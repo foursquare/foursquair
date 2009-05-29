@@ -1,0 +1,17 @@
+######################################################################
+# README # naveen (naveenium.com) - 20090528
+######################################################################
+
+I just started developing for Adobe AIR like 15 minutes ago, so
+bear with me here. :)
+
+I wanted a small desktop app that I could run in the corner that
+would auto-refresh and show me where my friends currently are. So
+I whipped up this app quick. It basically wraps the foursquare
+mobile web (http://m.playfoursquare.com) and refreshes once every
+5 minutes.
+
+In the future:
+ - attach this to the foursquare API
+ - make it slick.
+
