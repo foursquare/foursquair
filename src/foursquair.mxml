@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="350" initialize="init();">
+    <mx:Script>
+        <![CDATA[
+            import mx.controls.Alert;
+            import com.foursquare.api.*;
+            import mx.collections.ArrayCollection;
+            import mx.utils.ObjectUtil;
+            import mx.effects.Blur;
+            import mx.effects.Move;
+
+            public var foursquare:FoursqaureService = new FoursqaureService('266d5934f6cb223fcd5ffc75eeb0a99404acf504c', '6265da6ce9bd8cb2c69632ae51836327');
+            [Bindable] public var checkins:ArrayCollection;
+            [Bindable] public var actor:UserVO;
+            
+            private function init():void{
+                foursquare.authExchange('user', 'pass', function():void{
+                    foursquare.getUserDetails(0, function(u:UserVO):void{
+                        actor = u;
+                    }, null, true, false);
+                    foursquare.getCheckins(
+                        function(c:Array){
+                            checkins = new ArrayCollection(c);
+                        }
+                    );
+                });
+            }
+            
+            public function showFlashMessage(msg:String):void{
+                
+            }
+            
+            public function checkForUpdates():void{
+                foursquare.getCheckins(
+                    function(c:Array){
+                        var lastKnown:CheckinVO = checkins.getItemAt(0) as CheckinVO;
+                        if(lastKnown.id < c[0].id){
+                            
+                        }
+                    }
+                );
+            }
+            
+            private function handleTabBarItemClick(e:*):Boolean{
+                return false;
+            }
+            
+            public function transition(from:Canvas,to:Canvas,direction:String):void{
+                var out:Move = new Move();
+                var incoming:Move = new Move();
+                if(direction=='right'){
+                    out.duration = 500;
+                    out.target = from;
+                    out.xTo = -900;
+                    to.visible = false;
+                    incoming.target = to;
+                    incoming.xTo = 900;
+                    incoming.play();
+                    incoming.end();
+                    to.visible = true;
+                    incoming.xTo = 0;
+                    out.play();
+                    incoming.play();
+                }
+                else {
+                    out.duration = 500;
+                    out.target = from;
+                    out.xTo = 900;
+                    to.visible = false;
+                    incoming.target = to;
+                    incoming.xTo = -900;
+                    incoming.play();
+                    incoming.end();
+                    to.visible = true;
+                    incoming.xTo = 0;
+                    out.play();
+                    incoming.play();
+                }
+                
+                var out_blur:Blur = new Blur();
+                out_blur.target = from;
+                out_blur.duration = 500;
+                out_blur.play();
+                
+                var incoming_blur:Blur = new Blur();
+                incoming_blur.target = to;
+                incoming_blur.duration = 500;
+                incoming_blur.blurXTo = 0.0;
+                incoming_blur.blurXFrom = 200.0;
+                incoming_blur.play();
+                
+                /*
+                setTimeout(
+                    function():void{
+                        if(to.id=='artist'){
+                            main.selectedIndex = 1;
+                        }
+                        else if(to.id=='album'){
+                            main.selectedIndex = 2;
+                        }
+                        else if(to.id=='song'){
+                            main.selectedIndex = 3;
+                        }
+                        else if(to.id=='welcome'){
+                            main.selectedIndex = 0;
+                        }
+                    },
+                    500
+                );
+                */
+            }
+           
+        ]]>
+    </mx:Script>
+    <mx:HBox width="100%" height="100%">
+        <mx:VBox width="95" height="100%" horizontalAlign="center">
+            <mx:Image source="{actor.photo}" height="75" width="75"/>
+            <mx:TabBar dataProvider="viewstack1" width="100%" paddingLeft="0" direction="vertical" itemClick="handleTabBarItemClick(event);"></mx:TabBar>
+        </mx:VBox>
+        
+        <mx:ViewStack id="viewstack1" width="100%" height="100%">
+            <mx:Canvas label="Friends" width="100%" height="100%">
+                <mx:VBox width="100%" height="100%">
+                    <mx:Label text="What your friends are up to" />
+                    <mx:List dataProvider="{checkins}" width="100%" height="100%"><mx:itemRenderer>
+                        <mx:Component>
+                            <mx:HBox width="100%">
+                                <mx:Image source="{data.user.photo}" height="75" width="75" />
+                                <mx:VBox width="100%">
+                                    <mx:Label text="{data.display}" />
+                                    <mx:Label text="{data.shout}" />
+                                </mx:VBox>
+                            </mx:HBox>
+                        </mx:Component>
+                    </mx:itemRenderer></mx:List>
+                </mx:VBox>
+            </mx:Canvas>
+            <mx:Canvas label="Badges" width="100%" height="100%">
+                <mx:VBox width="100%" height="100%">
+                    <mx:Label text="Your badges" />
+                    <mx:List dataProvider="{actor.badges}" width="100%" height="100%"><mx:itemRenderer>
+                        <mx:Component>
+                            <mx:HBox width="100%" horizontalScrollPolicy="off" verticalScrollPolicy="off">
+                                <mx:Image source="{data.icon}" height="57" width="57" />
+                                <mx:VBox width="100%" horizontalScrollPolicy="off" verticalScrollPolicy="off">
+                                    <mx:Label text="{data.name}" />
+                                    <mx:Text text="{data.description}" height="100%"></mx:Text>
+                                </mx:VBox>
+                            </mx:HBox>
+                        </mx:Component>
+                    </mx:itemRenderer></mx:List>
+                </mx:VBox>
+            </mx:Canvas>
+        </mx:ViewStack>
+        <!--
+        <mx:HBox width="100%" horizontalGap="0">
+            <mx:Button label="Shout"  width="100%"/>
+            <mx:Button label="Add Friends"  width="100%"/>
+            <mx:Button label="Add Venue"  width="100%"/>
+            <mx:Button label="Help"  width="100%"/>
+        </mx:HBox>
+        -->
+        <!--
+        <mx:HBox width="100%">
+            <mx:Label text="Shout" />
+            <mx:TextInput id="shoutText"  width="100%"/>
+            <mx:Button label="Holler" />
+        </mx:HBox>
+        -->
+    </mx:HBox>
+</mx:WindowedApplication>
