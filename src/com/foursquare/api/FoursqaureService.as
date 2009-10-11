@@ -19,8 +19,8 @@ package com.foursquare.api{
 	public class FoursqaureService{
         public var actor:UserVO;
 		private var oauth:IOAuth;
-		private var oauth_token:String;
-		private var oauth_token_secret:String;
+		public var oauth_token:String;
+		public var oauth_token_secret:String;
 		
 		public function FoursqaureService(consumerKey:String, consumerSecret:String){
 			oauth = new OAuth(consumerKey, consumerSecret);
@@ -86,7 +86,7 @@ package com.foursquare.api{
 			);
 		}
 		
-		public function getHistory(onSuccess:Function, onError:Function=null):void{
+		public function getHistory(limit:int, onSuccess:Function, onError:Function=null):void{
 			getJSON(
                 'http://api.foursquare.com/v1/history.json', 
                 function(d:Object):void{
@@ -99,7 +99,8 @@ package com.foursquare.api{
                     onSuccess(o);
                 }, 
                 onError,
-                true
+                true,
+                {l: limit}
             );
 		}
 		
