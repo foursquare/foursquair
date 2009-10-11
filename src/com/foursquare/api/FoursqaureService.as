@@ -17,8 +17,7 @@ package com.foursquare.api{
 	
 	
 	public class FoursqaureService{
-		public static var CONSUMER_SECRET:String = '6265da6ce9bd8cb2c69632ae51836327';
-		public static var CONSUMER_KEY:String = '266d5934f6cb223fcd5ffc75eeb0a99404acf504c';
+        public var actor:UserVO;
 		private var oauth:IOAuth;
 		private var oauth_token:String;
 		private var oauth_token_secret:String;
@@ -85,6 +84,23 @@ package com.foursquare.api{
 			    onError,
 			    true
 			);
+		}
+		
+		public function getHistory(onSuccess:Function, onError:Function=null):void{
+			getJSON(
+                'http://api.foursquare.com/v1/history.json', 
+                function(d:Object):void{
+                    var checkins:Array = d.checkins as Array;
+                    var o:Array = new Array();
+                    checkins.forEach(function(el:Object, index:int, arr:Array){
+                    	el.user = actor;
+                        o.push(new CheckinVO(el));
+                    });
+                    onSuccess(o);
+                }, 
+                onError,
+                true
+            );
 		}
 		
 		public function getUserDetails(uid:Number, onSuccess:Function, onError:Function=null, badges:Boolean=false, mayor:Boolean=false):void{
