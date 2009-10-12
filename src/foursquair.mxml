@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="100%" initialize="init();" backgroundColor="#FFFFFF">
+<mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="100%" initialize="init();" backgroundColor="#FFFFFF" backgroundAttachment="assets/images/foursquare_header_background.png">
     <mx:states>
         <mx:State name="Login">
             <mx:SetProperty target="{main}" name="visible" value="false"/>
@@ -15,6 +15,22 @@
             </mx:AddChild>
         </mx:State>
     </mx:states>
+    <mx:Style>
+    	global{
+    		fontFamily: Arial;
+        }
+        
+        Button{
+            cornerRadius:3;
+            fillAlphas: 1.0, 1.0;
+            fontSize: 11;
+        }
+        Button.selected{
+        	fillColors: #B1CD45, #9CB92E;
+        	borderColor:#698109;
+        	color: #FFFFFF;
+        }
+    </mx:Style>
     <mx:Script>
         <![CDATA[
         	import mx.controls.Image;
@@ -31,6 +47,8 @@
             import mx.events.CollectionEvent;
             import mx.events.CollectionEventKind;
             
+            import flash.net.navigateToURL;
+            
             import com.adobe.air.notification.VideoNotification;
             import com.adobe.air.notification.NotificationClickedEvent;
             import com.adobe.air.notification.Purr;
@@ -41,6 +59,7 @@
             public var foursquare:FoursqaureService = new FoursqaureService('266d5934f6cb223fcd5ffc75eeb0a99404acf504c', '6265da6ce9bd8cb2c69632ae51836327');
             [Bindable] public var checkins:ArrayCollection;
             [Bindable] public var actor:UserVO;
+            [Bindable] public var venues:ArrayCollection = new ArrayCollection();
             
             import flash.filesystem.*; 
             public var oauthFile:File; 
@@ -70,6 +89,7 @@
                     
             	});
             	i.load(iconURL);
+            	
             	
                 
             	
@@ -165,38 +185,25 @@
                 incoming_blur.blurXTo = 0.0;
                 incoming_blur.blurXFrom = 200.0;
                 incoming_blur.play();
-                
-                /*
-                setTimeout(
-                    function():void{
-                        if(to.id=='artist'){
-                            main.selectedIndex = 1;
-                        }
-                        else if(to.id=='album'){
-                            main.selectedIndex = 2;
-                        }
-                        else if(to.id=='song'){
-                            main.selectedIndex = 3;
-                        }
-                        else if(to.id=='welcome'){
-                            main.selectedIndex = 0;
-                        }
-                    },
-                    500
-                );
-                */
             }
             
-            private function addCheckins(c:Array):void{
-            	checkins.addAllAt(new ArrayCollection(c), 0);
-                var n:Notification = new Notification('Foursquair', c.length+' new checkins', AbstractNotification.TOP_RIGHT, 5, bmp);
-                n.addEventListener(NotificationClickedEvent.NOTIFICATION_CLICKED_EVENT, function(e:NotificationClickedEvent):void{
-                	AbstractNotification(e.target).close();
-                	getApp().nativeWindow.activate();
-                });
-                purr.addNotification(n);
+            /**
+             * @todo (lucas) Be smarter about when to display notifications/make them more useful.
+             */ 
+            private function addCheckins(c:Array, notify:Boolean=true):void{
+            	if(c.length > 0){
+	            	checkins.addAllAt(new ArrayCollection(c), 0);
+	            	if(notify==true){
+		                var n:Notification = new Notification('Foursquair', c.length+' new checkins', AbstractNotification.TOP_RIGHT, 5, bmp);
+		                n.addEventListener(NotificationClickedEvent.NOTIFICATION_CLICKED_EVENT, function(e:NotificationClickedEvent):void{
+		                	AbstractNotification(e.target).close();
+		                	getApp().nativeWindow.activate();
+		                });
+		                purr.addNotification(n);
+	                }
+                }
             }
-            
+            import com.adobe.serialization.json.*;
             public function bootstrap():void{
             	updateCheckTimer = new Timer((60000*5));
             	updateCheckTimer.addEventListener(TimerEvent.TIMER, checkForUpdates);
@@ -220,10 +227,16 @@
 	                    );
 	                    */
 	                    foursquare.getCheckins(function(c:Array):void{
-	                    	addCheckins(c);
+                    	    addCheckins(c);
                             getApp().currentState = '';
                             getApp().status = '';
 	                    });
+	                    try{
+	                    foursquare.getVenues(actor.city.geolat, actor.city.geolong);
+	                    }
+	                    catch(e:Error){
+	                    	mx.controls.Alert.show(e.message, 'Error getting venues');
+	                    }
 	                }, 
 	                null, 
 	                true, 
@@ -254,7 +267,49 @@
             	   }
             	);
             }
+            /**
+             * @todo (lucas) Link a shout to a venue without actually counting as a checkin? 
+             * ie 
+             * "Anybody want to check out this bar tonight?"
+             * 
+             * <a>Details on LIC Bar</a>
+             */ 
+            public function handleShout():void{
+            	getApp().status = 'Shouting...';
+            	shoutSubmit.enabled = false;
+            	foursquare.checkin(0,'',shoutText.text,function(c:CheckinVO):void{
+            		shoutSubmit.enabled = true;
+            		addCheckins([c], false);
+            		getApp().status = '';
+            		shoutText.text = '';
+            	});
+            }
             
+            public function handleVenueSearch():void{
+                getApp().status = 'Searching...';
+                venueSearchSubmit.enabled = false;
+                try{
+                    foursquare.getVenues(
+                        actor.city.geolat, 
+                        actor.city.geolong, 
+                        10, 
+                        50, 
+                        venueSearchText.text, 
+                        function(v:Array):void{
+                            venuesTitle.text = 'Search results for '+venueSearchText.text;
+                            venues.addAll(new ArrayCollection(v));
+                            venueSearchSubmit.enabled = true;
+                            getApp().status = '';
+                        }
+                    );
+                }
+                catch(e:Error){
+                    mx.controls.Alert.show(e.message, 'Error getting venues');
+                    getApp().status = '';
+                    venueSearchSubmit.enabled = true;
+                }
+                
+            }
         ]]>
     </mx:Script>
     <mx:VBox id="login" visible="false" horizontalCenter="0" verticalCenter="0">
@@ -270,14 +325,21 @@
         </mx:Form>
     </mx:VBox>
     
-    <mx:HBox width="100%" height="100%" id="main">
-        <mx:VBox width="60" height="100%" horizontalAlign="center" id="sidebar" backgroundColor="#458CE1">
-            	<mx:Image source="{actor.photo}" height="50" width="50"/>
-            	<mx:VBox>
+    <mx:VBox width="100%" height="100%" id="main">
+        <mx:HBox width="100%" horizontalAlign="left" height="60" backgroundImage="@Embed(source='assets/images/foursquare_header_background.png')" backgroundSize="100%">
+            	<mx:HBox verticalAlign="bottom">
+            	   <mx:Image source="@Embed(source='assets/images/foursquare_header.png')" width="214" height="58" buttonMode="true" useHandCursor="true" click="navigateToURL(new URLRequest('http://foursquare.com'));" />
+            	   <mx:HBox paddingBottom="10" horizontalGap="1">
+            	   	   <mx:Button label="Friends" click="viewstack1.selectedIndex=0;" styleName="selected"/>
+                       <mx:Button label="Badges" click="viewstack1.selectedIndex=1;"/>
+                       <mx:Button label="Places" click="viewstack1.selectedIndex=2;"/>
+            	   </mx:HBox>
+            	<!--
             		<mx:Image source="@Embed(source='assets/images/foursquare_tv_icon.png')" click="viewstack1.selectedIndex=0;" />
             		<mx:Image source="@Embed(source='assets/images/foursquare_case_icon.png')" click="viewstack1.selectedIndex=1" />
-            	</mx:VBox>
-        </mx:VBox>
+            		-->
+            	</mx:HBox>
+        </mx:HBox>
         <mx:ViewStack id="viewstack1" width="100%" height="100%">
             <mx:Canvas label="F" width="100%" height="100%">
                 <mx:VBox width="100%" height="100%">
@@ -288,7 +350,7 @@
                                 <mx:Image source="{data.user.photo}" height="75" width="75" />
                                 <mx:VBox verticalGap="0" width="100%" borderStyle="solid" cornerRadius="3" horizontalScrollPolicy="off" verticalScrollPolicy="off" backgroundColor="#FFFFFF" paddingLeft="5" paddingRight="5" paddingBottom="5" paddingTop="5">
                                     <mx:HBox width="100%">
-                                    	<mx:Text text="{data.user.firstname} {data.user.lastname.substr(0,1)}." width="100%" fontSize="11" fontWeight="bold" />
+                                    	<mx:Text text="{data.user.name_with_initial}" width="100%" fontSize="11" fontWeight="bold" />
                                     	<mx:Text text="{data.created_in_words}" fontSize="9" />
                                     </mx:HBox>
                                     <mx:Text text="@ {data.venue.name}" width="100%" fontWeight="bold" fontSize="10" />
@@ -302,7 +364,7 @@
             <mx:Canvas label="B" width="100%" height="100%">
                 <mx:VBox width="100%" height="100%">
                     <mx:Label text="Your badges" />
-                    <mx:List dataProvider="{actor.badges}" width="100%" height="100%"><mx:itemRenderer>
+                    <mx:List dataProvider="{actor.badges}" width="100%" height="100%" borderStyle="none" themeColor="#FFFFFF"><mx:itemRenderer>
                         <mx:Component>
                             <mx:HBox width="100%" horizontalScrollPolicy="off" verticalScrollPolicy="off">
                                 <mx:Image source="{data.icon}" height="57" width="57" />
@@ -315,7 +377,46 @@
                     </mx:itemRenderer></mx:List>
                 </mx:VBox>
             </mx:Canvas>
+            <mx:Canvas label="V" width="100%" height="100%">
+                <mx:VBox width="100%" height="100%">
+                    <mx:HBox width="100%">
+                    	<mx:Label id="venuesTitle" text="Popular nearby" width="100%" />
+                    	<mx:Form paddingTop="0" paddingBottom="0" paddingLeft="0" paddingRight="10" defaultButton="{venueSearchSubmit}">
+                    	    <mx:HBox width="100%">
+                    		    <mx:TextInput id="venueSearchText" />
+                                <mx:Button label="Search" id="venueSearchSubmit" click="handleVenueSearch();" styleName="selected"/>
+                            </mx:HBox>
+                    	</mx:Form>
+                    </mx:HBox>
+                    <!--
+                    @todo (lucas) It's really important to show "verified" places here right? ie places friends have been but you havent
+                    -->
+                    <mx:List dataProvider="{venues}" width="100%" height="100%" borderStyle="none" themeColor="#FFFFFF"><mx:itemRenderer>
+                        <mx:Component>
+                            <mx:HBox width="100%" horizontalScrollPolicy="off" verticalScrollPolicy="off">
+                                <mx:Script>
+                                	<![CDATA[
+                                		import mx.core.Application;
+                                		import mx.controls.TextInput;
+                                	]]>
+                                </mx:Script>
+                                <mx:VBox width="100%">
+                                    <mx:HBox width="100%">
+                                	    <mx:Text text="{data.name}" width="100%" fontStyle="bold"></mx:Text>
+                                        <mx:LinkButton label="details" click="navigateToURL(new URLRequest('http://foursquare.com/venue/'+data.id));" />
+                                        <mx:LinkButton label="shout it" click="var shoutText:TextInput = mx.core.Application.application.shoutText; shoutText.text='Anybody want to go to '+data.name+'?';" />
+                                    </mx:HBox>
+                                    <mx:Text width="100%" text="{data.address}" />
+                                    <mx:Text width="100%" text="{data.crossstreet}" />
+                                    <mx:Text width="100%" text="Phone: {data.phone}" />
+                                </mx:VBox>
+                            </mx:HBox>
+                        </mx:Component>
+                    </mx:itemRenderer></mx:List>
+                </mx:VBox>
+            </mx:Canvas>
         </mx:ViewStack>
+        
         <!--
         <mx:HBox width="100%" horizontalGap="0">
             <mx:Button label="Shout"  width="100%"/>
@@ -324,12 +425,14 @@
             <mx:Button label="Help"  width="100%"/>
         </mx:HBox>
         -->
-        <!--
-        <mx:HBox width="100%">
-            <mx:Label text="Shout" />
-            <mx:TextInput id="shoutText"  width="100%"/>
-            <mx:Button label="Holler" />
-        </mx:HBox>
-        -->
-    </mx:HBox>
+        
+            <mx:Form width="100%" defaultButton="{shoutSubmit}">
+	            <mx:HBox width="100%">
+	            <mx:Label text="Shout" />
+	            <mx:TextInput id="shoutText"  width="100%"/>
+	            <mx:Button label="Holler" id="shoutSubmit" click="handleShout();"  cornerRadius="3" fillAlphas="[1.0, 1.0]" fillColors="[#B1CD45, #9CB92E]" color="#FFFFFF" borderColor="#698109" fontSize="12"/>
+	            </mx:HBox>
+            </mx:Form>
+        
+    </mx:VBox>
 </mx:WindowedApplication>

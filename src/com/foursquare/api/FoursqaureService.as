@@ -69,24 +69,60 @@ package com.foursquare.api{
             );
             loader.load(request);
 		}
+		/**
+		 * vid - (optional, not necessary if you are 'shouting' or have a venue name). ID of the venue where you want to check-in.
+		 * venue - (optional, not necessary if you are 'shouting' or have a vid) if you don't have a venue ID, pass the venue name as a string using this parameter. foursquare will attempt to match it on the server-side
+		 * shout - (optional) a message about your check-in
+		 * private - (optional, defaults to the user's setting). "1" means "don't show your friends". "0" means "show everyone"
+		 * twitter - (optional, default to the user's setting). "1" means "send to twitter". "0" means "don't send to twitter"
+		 * geolat - (optional, but recommended)
+		 * geolong - (optional, but recommended)
+		*/
+		public function checkin(vid:int, venue:String='', shout:String='', onSuccess:Function=null, onError:Function=null):void{
+			var params:Object = new Object();
+			if(vid > 0){
+				params.vid = vid;
+			}
+			if(venue.length > 1){
+				params.venue = venue;
+			}
+			if(shout.length > 1){
+				params.shout = shout;
+			}
+			getJSON(
+                'http://api.foursquare.com/v1/checkin.json', 
+                function(d:Object):void{
+                	var c:Object = d.checkin;
+                	d.user = actor;
+                	d.shout = shout;
+                	d.created = new Date();
+                	onSuccess(new CheckinVO(d));
+                },
+                onError,
+                true,
+                params
+            );
+		}
 		
 		public function getCheckins(onSuccess:Function, onError:Function=null):void{
 			getJSON(
 			    'http://api.foursquare.com/v1/checkins.json', 
 			    function(d:Object):void{
-			    	var checkins:Array = [d.checkins];
-			    	ObjectUtil.toString(checkins);
 			    	var o:Array = new Array();
-			    	for(var i:int=0; i<d.checkins.length; i++){
-			    		var c:Object = d.checkins[i];
-                        if(d.checkins[i].checkin){
-                            c = d.checkins[i].checkin;
-                        }
-                        
-                        trace(ObjectUtil.toString(c));
-                        o.push(new CheckinVO(c));
-			    	}
-
+			    	if(d.checkins instanceof Array){
+				    	var checkins:Array = [d.checkins];
+				    	for(var i:int=0; i<d.checkins.length; i++){
+				    		var c:Object = d.checkins[i];
+		                    if(d.checkins[i].checkin){
+		                        c = d.checkins[i].checkin;
+		                    }
+		                    o.push(new CheckinVO(c));
+				    	}
+                    }
+                    else{
+                    	o.push(new CheckinVO(d.checkins.checkin));
+                    }
+        
 			    	onSuccess(o);
 			    }, 
 			    onError,
@@ -98,8 +134,8 @@ package com.foursquare.api{
 			getJSON(
                 'http://api.foursquare.com/v1/history.json', 
                 function(d:Object):void{
+                	var o:Array = new Array();
                     var checkins:Array = d.checkins as Array;
-                    var o:Array = new Array();
                     checkins.forEach(function(el:Object, index:int, arr:Array){
                     	el.user = actor;
                         o.push(new CheckinVO(el));
@@ -126,6 +162,46 @@ package com.foursquare.api{
                 function(d:Object):void{
                     onSuccess(new UserVO(d.user));
                 }, 
+                onError,
+                true,
+                params
+            );
+		}
+		/**
+		 * geolat - latitude (required)
+         * geolong - longitude (required)
+         * r - radius in miles (optional)
+         * l - limit of results (optional, default 10)
+         * q - keyword search (optional)
+         */
+		public function getVenues(geolat:Number, geolong:Number, r:Number=25, l:int=10, q:String=null, onSuccess:Function=null, onError:Function=null):void{
+		    var params:Object = new Object();
+		    params.geolat = geolat;
+		    params.geolong = geolong;
+		    params.r = r;
+		    params.l = l;
+		    
+		    if(q!=null){
+		    	params.q = q;
+		    }
+		    getJSON(
+                'http://api.foursquare.com/v1/venues.json', 
+                function(d:Object):void{
+                    var o:Array = new Array();
+                    
+                    var venues:Array;
+                    if(d.venues.group){
+                    	venues = d.venues.group as Array;
+                    }
+                    else{
+                        venues = d.venues[0] as Array;
+                    }
+                    
+                    venues.forEach(function(el:Object, index:int, arr:Array){
+                        o.push(new VenueVO(el));
+                    });
+                    onSuccess(o);
+                },
                 onError,
                 true,
                 params
@@ -159,6 +235,9 @@ package com.foursquare.api{
                     else{
                         mx.controls.Alert.show(error.message, "error");
                     }
+                    var loader:URLLoader = e.target as URLLoader;
+                    trace('GOT JSON');
+                    trace(loader.data);
                 }
             );
             loader.addEventListener(
@@ -167,7 +246,13 @@ package com.foursquare.api{
                     var loader:URLLoader = e.target as URLLoader;
                     trace('GOT JSON');
                     trace(loader.data);
-                    onSuccess(JSON.decode(loader.data));
+                    try{
+                    var parsed:Object = JSON.decode(String(loader.data));
+                    onSuccess(parsed);
+                    }
+                    catch(e:JSONParseError){
+                    	mx.controls.Alert.show(e.message, 'JSON Parse Error :(');
+                    }
                 }
             );
             loader.load(request);
