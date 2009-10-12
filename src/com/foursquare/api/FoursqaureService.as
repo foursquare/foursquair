@@ -75,10 +75,18 @@ package com.foursquare.api{
 			    'http://api.foursquare.com/v1/checkins.json', 
 			    function(d:Object):void{
 			    	var checkins:Array = [d.checkins];
+			    	ObjectUtil.toString(checkins);
 			    	var o:Array = new Array();
-			    	checkins.forEach(function(el:Object, index:int, arr:Array){
-			    		o.push(new CheckinVO(el.checkin));
-			    	});
+			    	for(var i:int=0; i<d.checkins.length; i++){
+			    		var c:Object = d.checkins[i];
+                        if(d.checkins[i].checkin){
+                            c = d.checkins[i].checkin;
+                        }
+                        
+                        trace(ObjectUtil.toString(c));
+                        o.push(new CheckinVO(c));
+			    	}
+
 			    	onSuccess(o);
 			    }, 
 			    onError,

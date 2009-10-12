@@ -17,6 +17,8 @@
     </mx:states>
     <mx:Script>
         <![CDATA[
+        	import mx.controls.Image;
+        	import mx.events.CollectionEvent;
             import mx.controls.Alert;
             import com.foursquare.api.*;
             import mx.collections.ArrayCollection;
@@ -26,6 +28,15 @@
             import mx.core.Application;
             import flash.utils.Timer;
             import flash.events.TimerEvent;
+            import mx.events.CollectionEvent;
+            import mx.events.CollectionEventKind;
+            
+            import com.adobe.air.notification.VideoNotification;
+            import com.adobe.air.notification.NotificationClickedEvent;
+            import com.adobe.air.notification.Purr;
+            import com.adobe.air.notification.AbstractNotification;
+            import com.adobe.air.notification.Notification;
+            import mx.utils.StringUtil;
             
             public var foursquare:FoursqaureService = new FoursqaureService('266d5934f6cb223fcd5ffc75eeb0a99404acf504c', '6265da6ce9bd8cb2c69632ae51836327');
             [Bindable] public var checkins:ArrayCollection;
@@ -36,12 +47,32 @@
             
             private var updateCheckTimer:Timer;
             
+            private var purr:Purr = new Purr(1);
+            private const iconURL: String = "assets/images/notification_dude.png";
+            private var bmp: Bitmap = null;
+            
             private function getApp():foursquair{
             	return mx.core.Application.application as foursquair;
             }
             
             private function init():void{
             	getApp().currentState = 'Splash';
+            	var i:Image = new Image;
+            	i.addEventListener(Event.COMPLETE, function(event:Event):void{
+            		bmp = Bitmap(Image(event.target).content);
+                    purr.setIcons([bmp.bitmapData], "foursquair: all the cool kids are doing it.");
+                    
+                    /*
+                    var m: NativeMenu = new NativeMenu();
+                    m.addItem(new NativeMenuItem('Exit'));
+                    purr.setMenu(m);
+                    */
+                    
+            	});
+            	i.load(iconURL);
+            	
+                
+            	
                 oauthFile = File.applicationStorageDirectory; 
                 oauthFile = oauthFile.resolvePath("Preferences/oauth.txt");
                 if(oauthFile.exists) { 
@@ -81,7 +112,7 @@
                             		toAdd.push(el);
                             	}
                             });
-                            checkins.addAll(new ArrayCollection(toAdd));
+                            addCheckins(toAdd);
                             getApp().status = toAdd.length+' updates added!';
                         }
                         else{
@@ -156,10 +187,22 @@
                 */
             }
             
+            private function addCheckins(c:Array):void{
+            	checkins.addAllAt(new ArrayCollection(c), 0);
+                var n:Notification = new Notification('Foursquair', c.length+' new checkins', AbstractNotification.TOP_RIGHT, 5, bmp);
+                n.addEventListener(NotificationClickedEvent.NOTIFICATION_CLICKED_EVENT, function(e:NotificationClickedEvent):void{
+                	AbstractNotification(e.target).close();
+                	getApp().nativeWindow.activate();
+                });
+                purr.addNotification(n);
+            }
+            
             public function bootstrap():void{
             	updateCheckTimer = new Timer((60000*5));
             	updateCheckTimer.addEventListener(TimerEvent.TIMER, checkForUpdates);
             	updateCheckTimer.start();
+            	
+            	checkins = new ArrayCollection();
             	
             	getApp().status = 'Loading up.... Please wait';
             	foursquare.getUserDetails(
@@ -177,7 +220,7 @@
 	                    );
 	                    */
 	                    foursquare.getCheckins(function(c:Array):void{
-	                    	checkins = new ArrayCollection(c);
+	                    	addCheckins(c);
                             getApp().currentState = '';
                             getApp().status = '';
 	                    });

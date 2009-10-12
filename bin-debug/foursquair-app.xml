@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<application xmlns="http://ns.adobe.com/air/application/1.0">
+<application xmlns="http://ns.adobe.com/air/application/1.5">
 
 <!-- Adobe AIR Application Descriptor File Template.
 
@@ -60,10 +60,10 @@
         <!-- <resizable></resizable> -->
 
         <!-- The window's initial width. Optional. -->
-        <!-- <width></width> -->
+        <width>450</width>
 
         <!-- The window's initial height. Optional. -->
-        <!-- <height></height> -->
+        <height>600</height>
 
         <!-- The window's initial x position. Optional. -->
         <!-- <x></x> -->
@@ -86,12 +86,12 @@
 
     <!-- The icon the system uses for the application. For at least one resolution,
          specify the path to a PNG file included in the AIR package. Optional. -->
-    <!-- <icon>
-        <image16x16></image16x16>
-        <image32x32></image32x32>
-        <image48x48></image48x48>
-        <image128x128></image128x128>
-    </icon> -->
+    <icon>
+        <image16x16>assets/icon_016.png</image16x16>
+        <image32x32>assets/icon_032.png</image32x32>
+        <image48x48>assets/icon_048.png</image48x48>
+        <image128x128>assets/icon_128.png</image128x128>
+    </icon>
 
     <!-- Whether the application handles the update when a user double-clicks an update version
     of the AIR file (true), or the default AIR application installer handles the update (false).
