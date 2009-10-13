@@ -18,13 +18,13 @@
     <id>Foursqair-lucas</id>
 
     <!-- Used as the filename for the application. Required. -->
-    <filename>Foursqair_lucas</filename>
+    <filename>Foursqair</filename>
 
     <!-- The name that is displayed in the AIR application installer. Optional. -->
-    <name>Foursqair_lucas</name>
+    <name>Foursqair</name>
 
     <!-- An application version designator (such as "v1", "2.5", or "Alpha 1"). Required. -->
-    <version>0.51</version>
+    <version>0.52</version>
 
     <!-- Description, displayed in the AIR application installer. Optional. -->
     <description>See what your friends are up to while you're at work, plan your night out.</description>

@@ -66,6 +66,7 @@
             [Bindable] public var checkins:ArrayCollection;
             [Bindable] public var actor:UserVO;
             [Bindable] public var venues:ArrayCollection = new ArrayCollection();
+            [Bindable] public var currentVersion:String;
             
             import flash.filesystem.*; 
             public var oauthFile:File; 
@@ -87,7 +88,9 @@
             	getApp().currentState = 'Splash';
             	appUpdater.configurationFile = new File("app:/updateConfig.xml"); 
                 appUpdater.initialize();
-                trace(appUpdater.currentVersion);
+                appUpdater.checkNow();
+                
+                currentVersion = appUpdater.currentVersion;
                 
             	var i:Image = new Image;
             	i.addEventListener(Event.COMPLETE, function(event:Event):void{
@@ -107,7 +110,7 @@
                 
             	
                 oauthFile = File.applicationStorageDirectory; 
-                oauthFile = oauthFile.resolvePath("Preferences/oauth.txt");
+                oauthFile = oauthFile.resolvePath("Preferences/oauth_debug.txt");
                 if(oauthFile.exists) { 
                     var stream:FileStream = new FileStream(); 
 	                stream.open(oauthFile, FileMode.READ); 
@@ -128,6 +131,7 @@
             private function firstRun():void { 
                 // do stuff..
                 getApp().currentState = 'Login';
+                appUpdater.checkNow();
             } 
             
             public function showFlashMessage(msg:String):void{
@@ -373,8 +377,8 @@
         </mx:HBox>
         </mx:Form>
     </mx:VBox>
-    
-    <mx:VBox width="100%" height="100%" id="main">
+    <mx:Canvas id="main" width="100%" height="100%">
+    <mx:VBox width="100%" height="100%">
         <mx:HBox width="100%" horizontalAlign="left" height="60" backgroundImage="@Embed(source='assets/images/foursquare_header_background.png')" backgroundSize="100%">
             	<mx:HBox verticalAlign="bottom">
             	   <mx:Image source="@Embed(source='assets/images/foursquare_header.png')" width="214" height="58" buttonMode="true" useHandCursor="true" click="navigateToURL(new URLRequest('http://foursquare.com'));" />
@@ -475,4 +479,7 @@
             </mx:HBox>
         </mx:Form>
     </mx:VBox>
+    <mx:Label text="v {currentVersion}" right="0"/>
+    </mx:Canvas>
+    
 </mx:WindowedApplication>

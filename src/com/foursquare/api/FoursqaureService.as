@@ -227,6 +227,7 @@ package com.foursquare.api{
             loader.addEventListener(
                 IOErrorEvent.IO_ERROR, 
                 function(e:IOErrorEvent):void{
+                	trace(request.url);
                 	var error:Error = new Error("Couldnt parse XML.  Incorrect username/password or couldnt talk to foursquare :(");
                 	if(onError != null){
                         onError(error);
