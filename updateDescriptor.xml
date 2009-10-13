@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?> 
  <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0"> 
-   <version>0.56</version> 
-   <url>http://github.com/imlucas/foursquair/raw/master/foursquair-flex-0.56.air</url>
-   <description>Trying to get naveens shit to load.</description>
+   <version>0.57</version> 
+   <url>http://github.com/imlucas/foursquair/raw/master/foursquair-flex-0.57.air</url>
+   <description>Checkins should now actually load</description>
 </update>

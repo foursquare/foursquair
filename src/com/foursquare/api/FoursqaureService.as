@@ -1,6 +1,5 @@
 package com.foursquare.api{
 	import com.foursquare.util.XMLUtil;
-	import mx.core.Application;
 	
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
@@ -8,10 +7,10 @@ package com.foursquare.api{
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
 	import flash.net.URLVariables;
-	import mx.collections.ArrayCollection;
 	
+	import mx.collections.ArrayCollection;
 	import mx.controls.Alert;
-	import mx.utils.ObjectUtil;
+	import mx.core.Application;
 	
 	import org.flaircode.oauth.*;
 	import org.iotashan.oauth.*;
@@ -104,19 +103,15 @@ package com.foursquare.api{
                 params
             );
 		}
-		
 		public function getCheckins(onSuccess:Function, onError:Function=null):void{
 			getJSON(
 			    'http://api.foursquare.com/v1/checkins.xml', 
 			    function(d:Object):void{
 			    	var o:Array = new Array();
-			    	if(d.checkins instanceof Array){
-				    	var checkins:Array = [d.checkins];
-				    	for(var i:int=0; i<d.checkins.length; i++){
-				    		var c:Object = d.checkins[i];
-		                    if(d.checkins[i].checkin){
-		                        c = d.checkins[i].checkin;
-		                    }
+			    	if(d.checkins.checkin instanceof ArrayCollection){
+				    	var checkins:ArrayCollection = d.checkins.checkin as ArrayCollection;
+				    	for(var i:int=0; i<d.checkins.checkin.length; i++){
+				    		var c:Object = checkins.getItemAt(0);
 		                    o.push(new CheckinVO(c));
 				    	}
                     }
