@@ -10,7 +10,10 @@
             <mx:SetProperty target="{login}" name="visible" value="false"/>
             <mx:AddChild position="lastChild">
                 <mx:Canvas id="splash" width="100%" height="100%">
-                	<mx:Image source="@Embed(source='assets/images/foursquare_splash.png')" horizontalCenter="0" verticalCenter="0"/>
+                    <mx:VBox width="100%" height="100%" horizontalAlign="center" verticalAlign="middle">
+                    	<mx:Image source="@Embed(source='assets/images/foursquare_splash.png')" horizontalCenter="0" verticalCenter="0"/>
+                    	<mx:SWFLoader id="splashLoadingIndicator" source="@Embed(source='assets/swf/foursquare_loader.swf')" width="16" height="16" autoLoad="true" horizontalCenter="0" verticalCenter="0"/>
+                    </mx:VBox>
                 </mx:Canvas>
             </mx:AddChild>
         </mx:State>
@@ -121,6 +124,8 @@
             
             public function checkForUpdates(...rest):void{
             	trace('Check updates');
+            	showIndicator(friendsLoadingIndicator);
+            	
                 getApp().status = 'Checking for updates...';
                 foursquare.getCheckins(
                     function(c:Array):void{
@@ -138,6 +143,7 @@
                         else{
                         	getApp().status = 'No new updates :(';
                         }
+                        hideIndicator(friendsLoadingIndicator);
                     }
                 );
             }
@@ -204,7 +210,22 @@
                 }
             }
             import com.adobe.serialization.json.*;
+            
+            private function showIndicator(indicator:SWFLoader):void{
+            	indicator.visible = true;
+            	indicator.includeInLayout = true;
+            }
+            
+            private function hideIndicator(indicator:SWFLoader):void{
+            	indicator.visible = false;
+                indicator.includeInLayout = false;
+            }
             public function bootstrap():void{
+            	try{
+            	    showIndicator(friendsLoadingIndicator);
+                }
+                catch(e:Error){}
+             
             	updateCheckTimer = new Timer((60000*5));
             	updateCheckTimer.addEventListener(TimerEvent.TIMER, checkForUpdates);
             	updateCheckTimer.start();
@@ -230,6 +251,8 @@
                     	    addCheckins(c);
                             getApp().currentState = '';
                             getApp().status = '';
+                            hideIndicator(friendsLoadingIndicator);
+                
 	                    });
 	                    try{
 	                    foursquare.getVenues(actor.city.geolat, actor.city.geolong);
@@ -245,6 +268,8 @@
             }
             
             public function handleLogin():void{
+            	showIndicator(loginLoadingIndicator);
+            	
             	getApp().status = 'Loggin in...';
             	foursquare.authExchange(
             	   username.text, 
@@ -260,10 +285,12 @@
 			               stream.close(); 
             	       }
             	       getApp().status = '';
+            	       hideIndicator(loginLoadingIndicator);
             	       bootstrap();
             	   }, 
             	   function():void{
             	   	   getApp().status = 'Error trying to do auth exchange';
+            	   	   hideIndicator(loginLoadingIndicator);
             	   }
             	);
             }
@@ -275,6 +302,7 @@
              * <a>Details on LIC Bar</a>
              */ 
             public function handleShout():void{
+            	showIndicator(shoutLoadingIndicator);
             	getApp().status = 'Shouting...';
             	shoutSubmit.enabled = false;
             	foursquare.checkin(0,'',shoutText.text,function(c:CheckinVO):void{
@@ -282,10 +310,13 @@
             		addCheckins([c], false);
             		getApp().status = '';
             		shoutText.text = '';
+            		hideIndicator(shoutLoadingIndicator);
             	});
             }
             
             public function handleVenueSearch():void{
+            	showIndicator(searchLoadingIndicator);
+            	
                 getApp().status = 'Searching...';
                 venueSearchSubmit.enabled = false;
                 try{
@@ -300,6 +331,7 @@
                             venues.addAll(new ArrayCollection(v));
                             venueSearchSubmit.enabled = true;
                             getApp().status = '';
+                            hideIndicator(searchLoadingIndicator);
                         }
                     );
                 }
@@ -307,6 +339,7 @@
                     mx.controls.Alert.show(e.message, 'Error getting venues');
                     getApp().status = '';
                     venueSearchSubmit.enabled = true;
+                    hideIndicator(searchLoadingIndicator);
                 }
                 
             }
@@ -321,7 +354,10 @@
         <mx:Label text="Password" />
         <mx:TextInput id="password"  displayAsPassword="true"/>
         <mx:CheckBox id="rememberMe" selected="true" label="Remember me"/>
-        <mx:Button label="Sign in" id="loginSubmit" click="handleLogin();"/>
+        <mx:HBox width="100%">
+        	<mx:Button label="Sign in" id="loginSubmit" click="handleLogin();"/>
+        	<mx:SWFLoader visible="false" includeInLayout="false" id="loginLoadingIndicator" source="@Embed(source='assets/swf/foursquare_loader.swf')" width="16" height="16" autoLoad="true"/>
+        </mx:HBox>
         </mx:Form>
     </mx:VBox>
     
@@ -340,10 +376,13 @@
             		-->
             	</mx:HBox>
         </mx:HBox>
-        <mx:ViewStack id="viewstack1" width="100%" height="100%">
+        <mx:ViewStack id="viewstack1" width="100%" height="100%" creationPolicy="all">
             <mx:Canvas label="F" width="100%" height="100%">
                 <mx:VBox width="100%" height="100%">
-                    <mx:Label text="Friends"  fontSize="11"/>
+                    <mx:HBox width="100%">
+                    	<mx:Label text="Friends"  fontSize="11"/>
+                    	<mx:SWFLoader id="friendsLoadingIndicator" source="@Embed(source='assets/swf/foursquare_loader.swf')" width="16" height="16" autoLoad="true"/>
+                    </mx:HBox>
                     <mx:List dataProvider="{checkins}" width="100%" height="100%" themeColor="#FFFFFF" borderStyle="none"><mx:itemRenderer>
                         <mx:Component>
                             <mx:HBox width="100%" horizontalScrollPolicy="off" verticalScrollPolicy="off">
@@ -383,6 +422,7 @@
                     	<mx:Label id="venuesTitle" text="Popular nearby" width="100%" />
                     	<mx:Form paddingTop="0" paddingBottom="0" paddingLeft="0" paddingRight="10" defaultButton="{venueSearchSubmit}">
                     	    <mx:HBox width="100%">
+                    		    <mx:SWFLoader visible="false" includeInLayout="false" id="searchLoadingIndicator" source="@Embed(source='assets/swf/foursquare_loader.swf')" width="16" height="16" autoLoad="true"/>
                     		    <mx:TextInput id="venueSearchText" />
                                 <mx:Button label="Search" id="venueSearchSubmit" click="handleVenueSearch();" styleName="selected"/>
                             </mx:HBox>
@@ -430,6 +470,7 @@
 	            <mx:HBox width="100%">
 	            <mx:Label text="Shout" />
 	            <mx:TextInput id="shoutText"  width="100%"/>
+	            <mx:SWFLoader visible="false" includeInLayout="false" id="shoutLoadingIndicator" source="@Embed(source='assets/swf/foursquare_loader.swf')" width="16" height="16" autoLoad="true"/>
 	            <mx:Button label="Holler" id="shoutSubmit" click="handleShout();"  cornerRadius="3" fillAlphas="[1.0, 1.0]" fillColors="[#B1CD45, #9CB92E]" color="#FFFFFF" borderColor="#698109" fontSize="12"/>
 	            </mx:HBox>
             </mx:Form>

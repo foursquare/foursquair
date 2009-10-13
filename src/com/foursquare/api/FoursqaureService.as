@@ -251,7 +251,7 @@ package com.foursquare.api{
                     onSuccess(parsed);
                     }
                     catch(e:JSONParseError){
-                    	mx.controls.Alert.show(e.message, 'JSON Parse Error :(');
+                    	mx.controls.Alert.show(e.message+"\n\nStack:\n"+e.getStackTrace(), 'JSON Parse Error :(');
                     }
                 }
             );
