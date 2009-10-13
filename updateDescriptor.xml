@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?> 
  <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0"> 
-   <version>0.51</version> 
-   <url>http://github.com/imlucas/foursquair/raw/master/foursquair-flex-0.52.air</url>
+   <version>0.53</version> 
+   <url>http://github.com/imlucas/foursquair/raw/master/foursquair-flex-0.53.air</url>
    <description>Trying to get auto updates...</description>
 </update>

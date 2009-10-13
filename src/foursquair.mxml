@@ -89,6 +89,12 @@
             	appUpdater.configurationFile = new File("app:/updateConfig.xml"); 
                 appUpdater.initialize();
                 appUpdater.checkNow();
+                appUpdater.addEventListener(UpdateEvent.CHECK_FOR_UPDATE, function(e:UpdateEvent):void{
+                	mx.controls.Alert.show('Checking for updates');
+                });
+                appUpdater.addEventListener(UpdateEvent.BEFORE_INSTALL, function(e:UpdateEvent):void{
+                	mx.controls.Alert.show('Updater: Before Install');
+                });
                 
                 currentVersion = appUpdater.currentVersion;
                 
