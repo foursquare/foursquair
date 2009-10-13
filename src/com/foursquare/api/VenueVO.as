@@ -1,11 +1,11 @@
 package com.foursquare.api{
 	public class VenueVO{
-		public var id:int;
-		public var name:String;
-		public var address:String;
-		public var crossstreet:String;
-		public var geolat:Number;
-		public var geolong:Number;
+		[Bindable] public var id:int;
+		[Bindable] public var name:String;
+		[Bindable] public var address:String;
+		[Bindable] public var crossstreet:String;
+		[Bindable] public var geolat:Number;
+		[Bindable] public var geolong:Number;
 		
 		public function VenueVO(remote:Object){
 			this.id = remote.id;

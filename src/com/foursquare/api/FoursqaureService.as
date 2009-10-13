@@ -1,5 +1,5 @@
 package com.foursquare.api{
-	import com.adobe.serialization.json.*;
+	import com.foursquare.util.XMLUtil;
 	
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
@@ -8,13 +8,12 @@ package com.foursquare.api{
 	import flash.net.URLRequestMethod;
 	import flash.net.URLVariables;
 	
+	import mx.collections.ArrayCollection;
 	import mx.controls.Alert;
 	import mx.utils.ObjectUtil;
 	
 	import org.flaircode.oauth.*;
 	import org.iotashan.oauth.*;
-	
-	
 	
 	public class FoursqaureService{
         public var actor:UserVO;
@@ -90,7 +89,7 @@ package com.foursquare.api{
 				params.shout = shout;
 			}
 			getJSON(
-                'http://api.foursquare.com/v1/checkin.json', 
+                'http://api.foursquare.com/v1/checkin.xml', 
                 function(d:Object):void{
                 	var c:Object = d.checkin;
                 	d.user = actor;
@@ -106,7 +105,7 @@ package com.foursquare.api{
 		
 		public function getCheckins(onSuccess:Function, onError:Function=null):void{
 			getJSON(
-			    'http://api.foursquare.com/v1/checkins.json', 
+			    'http://api.foursquare.com/v1/checkins.xml', 
 			    function(d:Object):void{
 			    	var o:Array = new Array();
 			    	if(d.checkins instanceof Array){
@@ -132,7 +131,7 @@ package com.foursquare.api{
 		
 		public function getHistory(limit:int, onSuccess:Function, onError:Function=null):void{
 			getJSON(
-                'http://api.foursquare.com/v1/history.json', 
+                'http://api.foursquare.com/v1/history.xml', 
                 function(d:Object):void{
                 	var o:Array = new Array();
                     var checkins:Array = d.checkins as Array;
@@ -158,7 +157,7 @@ package com.foursquare.api{
 			params.mayor = (mayor) ? 1 : 0;
 			
 			getJSON(
-                'http://api.foursquare.com/v1/user.json', 
+                'http://api.foursquare.com/v1/user.xml', 
                 function(d:Object):void{
                     onSuccess(new UserVO(d.user));
                 }, 
@@ -185,19 +184,19 @@ package com.foursquare.api{
 		    	params.q = q;
 		    }
 		    getJSON(
-                'http://api.foursquare.com/v1/venues.json', 
+                'http://api.foursquare.com/v1/venues.xml', 
                 function(d:Object):void{
                     var o:Array = new Array();
                     
-                    var venues:Array;
-                    if(d.venues.group){
-                    	venues = d.venues.group as Array;
+                    var v:ArrayCollection = new ArrayCollection();
+                    try{
+                    	v = d.venues.group.venue as ArrayCollection;
                     }
-                    else{
-                        venues = d.venues[0] as Array;
+                    catch(e:Error){
+                    	v = d.venues.group as ArrayCollection;
+                        v = v.source[0].venue;
                     }
-                    
-                    venues.forEach(function(el:Object, index:int, arr:Array){
+                    v.source.forEach(function(el:Object, index:int, arr:Array){
                         o.push(new VenueVO(el));
                     });
                     onSuccess(o);
@@ -235,23 +234,20 @@ package com.foursquare.api{
                     else{
                         mx.controls.Alert.show(error.message, "error");
                     }
-                    var loader:URLLoader = e.target as URLLoader;
-                    trace('GOT JSON');
-                    trace(loader.data);
                 }
             );
             loader.addEventListener(
                 Event.COMPLETE, 
                 function(e:Event):void{
                     var loader:URLLoader = e.target as URLLoader;
-                    trace('GOT JSON');
-                    trace(loader.data);
+                    trace('-- Got XML from '+request.url);
+                    trace(loader.data+"\n");
                     try{
-                    var parsed:Object = JSON.decode(String(loader.data));
-                    onSuccess(parsed);
+	                    var parsed:Object = com.foursquare.util.XMLUtil.XMLToObject(loader.data);
+	                    onSuccess(parsed);
                     }
-                    catch(e:JSONParseError){
-                    	mx.controls.Alert.show(e.message+"\n\nStack:\n"+e.getStackTrace(), 'JSON Parse Error :(');
+                    catch(e:Error){
+                    	mx.controls.Alert.show(e.message+"\n\nStack:\n"+e.getStackTrace(), 'XML Parse Error :(');
                     }
                 }
             );
@@ -260,14 +256,12 @@ package com.foursquare.api{
 		
 		public function listCities(onSuccess:Function, onError:Function=null):void{
 		    getJSON(
-		        'http://api.foursquare.com/v1/cities.json', 
+		        'http://api.foursquare.com/v1/cities.xml', 
 		        function(data:Object):void{
 		        	var c:Array = data.cities as Array;
 		            c.map(function(el:Object):void{
 		               new CityVO(el);
 		            });
-		            trace(c.length);
-		            trace(ObjectUtil.toString(c));
 		            onSuccess(c);
 		        }
 		    );

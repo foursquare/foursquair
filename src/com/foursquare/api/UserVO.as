@@ -1,14 +1,16 @@
 package com.foursquare.api{
+	import mx.collections.ArrayCollection;
+	
 	public class UserVO{
 		
-		public var id:int;
-		public var firstname:String;
-		public var lastname:String;
-		public var name_with_initial:String;
-		public var photo:String;
-		public var gender:String;
-		public var badges:Array = new Array();
-		public var city:CityVO;
+		[Bindable] public var id:int;
+		[Bindable] public var firstname:String;
+		[Bindable] public var lastname:String;
+		[Bindable] public var name_with_initial:String;
+		[Bindable] public var photo:String;
+		[Bindable] public var gender:String;
+		[Bindable] public var badges:Array = new Array();
+		[Bindable] public var city:CityVO;
 		
 		public function UserVO(remote:Object){
 			this.id = remote.id;
@@ -23,8 +25,8 @@ package com.foursquare.api{
 				this.photo = (this.gender=="male") ? 'http://playfoursquare.s3.amazonaws.com/userpix_thumbs/blank_boy.png' : 'http://playfoursquare.s3.amazonaws.com/userpix_thumbs/blank_girl.png';
 			}
 			if(remote.badges){
-			   var b:Array = remote.badges as Array;
-			   b.forEach(function(el:Object, index:int, arr:Array){
+			   var b:ArrayCollection = remote.badges.badge as ArrayCollection;
+			   b.source.forEach(function(el:Object, index:int, arr:Array){
 			       badges.push(new BadgeVO(el));
 			   });
 			}

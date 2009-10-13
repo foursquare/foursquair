@@ -2,14 +2,14 @@ package com.foursquare.api{
 	import com.foursquare.util.TimeAgoInWords;
 	
 	public class CheckinVO{
-		public var id:int = 0;
-		public var user:UserVO;
-		public var venue:VenueVO;
-		public var display:String;
-		public var shout:String;
-		public var created:Date;
-		public var created_in_words:String;
-		public var is_shout_only:Boolean = false;
+		[Bindable] public var id:int = 0;
+		[Bindable] public var user:UserVO;
+		[Bindable] public var venue:VenueVO;
+		[Bindable] public var display:String;
+		[Bindable] public var shout:String;
+		[Bindable] public var created:Date;
+		[Bindable] public var created_in_words:String;
+		[Bindable] public var is_shout_only:Boolean = false;
 		
 		public function CheckinVO(remote:Object){
 			this.id = remote.id;
