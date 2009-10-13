@@ -25,10 +25,16 @@ package com.foursquare.api{
 				this.photo = (this.gender=="male") ? 'http://playfoursquare.s3.amazonaws.com/userpix_thumbs/blank_boy.png' : 'http://playfoursquare.s3.amazonaws.com/userpix_thumbs/blank_girl.png';
 			}
 			if(remote.badges){
-			   var b:ArrayCollection = remote.badges.badge as ArrayCollection;
-			   b.source.forEach(function(el:Object, index:int, arr:Array){
-			       badges.push(new BadgeVO(el));
-			   });
+				var b:ArrayCollection;
+			    if(remote.badges.badge){
+				    b = remote.badges.badge as ArrayCollection;
+			    }
+			    else{
+			    	b = new ArrayCollection(remote.badges);
+			    }
+			    b.source.forEach(function(el:Object, index:int, arr:Array){
+			        badges.push(new BadgeVO(el));
+			    });
 			}
 			this.city = ((remote.city) ? new CityVO(remote.city) : null);
 		}

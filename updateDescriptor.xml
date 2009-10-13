@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?> 
  <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0"> 
-   <version>0.5</version> 
-   <url>http://github.com/imlucas/foursquair/raw/master/foursquair-flex-0.5.air</url>
-   <description>Ported data providers to use XML instead of JSON</description>
+   <version>0.51</version> 
+   <url>http://github.com/imlucas/foursquair/raw/master/foursquair-flex-0.51.air</url>
+   <description>Fix bug in UserVO.badges</description>
 </update>

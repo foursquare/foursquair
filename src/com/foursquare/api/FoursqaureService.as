@@ -244,11 +244,11 @@ package com.foursquare.api{
                     trace(loader.data+"\n");
                     try{
 	                    var parsed:Object = com.foursquare.util.XMLUtil.XMLToObject(loader.data);
-	                    onSuccess(parsed);
                     }
                     catch(e:Error){
                     	mx.controls.Alert.show(e.message+"\n\nStack:\n"+e.getStackTrace(), 'XML Parse Error :(');
                     }
+                    onSuccess(parsed);
                 }
             );
             loader.load(request);
