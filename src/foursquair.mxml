@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="100%" initialize="init();" backgroundColor="#FFFFFF" backgroundAttachment="assets/images/foursquare_header_background.png">
+<mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="100%" initialize="init();" creationComplete="creationComplete();" backgroundColor="#FFFFFF" backgroundAttachment="assets/images/foursquare_header_background.png">
     <mx:states>
         <mx:State name="Login">
             <mx:SetProperty target="{main}" name="visible" value="false"/>
@@ -84,19 +84,26 @@
             	return mx.core.Application.application as foursquair;
             }
             
-            private function init():void{
-            	getApp().currentState = 'Splash';
+            private function creationComplete():void{
             	appUpdater.configurationFile = new File("app:/updateConfig.xml"); 
-                appUpdater.initialize();
-                appUpdater.checkNow();
+                appUpdater.addEventListener(UpdateEvent.INITIALIZED, function(e:UpdateEvent):void{
+                    appUpdater.checkNow();
+                });
                 appUpdater.addEventListener(UpdateEvent.CHECK_FOR_UPDATE, function(e:UpdateEvent):void{
-                	mx.controls.Alert.show('Checking for updates');
                 });
-                appUpdater.addEventListener(UpdateEvent.BEFORE_INSTALL, function(e:UpdateEvent):void{
-                	mx.controls.Alert.show('Updater: Before Install');
-                });
+                appUpdater.isNewerVersionFunction = function(currentVersion:String, updateVersion:String):Boolean {
+                    var n:Boolean = updateVersion > currentVersion;
+                    mx.controls.Alert.show('Needs newer version: '+n.toString()+', c: '+currentVersion+', u'+updateVersion);
+                    return n;
+                }
+                appUpdater.initialize();
                 
                 currentVersion = appUpdater.currentVersion;
+            }
+            
+            private function init():void{
+            	getApp().currentState = 'Splash';
+            	
                 
             	var i:Image = new Image;
             	i.addEventListener(Event.COMPLETE, function(event:Event):void{
