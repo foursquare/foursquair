@@ -1,8 +1,10 @@
 package com.foursquare.util{
+	import flash.xml.XMLDocument;
+	import flash.xml.XMLNode;
+	
+	import mx.core.Application;
 	import mx.rpc.xml.SimpleXMLDecoder;
-    import mx.rpc.xml.SimpleXMLEncoder;
-    import flash.xml.XMLDocument;
-    import flash.xml.XMLNode;
+	import mx.rpc.xml.SimpleXMLEncoder;
             
     public class XMLUtil{
         public function XMLUtil(){}	
@@ -16,9 +18,16 @@ package com.foursquare.util{
         }
             
         public static function XMLToObject(xmlStr:String):Object{
+            try{
             var xmlDoc:XMLDocument = new XMLDocument(xmlStr);
             var decoder:SimpleXMLDecoder = new SimpleXMLDecoder(true);
             return decoder.decodeXML(xmlDoc);
+            }
+            catch(e:Error){
+            	mx.core.Application.application.error(e);
+            }
+            return '';
         }
+        
     }	
 }

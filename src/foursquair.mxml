@@ -36,12 +36,15 @@
     </mx:Style>
     <mx:Script>
         <![CDATA[
+        	import com.foursquare.util.AppDebuggerEvent;
         	import air.update.events.UpdateEvent;
         	import mx.controls.Image;
         	import mx.events.CollectionEvent;
             import mx.controls.Alert;
             import com.foursquare.api.*;
             import com.foursquare.util.XMLUtil;
+            import com.foursquare.util.AppDebugger;
+            
             
             import mx.collections.ArrayCollection;
             import mx.utils.ObjectUtil;
@@ -55,7 +58,6 @@
             
             import flash.net.navigateToURL;
             
-            import com.adobe.air.notification.VideoNotification;
             import com.adobe.air.notification.NotificationClickedEvent;
             import com.adobe.air.notification.Purr;
             import com.adobe.air.notification.AbstractNotification;
@@ -71,6 +73,8 @@
             import flash.filesystem.*; 
             public var oauthFile:File; 
             
+            public var debugger:AppDebugger;
+            
             private var updateCheckTimer:Timer;
             
             private var purr:Purr = new Purr(1);
@@ -84,16 +88,47 @@
             	return mx.core.Application.application as foursquair;
             }
             
+            public function checkForAppUpdates():void{
+            	appUpdater.checkNow();
+            }
+            
+            public function log(msg:String):void{
+                debug.text += "DEBUG: "+msg+"\n";
+                trace("DEBUG: "+msg);
+                debug.validateNow();
+                debug.verticalScrollPosition = debug.maxVerticalScrollPosition;
+            }
+            
+            public function error(e:Object):void{
+            	var error:Error = e as Error;
+                if(e instanceof Error){
+                    error = e.data as Error;
+                }
+                else{
+                    error = new Error(e);
+                }
+                debug.text += "ERROR: "+e.message+"\n";
+                debug.text += e.getStackTrace()+"\n";
+                trace("ERROR: "+e.message);
+                trace(e.getStackTrace());
+                
+                debug.validateNow();
+                debug.verticalScrollPosition = debug.maxVerticalScrollPosition;
+            }
+            
             private function creationComplete():void{
+            	log('creation complete called');
+            	log('starting up appUpdater');
+            	
             	appUpdater.configurationFile = new File("app:/updateConfig.xml"); 
                 appUpdater.addEventListener(UpdateEvent.INITIALIZED, function(e:UpdateEvent):void{
-                    appUpdater.checkNow();
+                    log('appUpdaterReady');
                 });
                 appUpdater.addEventListener(UpdateEvent.CHECK_FOR_UPDATE, function(e:UpdateEvent):void{
                 });
                 appUpdater.isNewerVersionFunction = function(currentVersion:String, updateVersion:String):Boolean {
                     var n:Boolean = updateVersion > currentVersion;
-                    mx.controls.Alert.show('Needs newer version: '+n.toString()+', c: '+currentVersion+', u'+updateVersion);
+                    log('Needs newer version: '+n.toString()+', c: '+currentVersion+', u'+updateVersion);
                     return n;
                 }
                 appUpdater.initialize();
@@ -103,8 +138,7 @@
             
             private function init():void{
             	getApp().currentState = 'Splash';
-            	
-                
+            	log('init called');
             	var i:Image = new Image;
             	i.addEventListener(Event.COMPLETE, function(event:Event):void{
             		bmp = Bitmap(Image(event.target).content);
@@ -118,13 +152,11 @@
                     
             	});
             	i.load(iconURL);
-            	
-            	
-                
-            	
+            	log('checking oauth keys');
                 oauthFile = File.applicationStorageDirectory; 
-                oauthFile = oauthFile.resolvePath("Preferences/oauth_debug.txt");
+                oauthFile = oauthFile.resolvePath("Preferences/oauth_debug_2.txt");
                 if(oauthFile.exists) { 
+                	log('oauth keys there');
                     var stream:FileStream = new FileStream(); 
 	                stream.open(oauthFile, FileMode.READ); 
 	                var filedata:String = stream.readUTFBytes(stream.bytesAvailable); 
@@ -137,6 +169,7 @@
 	                bootstrap();
 	                
                 } else { 
+                	log('oauth keys not there');
                     firstRun();
                 } 
             }
@@ -152,7 +185,7 @@
             }
             
             public function checkForUpdates(...rest):void{
-            	trace('Check updates');
+            	log('checking for updates');
             	showIndicator(friendsLoadingIndicator);
             	
                 getApp().status = 'Checking for updates...';
@@ -226,17 +259,24 @@
              * @todo (lucas) Be smarter about when to display notifications/make them more useful.
              */ 
             private function addCheckins(c:Array, notify:Boolean=true):void{
-            	if(c.length > 0){
-	            	checkins.addAllAt(new ArrayCollection(c), 0);
-	            	if(notify==true){
-		                var n:Notification = new Notification('Foursquair', c.length+' new checkins', AbstractNotification.TOP_RIGHT, 5, bmp);
-		                n.addEventListener(NotificationClickedEvent.NOTIFICATION_CLICKED_EVENT, function(e:NotificationClickedEvent):void{
-		                	AbstractNotification(e.target).close();
-		                	getApp().nativeWindow.activate();
-		                });
-		                purr.addNotification(n);
+            	log('adding checkins to display');
+            	try{
+	            	if(c.length > 0){
+		            	checkins.addAllAt(new ArrayCollection(c), 0);
+		            	if(notify==true){
+			                var n:Notification = new Notification('Foursquair', c.length+' new checkins', AbstractNotification.TOP_RIGHT, 5, bmp);
+			                n.addEventListener(NotificationClickedEvent.NOTIFICATION_CLICKED_EVENT, function(e:NotificationClickedEvent):void{
+			                	AbstractNotification(e.target).close();
+			                	getApp().nativeWindow.activate();
+			                });
+			                purr.addNotification(n);
+		                }
 	                }
                 }
+                catch(e:Error){
+                	error(e);
+                }
+             
             }
             
             private function showIndicator(indicator:SWFLoader):void{
@@ -249,6 +289,7 @@
                 indicator.includeInLayout = false;
             }
             public function bootstrap():void{
+            	log('boostrapping');
             	try{
             	    showIndicator(friendsLoadingIndicator);
                 }
@@ -261,6 +302,8 @@
             	checkins = new ArrayCollection();
             	
             	getApp().status = 'Loading up.... Please wait';
+            	log('getting user details');
+            	try{
             	foursquare.getUserDetails(
             	    0, 
             	    function(u:UserVO):void{
@@ -275,21 +318,37 @@
 	                        }
 	                    );
 	                    */
-	                    foursquare.getCheckins(function(c:Array):void{
-                    	    addCheckins(c);
-                            getApp().currentState = '';
-                            getApp().status = '';
-                            hideIndicator(friendsLoadingIndicator);
-                
-	                    });
-	                    foursquare.getVenues(actor.city.geolat, actor.city.geolong, 25, 25, '', function(v:Array):void{
-	                       venues = new ArrayCollection(v);
-	                    });
+	                    log('getting checkins');
+	                    try{
+		                    foursquare.getCheckins(function(c:Array):void{
+	                    	    addCheckins(c);
+	                            getApp().currentState = '';
+	                            getApp().status = '';
+	                            hideIndicator(friendsLoadingIndicator);
+	                
+		                    });
+	                    }
+	                    catch(e:Error){
+	                    	error(e);
+	                    }
+	                    log('getting popular nearby venues');
+	                    try{
+		                    foursquare.getVenues(actor.city.geolat, actor.city.geolong, 25, 25, '', function(v:Array):void{
+		                       venues = new ArrayCollection(v);
+		                    });
+	                    }
+	                    catch(e:Error){
+	                    	error(e);
+	                    }
 	                }, 
 	                null, 
 	                true, 
 	                false
                 );
+             }
+             catch(e:Error){
+             	error(e);
+             }
             }
             
             public function handleLogin():void{
@@ -318,8 +377,9 @@
             	       hideIndicator(loginLoadingIndicator);
             	       bootstrap();
             	   }, 
-            	   function():void{
+            	   function(e:Error):void{
             	   	   getApp().status = 'Error trying to do auth exchange';
+            	   	   error(e);
             	   	   hideIndicator(loginLoadingIndicator);
             	   }
             	);
@@ -375,7 +435,8 @@
             }
         ]]>
     </mx:Script>
-    <mx:VBox id="login" visible="false" horizontalCenter="0" verticalCenter="0">
+    <mx:VBox width="100%" height="100%">
+    <mx:VBox id="login" visible="false" horizontalCenter="0" verticalCenter="0" includeInLayout="false">
         <mx:Image source="@Embed(source='assets/images/foursquare_logo_270.png')"/>
         <mx:Form defaultButton="{loginSubmit}" id="form1" width="100%">
         <mx:Label text="Username or phone #" />
@@ -390,6 +451,7 @@
         </mx:HBox>
         </mx:Form>
     </mx:VBox>
+    
     <mx:Canvas id="main" width="100%" height="100%">
     <mx:VBox width="100%" height="100%">
         <mx:HBox width="100%" horizontalAlign="left" height="60" backgroundImage="@Embed(source='assets/images/foursquare_header_background.png')" backgroundSize="100%">
@@ -491,8 +553,13 @@
             <mx:Button label="Holler" id="shoutSubmit" click="handleShout();"  cornerRadius="3" fillAlphas="[1.0, 1.0]" fillColors="[#B1CD45, #9CB92E]" color="#FFFFFF" borderColor="#698109" fontSize="12"/>
             </mx:HBox>
         </mx:Form>
+        
     </mx:VBox>
-    <mx:Label text="v {currentVersion}" right="0"/>
+    <mx:LinkButton label="Check for updates" click="checkForAppUpdates();" right="100" />
+    <mx:Label text="blarg v {currentVersion}" right="0"/>
     </mx:Canvas>
-    
+    <mx:Box width="100%">
+        <mx:TextArea id="debug" width="100%" height="100" liveScrolling="true"></mx:TextArea>
+    </mx:Box>
+    </mx:VBox>
 </mx:WindowedApplication>

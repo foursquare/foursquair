@@ -1,5 +1,6 @@
 package com.foursquare.api{
 	import com.foursquare.util.XMLUtil;
+	import mx.core.Application;
 	
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
@@ -7,8 +8,8 @@ package com.foursquare.api{
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
 	import flash.net.URLVariables;
-	
 	import mx.collections.ArrayCollection;
+	
 	import mx.controls.Alert;
 	import mx.utils.ObjectUtil;
 	
@@ -25,6 +26,8 @@ package com.foursquare.api{
 			oauth = new OAuth(consumerKey, consumerSecret);
 		}
 		
+		
+		
 		public function authExchange(username:String, password:String, onSuccess:Function, onError:Function=null):void{
 			var request:URLRequest = oauth.buildRequest(
 			    URLRequestMethod.POST, 
@@ -40,7 +43,6 @@ package com.foursquare.api{
                 IOErrorEvent.IO_ERROR, 
                 function(e:IOErrorEvent):void{
                     trace('ERROR in auth exchange: '+e.toString());
-                    
                     var error:Error = new Error("Incorrect username/password or couldnt talk to foursquare :(");
                     onError(error);
                 }
@@ -56,7 +58,7 @@ package com.foursquare.api{
 	                    onSuccess.apply(this);
                     }
                     catch(e:Error){
-                    	var error:Error = new Error("Couldnt parse XML.  Incorrect username/password or couldnt talk to foursquare :(");
+                    	var error:Error = e;
                         if(onError != null){
                         	onError(error);
                         }
@@ -241,8 +243,8 @@ package com.foursquare.api{
                 Event.COMPLETE, 
                 function(e:Event):void{
                     var loader:URLLoader = e.target as URLLoader;
-                    trace('-- Got XML from '+request.url);
-                    trace(loader.data+"\n");
+                    mx.core.Application.application.log('-- Got XML from '+request.url);
+                    mx.core.Application.application.log(loader.data+"\n");
                     try{
 	                    var parsed:Object = com.foursquare.util.XMLUtil.XMLToObject(loader.data);
                     }
