@@ -103,6 +103,7 @@ package com.foursquare.api{
                 params
             );
 		}
+		import mx.utils.ObjectUtil;
 		public function getCheckins(onSuccess:Function, onError:Function=null):void{
 			getJSON(
 			    'http://api.foursquare.com/v1/checkins.xml', 
@@ -111,7 +112,7 @@ package com.foursquare.api{
 			    	if(d.checkins.checkin instanceof ArrayCollection){
 				    	var checkins:ArrayCollection = d.checkins.checkin as ArrayCollection;
 				    	for(var i:int=0; i<d.checkins.checkin.length; i++){
-				    		var c:Object = checkins.getItemAt(0);
+				    		var c:Object = checkins.getItemAt(i);
 		                    o.push(new CheckinVO(c));
 				    	}
                     }

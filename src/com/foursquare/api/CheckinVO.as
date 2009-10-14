@@ -32,6 +32,7 @@ package com.foursquare.api{
             	var cleaned:String = String(remote.created).replace(/(\w{3}+)(.{1}+) (\d{2}+) (\w{3}+) (\d{2}+) (\d{2}:\d{2}:\d{2}+) (\+|\-+)(\d{4}+)/g, "$1 $4 $3 $6 GMT$7$8 20$5");
                 then.setTime(Date.parse(cleaned));
             }
+            then.setTime(then.getTime()-(1000*60*4));
 			this.created = then;
 			this.created_in_words = TimeAgoInWords.format(then)+' ago';
 		}

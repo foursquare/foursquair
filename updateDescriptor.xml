@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?> 
  <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0"> 
-   <version>0.57</version> 
-   <url>http://github.com/imlucas/foursquair/raw/master/foursquair-flex-0.57.air</url>
-   <description>Checkins should now actually load</description>
+   <version>0.6</version> 
+   <url>http://github.com/imlucas/foursquair/raw/master/foursquair-flex-0.6.air</url>
+   <description>Fix the 75 checkins from the same person bug.  Add timers in checkins list so that time in words is updated instead of just being static.  4square created timestamps seem to be 4 seconds ahead of my local machine.  Coincidence?  I think not. Make CheckinVO constructor deloreanize them.</description>
 </update>

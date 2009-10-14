@@ -262,9 +262,19 @@
             	log('adding checkins to display');
             	try{
 	            	if(c.length > 0){
+	            		var notifyCheckins:Array = new Array();
+	            		
+		            	c.forEach(function(el:Object, index:int, arr:Array){
+		            		var check:CheckinVO = CheckinVO(el);
+		            		if(check.user.id != actor.id){
+		            			notifyCheckins.push(check);
+		            		}
+		            	});
+		            	notifyCheckins.reverse();
+		            	
 		            	checkins.addAllAt(new ArrayCollection(c), 0);
-		            	if(notify==true){
-			                var n:Notification = new Notification('Foursquair', c.length+' new checkins', AbstractNotification.TOP_RIGHT, 5, bmp);
+		            	if(notify==true && notifyCheckins.length > 0){
+			                var n:Notification = new Notification('Foursquair', notifyCheckins.length+' new checkins!', AbstractNotification.TOP_RIGHT, 3, bmp);
 			                n.addEventListener(NotificationClickedEvent.NOTIFICATION_CLICKED_EVENT, function(e:NotificationClickedEvent):void{
 			                	AbstractNotification(e.target).close();
 			                	getApp().nativeWindow.activate();
@@ -364,10 +374,7 @@
             	       	   d.oauth_token = foursquare.oauth_token;
             	       	   d.oauth_token_secret = foursquare.oauth_token_secret;
             	       	   var contents:String = com.foursquare.util.XMLUtil.objectToXML(d).toXMLString();
-            	       	   
-	            	       //var c:XML = new XML('<foursquare><oauth_token>'+foursquare.oauth_token+'</oauth_token><oauth_token_secret>'+foursquare.oauth_token_secret+'</oauth_token_secret></foursquare>');
-	            	       //var contents:String = c.toXMLString();
-	            	       
+
 	            	       var stream:FileStream = new FileStream(); 
 			               stream.open(oauthFile, FileMode.WRITE);
 			               stream.writeUTFBytes(contents); 
@@ -397,7 +404,7 @@
             	shoutSubmit.enabled = false;
             	foursquare.checkin(0,'',shoutText.text,function(c:CheckinVO):void{
             		shoutSubmit.enabled = true;
-            		addCheckins([c], false);
+            		checkForUpdates();
             		getApp().status = '';
             		shoutText.text = '';
             		hideIndicator(shoutLoadingIndicator);
@@ -473,12 +480,33 @@
                     </mx:HBox>
                     <mx:List dataProvider="{checkins}" width="100%" height="100%" themeColor="#FFFFFF" borderStyle="none"><mx:itemRenderer>
                         <mx:Component>
-                            <mx:HBox width="100%" horizontalScrollPolicy="off" verticalScrollPolicy="off">
+                            <mx:HBox width="100%" horizontalScrollPolicy="off" verticalScrollPolicy="off" creationComplete="creationComplete();">
+                                <mx:Script>
+                                    <![CDATA[
+                                        import flash.utils.Timer;
+                                        import flash.events.TimerEvent;
+                                        import com.foursquare.util.TimeAgoInWords;
+                                        
+                                        private var t:Timer;
+                                        
+                                        private function creationComplete():void{
+                                            if(t==null && data!=null){
+                                                t = new Timer(60000);
+                                                t.addEventListener(TimerEvent.TIMER, function(e:TimerEvent):void{
+                                                    timeAgo.text = TimeAgoInWords.format(data.created)+' ago';
+                                                });
+                                                t.start();
+                                            }
+                                        }
+                                    ]]>
+                                </mx:Script>
+                                <mx:Canvas width="75" height="75" backgroundImage="http://playfoursquare.s3.amazonaws.com/userpix_thumbs/blank_boy.png" backgroundSize="100%">
                                 <mx:Image source="{data.user.photo}" height="75" width="75" />
+                                </mx:Canvas>
                                 <mx:VBox verticalGap="0" width="100%" borderStyle="solid" cornerRadius="3" horizontalScrollPolicy="off" verticalScrollPolicy="off" backgroundColor="#FFFFFF" paddingLeft="5" paddingRight="5" paddingBottom="5" paddingTop="5">
                                     <mx:HBox width="100%">
                                     	<mx:Text text="{data.user.name_with_initial}" width="100%" fontSize="11" fontWeight="bold" />
-                                    	<mx:Text text="{data.created_in_words}" fontSize="9" />
+                                    	<mx:Text text="{data.created_in_words}" fontSize="9" id="timeAgo" />
                                     </mx:HBox>
                                     <mx:Text text="@ {data.venue.name}" width="100%" fontWeight="bold" fontSize="10" />
                                     <mx:Text text="&quot;{data.shout}&quot;" includeInLayout="{data.shout!=''}" visible="{data.shout!=''}" width="100%" fontSize="10" />
