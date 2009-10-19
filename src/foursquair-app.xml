@@ -15,13 +15,13 @@
 -->
 
     <!-- The application identifier string, unique to this application. Required. -->
-    <id>Foursqair-lucas</id>
+    <id>Foursquair-lucas</id>
 
     <!-- Used as the filename for the application. Required. -->
-    <filename>Foursqair</filename>
+    <filename>Foursquair</filename>
 
     <!-- The name that is displayed in the AIR application installer. Optional. -->
-    <name>Foursqair</name>
+    <name>Foursquair</name>
 
     <!-- An application version designator (such as "v1", "2.5", or "Alpha 1"). Required. -->
     <version>0.61</version>
@@ -39,7 +39,7 @@
         <content>[This value will be overwritten by Flex Builder in the output app.xml]</content>
         
         <!-- The title of the main window. Optional. -->
-        <title>Foursqair - See what your friends are up to, plan your night out</title>
+        <title>Foursquair - See what your friends are up to, plan your night out</title>
 
         <!-- The type of system chrome to use (either "standard" or "none"). Optional. Default standard. -->
         <!-- <systemChrome></systemChrome> -->
