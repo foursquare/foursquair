@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <application xmlns="http://ns.adobe.com/air/application/1.5">
     <!-- The application identifier string, unique to this application. Required. -->
-    <id>Foursqair-lucas</id>
+    <id>Foursquair-lucas</id>
 
     <!-- Used as the filename for the application. Required. -->
-    <filename>Foursqair</filename>
+    <filename>Foursquair</filename>
 
     <!-- The name that is displayed in the AIR application installer. Optional. -->
-    <name>Foursqair</name>
+    <name>Foursquair</name>
 
     <!-- An application version designator (such as "v1", "2.5", or "Alpha 1"). Required. -->
-    <version>0.61</version>
+    <version>0.62</version>
 
     <!-- Description, displayed in the AIR application installer. Optional. -->
     <description>See what your friends are up to while you're at work, plan your night out.</description>
@@ -25,7 +25,7 @@
         <content>[This value will be overwritten by Flex Builder in the output app.xml]</content>
         
         <!-- The title of the main window. Optional. -->
-        <title>Foursqair - See what your friends are up to, plan your night out</title>
+        <title>Foursquair - See what your friends are up to, plan your night out</title>
 
         <!-- The type of system chrome to use (either "standard" or "none"). Optional. Default standard. -->
         <!-- <systemChrome></systemChrome> -->
@@ -73,10 +73,10 @@
     <!-- The icon the system uses for the application. For at least one resolution,
          specify the path to a PNG file included in the AIR package. Optional. -->
     <icon>
-        <image16x16>src/assets/icon_016.png</image16x16>
-        <image32x32>src/assets/icon_032.png</image32x32>
-        <image48x48>src/assets/icon_048.png</image48x48>
-        <image128x128>src/assets/icon_128.png</image128x128>
+        <image16x16>assets/icon_016.png</image16x16>
+        <image32x32>assets/icon_032.png</image32x32>
+        <image48x48>assets/icon_048.png</image48x48>
+        <image128x128>assets/icon_128.png</image128x128>
     </icon>
 
     <!-- Whether the application handles the update when a user double-clicks an update version

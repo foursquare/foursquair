@@ -1,25 +1,37 @@
-######################################################################
-# README # naveen (naveenium.com) - 20090528
-######################################################################
+-------------------------------------------
+README 
+Foursquair - A desktop app for keeping track of your friends during the day.
 
-I just started developing for Adobe AIR like 15 minutes ago, so
-bear with me here. :)
+@author naveen (naveenium.com)
+@author Lucas (www.imlucas.com)
+-------------------------------------------
 
-I wanted a small desktop app that I could run in the corner that
-would auto-refresh and show me where my friends currently are. So
-I whipped up this app quick. It basically wraps the foursquare
-mobile web (http://m.playfoursquare.com) and refreshes once every
-5 minutes.
+-------------------------------------------
+About
+-------------------------------------------
+A desktop app to keep track of where your friends are checking in through out 
+the day while your at work.  The app pings for checkins every 5 minutes and will 
+show you a nice little notification when somebody checks in somewhere new.
 
-In the future:
- - attach this to the foursquare API
- - make it slick.
+It's currently under heavy development, so make sure to hit that check for 
+updates link at the bottom early and often.  If you dont, that's ok. The app will 
+update on it's own when new code is pushed.  
+
+It's built on Adobe AIR using Flex.
+
+-------------------------------------------
+Future
+-------------------------------------------
+ - Finish adding all API methods to foursquareservice 
+ - Make as3foursquarelib so that anybody can get up and running quickly
+ - Refactor notifications to not use as3notification lib and to be sexier
+ - A sexy design
+ - Learn how to spell foursquair
  
-
 -------------------------------------------
 Building
 -------------------------------------------
-    Importing into flex builder
+    Importing into Flex Builder
 
     From the command line:
         cd Workspace
@@ -54,4 +66,9 @@ Libraries Used
 -------------------------------------------
  - AS3 OAuth http://github.com/srohde/OAuth
  - AS3 Notification Lib http://code.google.com/p/as3notificationlib/ (Plan on writing a new version of this thats more flex-y)
- 
+
+-------------------------------------------
+Troubleshooting
+-------------------------------------------
+ - Q: I can't build it... says there is some kind of weird problem.
+ - A: Make sure you're using at least the Flex 3.2 SDK.
