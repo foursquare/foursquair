@@ -14,4 +14,44 @@ mobile web (http://m.playfoursquare.com) and refreshes once every
 In the future:
  - attach this to the foursquare API
  - make it slick.
+ 
 
+-------------------------------------------
+Building
+-------------------------------------------
+    Importing into flex builder
+
+    From the command line:
+        cd Workspace
+        mkdir foursquair
+        cd foursquair
+        git clone git@github.com:foursquair/foursquair.git
+ 
+    And then in Flex Builder:
+        Right click in Flex Nagivator Pane
+        Select New -> Flex Project
+        Project name: foursquair
+        Select Desktop Application as Application Type
+        
+    Off to the races...
+
+-------------------------------------------
+Managing Updates
+-------------------------------------------
+    Automatic Updates are provided by ApplicationUpdater_UI (http://livedocs.adobe.com/flex/3/langref/air/update/ApplicationUpdaterUI.html)
+    
+    src/updateConfig.xml provides the parameters to the local App Install for how often updates should be checked for and from where.
+    
+    So you want to release a new version?
+        1. Update the <version> tag in src/foursquair-app.xml
+        2. Make a release build of your app (Export-> Flex Builder -> Release Build)
+        3. Update the updateDescriptor.xml file to point to your new version and add a quick description about what was changed.
+        4. Push your code.  The app will automatically check for updates once a day and prompt to update.
+    
+     
+-------------------------------------------
+Libraries Used
+-------------------------------------------
+ - AS3 OAuth http://github.com/srohde/OAuth
+ - AS3 Notification Lib http://code.google.com/p/as3notificationlib/ (Plan on writing a new version of this thats more flex-y)
+ 
