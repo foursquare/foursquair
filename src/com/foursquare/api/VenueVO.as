@@ -12,8 +12,8 @@ package com.foursquare.api{
 			this.name = remote.name;
 			this.address = remote.address;
 			this.crossstreet = remote.crossstreet;
-			this.geolat = remote.geolat;
-			this.geolong = remote.geolong;
+			this.geolat = Number(remote.geolat);
+			this.geolong = Number(remote.geolong);
 		}
 	}
 }

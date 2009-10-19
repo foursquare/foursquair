@@ -11,11 +11,13 @@ package com.foursquare.api{
 	import mx.collections.ArrayCollection;
 	import mx.controls.Alert;
 	import mx.core.Application;
+	import mx.utils.ObjectUtil;
 	
 	import org.flaircode.oauth.*;
 	import org.iotashan.oauth.*;
 	
 	public class FoursqaureService{
+		
         public var actor:UserVO;
 		private var oauth:IOAuth;
 		public var oauth_token:String;
@@ -89,7 +91,7 @@ package com.foursquare.api{
 			if(shout.length > 1){
 				params.shout = shout;
 			}
-			getJSON(
+			getData(
                 'http://api.foursquare.com/v1/checkin.xml', 
                 function(d:Object):void{
                 	var c:Object = d.checkin;
@@ -103,9 +105,8 @@ package com.foursquare.api{
                 params
             );
 		}
-		import mx.utils.ObjectUtil;
 		public function getCheckins(onSuccess:Function, onError:Function=null):void{
-			getJSON(
+			getData(
 			    'http://api.foursquare.com/v1/checkins.xml', 
 			    function(d:Object):void{
 			    	var o:Array = new Array();
@@ -128,11 +129,11 @@ package com.foursquare.api{
 		}
 		
 		public function getHistory(limit:int, onSuccess:Function, onError:Function=null):void{
-			getJSON(
+			getData(
                 'http://api.foursquare.com/v1/history.xml', 
                 function(d:Object):void{
                 	var o:Array = new Array();
-                    var checkins:Array = d.checkins as Array;
+                    var checkins:Array = d.checkins.checkin.source as Array;
                     checkins.forEach(function(el:Object, index:int, arr:Array){
                     	el.user = actor;
                         o.push(new CheckinVO(el));
@@ -154,7 +155,7 @@ package com.foursquare.api{
 			params.badges = (badges) ? 1 : 0;
 			params.mayor = (mayor) ? 1 : 0;
 			
-			getJSON(
+			getData(
                 'http://api.foursquare.com/v1/user.xml', 
                 function(d:Object):void{
                     onSuccess(new UserVO(d.user));
@@ -181,22 +182,31 @@ package com.foursquare.api{
 		    if(q!=null){
 		    	params.q = q;
 		    }
-		    getJSON(
+		    getData(
                 'http://api.foursquare.com/v1/venues.xml', 
                 function(d:Object):void{
                     var o:Array = new Array();
                     
                     var v:ArrayCollection = new ArrayCollection();
-                    try{
-                    	v = d.venues.group.venue as ArrayCollection;
+                    if(d.venues == null){
+                    	v = new ArrayCollection();
                     }
-                    catch(e:Error){
-                    	v = d.venues.group as ArrayCollection;
-                        v = v.source[0].venue;
+                    else if(d.venues.group instanceof ArrayCollection){
+                        v = d.venues.group.source[0].venue;
                     }
-                    v.source.forEach(function(el:Object, index:int, arr:Array){
-                        o.push(new VenueVO(el));
-                    });
+                    else if(d.venues.group.venue instanceof ArrayCollection){
+                	   v = d.venues.group.venue as ArrayCollection;
+                	}
+                	else{
+                		v = new ArrayCollection([d.venues.group.venue]);
+                	}
+                	
+                    
+                    if(v.source.length > 0){
+	                    v.source.forEach(function(el:Object, index:int, arr:Array){
+	                        o.push(new VenueVO(el));
+	                    });
+                    }
                     onSuccess(o);
                 },
                 onError,
@@ -205,7 +215,20 @@ package com.foursquare.api{
             );
 		}
 		
-		public function getJSON(url:String, onSuccess:Function, onError:Function=null, authRequired:Boolean=false, requestParams:Object=null):void{
+		public function listCities(onSuccess:Function, onError:Function=null):void{
+            getData(
+                'http://api.foursquare.com/v1/cities.xml', 
+                function(data:Object):void{
+                    var c:Array = data.cities as Array;
+                    c.map(function(el:Object):void{
+                       new CityVO(el);
+                    });
+                    onSuccess(c);
+                }
+            );
+        }
+		
+		public function getData(url:String, onSuccess:Function, onError:Function=null, authRequired:Boolean=false, requestParams:Object=null):void{
 			var request:URLRequest;
 			if(!authRequired){
 			    request = new URLRequest(url);
@@ -251,19 +274,6 @@ package com.foursquare.api{
                 }
             );
             loader.load(request);
-		}
-		
-		public function listCities(onSuccess:Function, onError:Function=null):void{
-		    getJSON(
-		        'http://api.foursquare.com/v1/cities.xml', 
-		        function(data:Object):void{
-		        	var c:Array = data.cities as Array;
-		            c.map(function(el:Object):void{
-		               new CityVO(el);
-		            });
-		            onSuccess(c);
-		        }
-		    );
 		}
 	}
 }
