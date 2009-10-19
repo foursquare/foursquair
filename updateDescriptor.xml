@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?> 
  <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0"> 
-   <version>0.61</version> 
-   <url>http://github.com/imlucas/foursquair/raw/master/foursquair-flex-0.61.air</url>
-   <description>Added basic transitions.  Add check for checkins link.  Make bottom info a little more toerable.  Make debug textarea toggleable.</description>
+   <version>0.62</version> 
+   <url>http://github.com/imlucas/foursquair/raw/master/foursquair-flex-0.62.air</url>
+   <description>Fix some spelling mistakes.  Update readme a bunch.</description>
 </update>
