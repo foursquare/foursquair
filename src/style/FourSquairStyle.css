@@ -1,0 +1,20 @@
+/* CSS file */
+global{
+	fontFamily: Arial;
+}
+
+.mainSkin{
+	skin-class: ClassReference("com.foursquare.skins.MainAppSkin");
+	backgroundColor: #FFFFFF;
+}
+
+Button{
+	cornerRadius:3;
+	fillAlphas: 1.0, 1.0;
+	fontSize: 11;
+}
+Button.selected{
+	fillColors: #B1CD45, #9CB92E;
+	borderColor:#698109;
+	color: #FFFFFF;
+}

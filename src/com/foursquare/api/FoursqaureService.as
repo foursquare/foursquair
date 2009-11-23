@@ -11,7 +11,7 @@ package com.foursquare.api{
 	import mx.collections.ArrayCollection;
 	import mx.controls.Alert;
 	import mx.core.Application;
-	import mx.utils.ObjectUtil;
+	import mx.managers.SystemManager;
 	
 	import org.flaircode.oauth.*;
 	import org.iotashan.oauth.*;
@@ -262,8 +262,8 @@ package com.foursquare.api{
                 Event.COMPLETE, 
                 function(e:Event):void{
                     var loader:URLLoader = e.target as URLLoader;
-                    mx.core.Application.application.log('-- Got XML from '+request.url);
-                    mx.core.Application.application.log(loader.data+"\n");
+                    trace('-- Got XML from '+request.url);
+                    trace(loader.data+"\n");
                     try{
 	                    var parsed:Object = com.foursquare.util.XMLUtil.XMLToObject(loader.data);
                     }

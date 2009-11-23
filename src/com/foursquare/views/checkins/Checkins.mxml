@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<checkins:CheckinsBase xmlns:mx="http://www.adobe.com/2006/mxml"
+					xmlns:views="com.foursquare.views.*"
+					width="100%" height="100%" xmlns:checkins="com.foursquare.views.checkins.*">
+	<mx:VBox width="100%" height="100%">
+	<mx:HBox width="100%">
+	<mx:Label text="Where your friends are checking in"  fontSize="11"/>
+	<mx:SWFLoader id="friendsLoadingIndicator" source="@Embed(source='assets/swf/foursquare_loader.swf')" width="16" height="16" autoLoad="true"/>
+	</mx:HBox>
+	<mx:List dataProvider="{checkins}" width="100%" height="100%" themeColor="#FFFFFF" borderStyle="none">
+		<mx:itemRenderer>
+		  <mx:Component>
+			<checkins:CheckinItem />
+		  </mx:Component>
+	  </mx:itemRenderer>
+	</mx:List>
+	</mx:VBox>
+</checkins:CheckinsBase>
