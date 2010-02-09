@@ -32,7 +32,7 @@ package com.foursquare.api{
 			    else{
 			    	b = new ArrayCollection(remote.badges);
 			    }
-			    b.source.forEach(function(el:Object, index:int, arr:Array){
+			    b.source.forEach(function(el:Object, index:int, arr:Array):void{
 			        badges.push(new BadgeVO(el));
 			    });
 			}

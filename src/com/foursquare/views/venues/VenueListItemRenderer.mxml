@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					 xmlns:s="library://ns.adobe.com/flex/spark" 
+					 xmlns:mx="library://ns.adobe.com/flex/halo"
+					 implements="mx.controls.listClasses.IListItemRenderer"
+					 
+					 width="100%" verticalGap="0"
+					 horizontalScrollPolicy="off" verticalScrollPolicy="off"
+					 >
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+
+	<fx:Script>
+		<![CDATA[
+			import flash.net.URLRequest;
+			import flash.net.navigateToURL;
+			
+			import mx.controls.listClasses.IListItemRenderer;
+			private function shoutIt():void{
+				var venueEvent:VenueEvent = new VenueEvent(VenueEvent.SHOUT, true);
+				venueEvent.shoutText = 'Anybody want to go to '+data.name+'?';
+				dispatchEvent(venueEvent);
+			}
+			
+			private function getDetails():void{
+				navigateToURL(new URLRequest('http://foursquare.com/venue/'+data.id));
+			}
+		]]>
+	</fx:Script>
+	
+		<mx:HBox width="100%" horizontalGap="1">
+			<mx:Text text="{data.name}" fontWeight="bold" fontSize="11"></mx:Text> 
+			<mx:Text text="{data.address}" />
+			<mx:Text text="{data.crossstreet}" visible="{data.crossstreet!=null}" includeInLayout="{data.crossstreet!=null}" />
+			<mx:HBox horizontalAlign="right" width="100%" horizontalGap="2">
+				<mx:LinkButton label="details" click="getDetails()" />
+				<mx:LinkButton label="shout it" click="shoutIt()" />
+			</mx:HBox>
+		</mx:HBox>
+		<mx:HRule width="100%" />
+</mx:VBox>

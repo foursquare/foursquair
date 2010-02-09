@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:SparkSkin xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			 xmlns:s="library://ns.adobe.com/flex/spark" 
+			 xmlns:mx="library://ns.adobe.com/flex/halo"
+			 minHeight="16"
+			 >
+	<fx:Script>
+		<![CDATA[
+			import mx.graphics.SolidColor;
+		]]>
+	</fx:Script>
+	
+	<s:Rect
+		id="bg"
+		fill="{ new SolidColor( 0x83DA01 ) }"
+		left="1" right="1" bottom="1" top="1"
+		/>
+	
+</s:SparkSkin>

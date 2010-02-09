@@ -1,20 +1,48 @@
 /* CSS file */
+@namespace s "library://ns.adobe.com/flex/spark";
+@namespace mx "library://ns.adobe.com/flex/halo";
+
+/*------FONTS------*/
+
+/*fonts for use with spark components*/
+@font-face {
+	src: url("assets/fonts/arial.ttf");
+	fontFamily: Arial;
+	
+}
+
+@font-face {
+	src: url("assets/fonts/Arial Bold.ttf");
+	fontFamily: Arial;
+	fontWeight: bold;
+	
+}
+
+@font-face {
+	src: url("assets/fonts/Arial Italic.ttf");
+	fontFamily: Arial;
+	font-style: italic;
+	
+}
+
 global{
 	fontFamily: Arial;
 }
 
-.mainSkin{
-	skin-class: ClassReference("com.foursquare.skins.MainAppSkin");
-	backgroundColor: #FFFFFF;
+s|WindowedApplication{
+	backgroundColor: #999999;
 }
 
-Button{
-	cornerRadius:3;
-	fillAlphas: 1.0, 1.0;
-	fontSize: 11;
+/*login|LoginView{
+	skin-class: ClassReference("com.foursquare.skins.LoginViewSkin");
+}*/
+
+.headerSkin{
+	skin-class: ClassReference("com.foursquare.skins.HeaderSkin");
 }
-Button.selected{
-	fillColors: #B1CD45, #9CB92E;
-	borderColor:#698109;
-	color: #FFFFFF;
+
+.checkinList{
+	border-visible:false;
+	skin-class: ClassReference("com.foursquare.skins.CheckinListSkin");
+
 }

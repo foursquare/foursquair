@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%"
-		 horizontalScrollPolicy="off" verticalScrollPolicy="off"
-		 creationComplete="creationComplete();">
-	
-	<mx:Script>
+<s:ItemRenderer
+		xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		xmlns:s="library://ns.adobe.com/flex/spark"
+		width="100%"
+		creationComplete="creationComplete();"
+		 >
+	<s:layout><s:HorizontalLayout gap="12" /></s:layout>
+
+	<fx:Script>
 		<![CDATA[
 			import com.foursquare.util.TimeAgoInWords;
 			
@@ -11,28 +15,52 @@
 			private var t:Timer;
 			
 			private function creationComplete():void{
-				if(t==null && data!=null){
+				//TODO (seth) move this to a place in the View so that the timer isn't created
+				//multiple times.
+				
+				/* if(t==null && data!=null){
 					t = new Timer(60000);
 					t.addEventListener(TimerEvent.TIMER, function(e:TimerEvent):void{
 						timeAgo.text = TimeAgoInWords.format(data.created)+' ago';
 					});
 					t.start();
+				} */
+			}
+			
+			override public function set data(value:Object) : void{
+				super.data = value;
+				
+				if(data.user.photo!=""){
+					userImage.source = data.user.photo;
+				}else{
+					userImage.source = "http://playfoursquare.s3.amazonaws.com/userpix_thumbs/blank_boy.png";
 				}
 			}
 		]]>
-	</mx:Script>
+	</fx:Script>
+	<s:Group height="38" width="38">
+		<s:Rect>
+			<s:stroke>
+				<s:SolidColorStroke color="white" />
+			</s:stroke>
+		</s:Rect>
+		<s:BitmapImage id="userImage" left="1" top="1" right="1" bottom="1" />
+	</s:Group>
 	
-	<mx:Canvas width="75" height="75" backgroundImage="http://playfoursquare.s3.amazonaws.com/userpix_thumbs/blank_boy.png" backgroundSize="100%">
-		<mx:Image source="{data.user.photo}" height="75" width="75" />
-	</mx:Canvas>
+	<s:Group width="100%" height="100%">
+		<s:Rect width="100%" height="100%">
+			<s:fill>
+				<s:SolidColor color="white" />
+			</s:fill>
+		</s:Rect>
+		<s:VGroup width="100%" height="100%">
+			<s:HGroup width="100%">
+				<s:Label text="{data.user.name_with_initial}" width="100%" />
+				<s:Label text="{data.created_in_words}" id="timeAgo" width="100%" />
+			</s:HGroup>
+			<s:Label text="@ {data.venue.name}" />
+			<s:Label text="&quot;{data.shout}&quot;" includeInLayout="{data.shout!=''}" visible="{data.shout!=''}" />
+		</s:VGroup>
+	</s:Group>
 	
-	<mx:VBox verticalGap="0" width="100%" borderStyle="solid" cornerRadius="3" horizontalScrollPolicy="off" verticalScrollPolicy="off" backgroundColor="#FFFFFF" paddingLeft="5" paddingRight="5" paddingBottom="5" paddingTop="5">
-		<mx:HBox width="100%">
-			<mx:Text text="{data.user.name_with_initial}" width="100%" fontSize="11" fontWeight="bold" />
-			<mx:Text text="{data.created_in_words}" fontSize="9" id="timeAgo" />
-		</mx:HBox>
-		<mx:Text text="@ {data.venue.name}" width="100%" fontWeight="bold" fontSize="10" />
-		<mx:Text text="&quot;{data.shout}&quot;" includeInLayout="{data.shout!=''}" visible="{data.shout!=''}" width="100%" fontSize="10" />
-	</mx:VBox>
-	
-</mx:HBox>
+</s:ItemRenderer>

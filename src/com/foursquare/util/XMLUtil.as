@@ -2,7 +2,7 @@ package com.foursquare.util{
 	import flash.xml.XMLDocument;
 	import flash.xml.XMLNode;
 	
-	import mx.core.Application;
+	import mx.core.FlexGlobals;
 	import mx.rpc.xml.SimpleXMLDecoder;
 	import mx.rpc.xml.SimpleXMLEncoder;
             
@@ -24,7 +24,7 @@ package com.foursquare.util{
             return decoder.decodeXML(xmlDoc);
             }
             catch(e:Error){
-            	mx.core.Application.application.error(e);
+            	FlexGlobals.topLevelApplication.error(e);
             }
             return '';
         }

@@ -18,7 +18,7 @@ package com.foursquare.views.venues
 	public class VenuesBase extends Canvas
 	{
 		
-		public var venueSearchSubmit:Button;
+		[Bindable] public var venueSearchSubmit:Button;
 		public var venueSearchText:TextInput;
 		public var venuesTitle:Label;
 		
@@ -52,6 +52,6 @@ package com.foursquare.views.venues
 		{
 			_venues = value;
 		}
-
+		
 	}
 }

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<foursquare:FoursquareBase
+	xmlns:foursquare="com.foursquare.*"
+	xmlns:fx="http://ns.adobe.com/mxml/2009" 
+	xmlns:s="library://ns.adobe.com/flex/spark" 
+	xmlns:mx="library://ns.adobe.com/flex/halo"
+	xmlns:login="com.foursquare.views.login.*"
+	xmlns:checkins="com.foursquare.views.checkins.*"
+	xmlns:history="com.foursquare.views.history.*"
+	xmlns:venues="com.foursquare.views.venues.*"
+	xmlns:ws="de.websector.utils.updater.ui.*" 
+	xmlns:notification="com.adobe.air.notification.*" 
+	xmlns:navigation="com.foursquare.views.navigation.*" 
+	xmlns:header="com.foursquare.views.header.*"
+	height="100%">
+
+	
+	<fx:Style source="style/FourSquairStyle.css" />
+	<fx:Script>
+		<![CDATA[
+			import com.foursquare.models.Constants;
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<foursquare:FourSquareContext contextView="{this}"/>
+		<s:Parallel id="viewStackTransitionEffect">
+			<s:Move id="ViewStackTransitionEffectStart" duration="500" xTo="0" />
+			<s:Move id="ViewStackTransitionEffectEnd" duration="500"/>
+		</s:Parallel>
+	</fx:Declarations>
+	
+	<foursquare:states>
+		<s:State name="login" />
+		<s:State name="splash" />
+		<s:State name="checkin" />
+		<s:State name="history" />
+		<s:State name="venues" />
+	</foursquare:states>
+	
+	
+	<s:VGroup width="100%" height="100%">
+		<!--todo - increment update file to tell users to download the latest.-->
+		
+		<ws:ApplicationUpdaterUI
+			id="updater"
+			width="100%" height="50"
+			configurationFile="{ new File ( Constants.UPDATE_FILE ) }"
+			skinClass="de.websector.utils.updater.ui.skins.firefox.AppUpdaterUIFirefoxSkin"
+			useWindow="false"
+			invisibleCheck="true"
+			/>
+		
+		<login:LoginView id="loginView" includeIn="login" horizontalCenter="0" verticalCenter="0" />
+		
+		<header:HeaderView id="header" width="100%" height="73" styleName="headerSkin" />
+
+		<s:VGroup width="100%" height="100%" excludeFrom="login">
+			<checkins:CheckinView	id="checkinView" includeIn="checkin" height="100%" width="100%" 
+							   	hideEffect="{viewStackTransitionEffect}"
+							   	showEffect="{viewStackTransitionEffect}"/>
+			<history:History 	id="historyView" includeIn="history" height="100%" width="100%" 
+							 	hideEffect="{viewStackTransitionEffect}"
+							 	showEffect="{viewStackTransitionEffect}"/>
+			<venues:Venues 		id="venueView" includeIn="venues" height="100%" width="100%" 
+						   		hideEffect="{viewStackTransitionEffect}"
+						   		showEffect="{viewStackTransitionEffect}" />
+			
+			<s:HGroup width="100%" height="100" bottom="0">
+				<mx:TextInput id="shoutText" width="100%"/>
+				<s:Button label="Shout" id="shoutSubmit" click="handleShout(shoutText.text)" />
+			</s:HGroup>
+		
+		</s:VGroup>
+		
+		<s:Group>
+			<mx:TextArea id="debug" width="100%" height="100" liveScrolling="true" visible="false" includeInLayout="false"></mx:TextArea>
+			<s:HGroup width="100%">
+				<s:Label text="Logout" click="{logout()}" left="5" textDecoration="underline" excludeFrom="login"/>
+				<s:Label fontSize="11" text="v. {updater.installedVersion}" right="5"/>
+				<!--<mx:LinkButton label="Debug" id="debugButton" right="100"  paddingTop="0" paddingBottom="0" paddingLeft="0" paddingRight="0" fontWeight="normal" fontStyle="normal" textDecoration="underline"/>-->
+			</s:HGroup>
+		</s:Group>
+		
+	</s:VGroup>
+	
+	<s:VGroup width="100%" height="100%" includeIn="splash" horizontalAlign="center" horizontalCenter="0" verticalCenter="0" >
+		<mx:Image source="@Embed(source='assets/images/foursquare_splash.png')" horizontalCenter="0" verticalCenter="0"/>
+		<mx:SWFLoader id="splashLoadingIndicator" source="@Embed(source='assets/swf/foursquare_loader.swf')" width="16" height="16" autoLoad="true" horizontalCenter="0" verticalCenter="0"/>
+	</s:VGroup>
+	
+</foursquare:FoursquareBase>

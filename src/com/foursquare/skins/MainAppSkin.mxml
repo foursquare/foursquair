@@ -59,7 +59,7 @@ The color of the fill is set to the Application's backgroundColor property.
 
 <s:Group left="0" right="0" top="0" bottom="0">
 	<s:layout>
-		<s:VerticalLayout gap="0" horizontalAlign="justify" />
+		<s:VerticalLayout gap="0" />
 	</s:layout>
 	
 	<!--- 

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+
+<s:Skin 
+	xmlns:fx="http://ns.adobe.com/mxml/2009" 
+	xmlns:s="library://ns.adobe.com/flex/spark" 
+	xmlns:mx="library://ns.adobe.com/flex/halo" 	
+	minWidth="21" minHeight="16" 
+	alpha.disabled="0.5"
+	>
+	<fx:Script>
+		<![CDATA[
+			import mx.graphics.SolidColorStroke;
+		]]>
+	</fx:Script>
+	
+	<fx:Metadata>
+		[HostComponent("spark.components.Button")]
+	</fx:Metadata>
+	
+	<!-- states -->	
+	<s:states>
+		<s:State name="up" />
+		<s:State name="over" />
+		<s:State name="down" />
+		<s:State name="disabled" />
+	</s:states>
+	
+	
+	<s:Rect 
+		radiusX="8" radiusY="8" 
+		height="100%" width="100%"
+		y=".5" x=".5"
+		>
+		<s:fill>
+			<s:LinearGradient rotation="90">
+				<s:GradientEntry 
+					color="#f4f4f3" 
+					color.down="#bbbaba" 
+					ratio="0"/>
+				<s:GradientEntry 
+					color="#bbbaba" 
+					color.down="#f4f4f3" 
+					ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+		<s:stroke>
+			<s:SolidColorStroke 
+				color="#999999"
+				color.over="#666666"
+				color.down="#666666"
+				weight="1"
+				/>
+		</s:stroke>
+	</s:Rect>
+	
+	
+	
+	<!-- label -->
+	<s:Label 
+		id="labelDisplay"
+		horizontalCenter="0" verticalCenter="1"
+		left="15" right="15" 
+		top="2" bottom="2"
+		textAlign="center"
+		verticalAlign="middle"
+		color="#333333"
+		fontSize="11"
+		fontFamily="Arial"
+		/>
+	
+	
+</s:Skin>

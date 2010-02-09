@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		  xmlns:s="library://ns.adobe.com/flex/spark" 
+		  xmlns:mx="library://ns.adobe.com/flex/halo" width="400" height="300">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import com.foursquare.events.NavigationEvent;
+			import com.foursquare.models.Section;
+			
+			import mx.collections.ArrayCollection;
+			
+			import spark.events.IndexChangeEvent;
+
+			private var navDataProvider:ArrayCollection =
+				new ArrayCollection([
+					resourceManager.getString("myResources","CHECKIN"),
+					resourceManager.getString("myResources","HISTORY"),
+					resourceManager.getString("myResources","VENUES"),
+				]);
+			
+			/*******************************************
+			 * map button index to section and dispatch
+			 * @event
+			 * ****************************************/
+			private function onButtonBarChange(event : IndexChangeEvent):void{
+				var navigationEvent:NavigationEvent = new NavigationEvent( NavigationEvent.CHANGE )
+				switch(event.newIndex){
+					case 0:
+						navigationEvent.section = Section.CHECKIN;
+						break;
+					case 1:
+						navigationEvent.section = Section.HISTORY;
+						break;
+					case 2:
+						navigationEvent.section = Section.VENUES;
+						break;
+				}
+				dispatchEvent( navigationEvent );
+			}
+		]]>
+	</fx:Script>
+	
+	<s:ButtonBar id="buttonBar" change="onButtonBarChange(event)" selectedIndex="0" 
+				 dataProvider="{navDataProvider}"/>
+	
+</s:HGroup>

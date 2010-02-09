@@ -27,7 +27,7 @@ package com.foursquare.api{
             // Needs to be 
             // Sat Oct 10 00:43:06 GMT+0000 2009
             var then:Date = new Date();
-            var isDate:Boolean = remote.created instanceof Date;
+            var isDate:Boolean = remote.created is Date;
             if(isDate==false){
             	var cleaned:String = String(remote.created).replace(/(\w{3}+)(.{1}+) (\d{2}+) (\w{3}+) (\d{2}+) (\d{2}:\d{2}:\d{2}+) (\+|\-+)(\d{4}+)/g, "$1 $4 $3 $6 GMT$7$8 20$5");
                 then.setTime(Date.parse(cleaned));
