@@ -9,7 +9,7 @@ package de.websector.utils.updater.ui
 		
 		import com.adobe.utils.LocaleUtil;
 		
-		import de.websector.utils.updater.ui.skins.standard.AppUpdaterUIStandardSkin;
+		import de.websector.utils.updater.ui.skins.firefox.AppUpdaterUIFirefoxSkin;
 		
 		import flash.desktop.NativeApplication;
 		import flash.events.ErrorEvent;
@@ -195,7 +195,7 @@ package de.websector.utils.updater.ui
 				
 				css.defaultFactory = function():void
 				{
-					this.skinClass = AppUpdaterUIStandardSkin;
+					this.skinClass = AppUpdaterUIFirefoxSkin;
 				}
 					
 				styleManager.setStyleDeclaration("de.websector.utils.updater.ui.ApplicationUpdaterUI", css, true);

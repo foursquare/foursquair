@@ -8,8 +8,6 @@ package com.foursquare.models
 {
 	public class Constants
 	{
-		
-		public static const UPDATE_FILE:String = "app:/updateConfig.xml";
 		public static const iconURL: String = "assets/images/notification_dude.png";
 	}
 }

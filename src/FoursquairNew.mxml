@@ -14,13 +14,7 @@
 	xmlns:header="com.foursquare.views.header.*"
 	height="100%">
 
-	
 	<fx:Style source="style/FourSquairStyle.css" />
-	<fx:Script>
-		<![CDATA[
-			import com.foursquare.models.Constants;
-		]]>
-	</fx:Script>
 	
 	<fx:Declarations>
 		<foursquare:FourSquareContext contextView="{this}"/>
@@ -30,12 +24,17 @@
 		</s:Parallel>
 	</fx:Declarations>
 	
+	<fx:Metadata>
+		[ResourceBundle("myResources")]
+	</fx:Metadata>
+	
 	<foursquare:states>
 		<s:State name="login" />
 		<s:State name="splash" />
 		<s:State name="checkin" />
 		<s:State name="history" />
-		<s:State name="venues" />
+		<s:State name="settings" />
+		<s:State name="search" />
 	</foursquare:states>
 	
 	
@@ -45,7 +44,7 @@
 		<ws:ApplicationUpdaterUI
 			id="updater"
 			width="100%" height="50"
-			configurationFile="{ new File ( Constants.UPDATE_FILE ) }"
+			configurationFile="{ new File ( 'app:/updateConfig.xml' ) }"
 			skinClass="de.websector.utils.updater.ui.skins.firefox.AppUpdaterUIFirefoxSkin"
 			useWindow="false"
 			invisibleCheck="true"
@@ -62,7 +61,7 @@
 			<history:History 	id="historyView" includeIn="history" height="100%" width="100%" 
 							 	hideEffect="{viewStackTransitionEffect}"
 							 	showEffect="{viewStackTransitionEffect}"/>
-			<venues:Venues 		id="venueView" includeIn="venues" height="100%" width="100%" 
+			<venues:Venues 		id="venueView" includeIn="search" height="100%" width="100%" 
 						   		hideEffect="{viewStackTransitionEffect}"
 						   		showEffect="{viewStackTransitionEffect}" />
 			

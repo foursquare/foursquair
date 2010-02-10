@@ -30,7 +30,7 @@
 			override public function set data(value:Object) : void{
 				super.data = value;
 				
-				if(data.user.photo!=""){
+				if(data && data.user.photo!=""){
 					userImage.source = data.user.photo;
 				}else{
 					userImage.source = "http://playfoursquare.s3.amazonaws.com/userpix_thumbs/blank_boy.png";

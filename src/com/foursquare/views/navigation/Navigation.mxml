@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		  xmlns:s="library://ns.adobe.com/flex/spark" 
-		  xmlns:mx="library://ns.adobe.com/flex/halo" width="400" height="300">
+		  xmlns:mx="library://ns.adobe.com/flex/halo">
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
@@ -12,16 +12,10 @@
 			import com.foursquare.models.Section;
 			
 			import mx.collections.ArrayCollection;
+			import mx.resources.ResourceManager;
 			
 			import spark.events.IndexChangeEvent;
 
-			private var navDataProvider:ArrayCollection =
-				new ArrayCollection([
-					resourceManager.getString("myResources","CHECKIN"),
-					resourceManager.getString("myResources","HISTORY"),
-					resourceManager.getString("myResources","VENUES"),
-				]);
-			
 			/*******************************************
 			 * map button index to section and dispatch
 			 * @event
@@ -36,7 +30,10 @@
 						navigationEvent.section = Section.HISTORY;
 						break;
 					case 2:
-						navigationEvent.section = Section.VENUES;
+						navigationEvent.section = Section.SETTINGS;
+						break;
+					case 3:
+						navigationEvent.section = Section.SEARCH;
 						break;
 				}
 				dispatchEvent( navigationEvent );
@@ -44,7 +41,20 @@
 		]]>
 	</fx:Script>
 	
-	<s:ButtonBar id="buttonBar" change="onButtonBarChange(event)" selectedIndex="0" 
-				 dataProvider="{navDataProvider}"/>
+	<s:ButtonBar id="buttonBar" change="onButtonBarChange(event)" selectedIndex="0" styleName="navigationButtonBarSkin">
+		<s:dataProvider>
+			  <s:ArrayList>
+				  <fx:Object label="{resourceManager.getString('myResources', 'CHECKIN')}"
+							 icon="@Embed('assets/icons/icon-checkin.png')" />
+				  <fx:Object label="{resourceManager.getString('myResources', 'HISTORY')}"
+							 icon="@Embed('assets/icons/icon-history.png')" />
+				  <fx:Object label="{resourceManager.getString('myResources', 'SETTINGS')}"
+							 icon="@Embed('assets/icons/icon-settings.png')" />
+				  <fx:Object label="{resourceManager.getString('myResources', 'SEARCH')}"
+							 icon="@Embed('assets/icons/icon-search.png')" />
+			  </s:ArrayList>
+		  </s:dataProvider>
+
+	</s:ButtonBar>
 	
 </s:HGroup>

@@ -41,6 +41,10 @@ s|WindowedApplication{
 	skin-class: ClassReference("com.foursquare.skins.HeaderSkin");
 }
 
+.navigationButtonBarSkin {
+	skin-class: ClassReference("com.foursquare.skins.NavigationButtonBarSkin");
+}
+
 .checkinList{
 	border-visible:false;
 	skin-class: ClassReference("com.foursquare.skins.CheckinListSkin");

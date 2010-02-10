@@ -12,7 +12,8 @@ package com.foursquare.models
 		public static const SPLASH:String = "splash";
 		public static const CHECKIN:String = "checkin";
 		public static const HISTORY:String = "history";
-		public static const VENUES:String = "venues";
+		public static const SETTINGS:String = "settings";
+		public static const SEARCH:String = "search";
 	
 	}
 }
