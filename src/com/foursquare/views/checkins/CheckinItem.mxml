@@ -2,17 +2,20 @@
 <s:ItemRenderer
 		xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		xmlns:s="library://ns.adobe.com/flex/spark"
+		xmlns:elements="flashx.textLayout.elements.*"
 		width="100%"
 		creationComplete="creationComplete();"
-		 >
+		>
 	<s:layout><s:HorizontalLayout gap="12" /></s:layout>
 
 	<fx:Script>
 		<![CDATA[
-			import com.foursquare.util.TimeAgoInWords;
-			
 			import flash.utils.Timer;
+			
+			import flashx.textLayout.events.FlowElementMouseEvent;
+
 			private var t:Timer;
+			private var dataChanged:Boolean;
 			
 			private function creationComplete():void{
 				//TODO (seth) move this to a place in the View so that the timer isn't created
@@ -27,13 +30,37 @@
 				} */
 			}
 			
+			public function onNameClick(event:FlowElementMouseEvent):void{
+				trace("test");
+			}
+
+			public function onVenueClick(event:FlowElementMouseEvent):void{
+				trace("test");
+			}
+			
+			override protected function commitProperties() : void{
+				super.commitProperties();
+				
+				if(dataChanged){
+					dataChanged = false;
+					
+					userLink.replaceText(0, userLink.text.length, data.user.name_with_initial);
+					venueLink.replaceText(0, venueLink.text.length, data.venue.name);
+					shoutText.text = data.shout;
+					
+					if(data && data.user.photo!=""){
+						userImage.source = data.user.photo;
+					}else{
+						userImage.source = "http://playfoursquare.s3.amazonaws.com/userpix_thumbs/blank_boy.png";
+					}
+				}
+			}
+			
 			override public function set data(value:Object) : void{
 				super.data = value;
-				
-				if(data && data.user.photo!=""){
-					userImage.source = data.user.photo;
-				}else{
-					userImage.source = "http://playfoursquare.s3.amazonaws.com/userpix_thumbs/blank_boy.png";
+				if(data){
+					dataChanged = true;
+					invalidateProperties();
 				}
 			}
 		]]>
@@ -48,19 +75,31 @@
 	</s:Group>
 	
 	<s:Group width="100%" height="100%">
+		<!--triangle-->
+		<s:Path top="9" data="H 0 0 L -6 6 L 0 12">
+			<s:fill>
+				<s:SolidColor color="0xffffff" />
+			</s:fill>
+		</s:Path>
 		<s:Rect width="100%" height="100%">
 			<s:fill>
 				<s:SolidColor color="white" />
 			</s:fill>
 		</s:Rect>
-		<s:VGroup width="100%" height="100%">
-			<s:HGroup width="100%">
-				<s:Label text="{data.user.name_with_initial}" width="100%" />
-				<s:Label text="{data.created_in_words}" id="timeAgo" width="100%" />
-			</s:HGroup>
-			<s:Label text="@ {data.venue.name}" />
-			<s:Label text="&quot;{data.shout}&quot;" includeInLayout="{data.shout!=''}" visible="{data.shout!=''}" />
-		</s:VGroup>
+		
+		<s:RichEditableText editable="false" selectable="false" top="10" left="10" right="10" bottom="20">
+			<s:TextFlow id="textFlow">
+				<s:p>
+					<s:a click="onNameClick(event);" ><elements:SpanElement id="userLink" color="0x2b6786" fontWeight="bold" fontSize="12" text="un" /></s:a>
+					at
+					<s:a click="onVenueClick(event);" ><elements:SpanElement id="venueLink" color="0x2b6786" fontWeight="bold" fontSize="12" text="vn" /></s:a>
+				</s:p>
+				<s:p paddingTop="10">
+					<elements:SpanElement id="shoutText" color="0x000000" fontSize="12" />
+				</s:p>
+			</s:TextFlow>
+		</s:RichEditableText>
+		<s:Label text="{data.created_in_words}" id="timeAgo" color="0x666666" fontSize="10" bottom="0" right="5"/>
 	</s:Group>
 	
 </s:ItemRenderer>

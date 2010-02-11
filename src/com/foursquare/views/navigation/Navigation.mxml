@@ -22,26 +22,29 @@
 			 * ****************************************/
 			private function onButtonBarChange(event : IndexChangeEvent):void{
 				var navigationEvent:NavigationEvent = new NavigationEvent( NavigationEvent.CHANGE )
-				switch(event.newIndex){
-					case 0:
-						navigationEvent.section = Section.CHECKIN;
-						break;
-					case 1:
-						navigationEvent.section = Section.HISTORY;
-						break;
-					case 2:
-						navigationEvent.section = Section.SETTINGS;
-						break;
-					case 3:
-						navigationEvent.section = Section.SEARCH;
-						break;
+				if(event.newIndex >= 0){
+					switch(event.newIndex){
+						case 0:
+							navigationEvent.section = Section.CHECKIN;
+							break;
+						case 1:
+							navigationEvent.section = Section.HISTORY;
+							break;
+						case 2:
+							navigationEvent.section = Section.SETTINGS;
+							break;
+						case 3:
+							navigationEvent.section = Section.SEARCH;
+							break;
+					}
+					dispatchEvent( navigationEvent );
 				}
-				dispatchEvent( navigationEvent );
 			}
 		]]>
 	</fx:Script>
 	
-	<s:ButtonBar id="buttonBar" change="onButtonBarChange(event)" selectedIndex="0" styleName="navigationButtonBarSkin">
+	<s:ButtonBar id="buttonBar" change="onButtonBarChange(event)" selectedIndex="0"
+				 styleName="navigationButtonBarSkin" requireSelection="true">
 		<s:dataProvider>
 			  <s:ArrayList>
 				  <fx:Object label="{resourceManager.getString('myResources', 'CHECKIN')}"

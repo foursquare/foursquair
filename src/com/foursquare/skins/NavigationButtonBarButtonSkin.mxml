@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- http://blog.flexexamples.com/2009/07/28/displaying-icons-in-a-spark-buttonbar-control-in-flex-4/ -->
-<s:SparkSkin name="NavigationButtonBarButtonSkin"
-			 xmlns:fx="http://ns.adobe.com/mxml/2009"
-			 xmlns:s="library://ns.adobe.com/flex/spark"
+<s:Skin	 xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
 			 minWidth="26" minHeight="26"
 			 alpha.disabledStates="0.5">
+	<s:layout><s:VerticalLayout gap="8" horizontalAlign="center" /></s:layout>
 	<!-- states -->
 	<s:states>
 		<s:State name="up" />
@@ -36,11 +36,6 @@
 				hostComponent.toolTip = dataObj.label;
 			}
 			
-			/* Define the skin elements that should not be colorized. 
-			For toggle button, the graphics are colorized but the label is not. */
-			static private const exclusions:Array = [];
-			
-			override public function get colorizeExclusions():Array {return exclusions;}
 		]]>
 	</fx:Script>
 	
@@ -50,5 +45,11 @@
 			   horizontalCenter="0" verticalCenter="0">
 		<s:BitmapImage id="img" />
 	</s:Graphic>
+
+	<s:Path data="H 0 0 L 8 -8 L 16 0" includeIn="selectedStates">
+		<s:fill>
+			<s:SolidColor color="0x666666" />
+		</s:fill>
+	</s:Path>
 	
-</s:SparkSkin>
+</s:Skin>

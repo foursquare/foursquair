@@ -4,10 +4,7 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/halo"
 		 xmlns:navigation="com.foursquare.views.navigation.*">
-	<s:layout><s:HorizontalLayout /></s:layout>
-	<s:VGroup id="header" width="100%">
-		<s:Label id="userName" width="100%" />
-		<navigation:Navigation width="100%" height="30" />
-	</s:VGroup>
-	<s:BitmapImage id="userImage" right="0" />
+	<s:Label id="userName" fontWeight="bold" fontSize="12" top="11" width="100%" />
+	<navigation:Navigation width="100%" top="31" height="30" />
+	<s:BitmapImage id="userImage" right="0" top="0" />
 </s:SkinnableContainer>
