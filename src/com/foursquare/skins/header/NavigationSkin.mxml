@@ -18,7 +18,7 @@
 	
 	<fx:Declarations>
 		<fx:Component id="middleButton">
-			<s:ButtonBarButton skinClass="com.foursquare.skins.NavigationButtonBarButtonSkin" />
+			<s:ButtonBarButton skinClass="com.foursquare.skins.header.NavigationButtonBarButtonSkin" />
 		</fx:Component>
 	</fx:Declarations>
 	

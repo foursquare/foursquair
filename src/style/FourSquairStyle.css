@@ -1,6 +1,7 @@
 /* CSS file */
 @namespace s "library://ns.adobe.com/flex/spark";
 @namespace mx "library://ns.adobe.com/flex/halo";
+@namespace login "com.foursquare.views.login.*";
 
 /*------FONTS------*/
 
@@ -66,22 +67,38 @@ mx|ToolTip {
 	cornerRadius: 4;
 	fontSize: 11;
 }
+/**
+* login
+**/
+login|LoginView{
+	skin-class: ClassReference("com.foursquare.skins.login.LoginViewSkin");
+}
 
 
-/*login|LoginView{
-	skin-class: ClassReference("com.foursquare.skins.LoginViewSkin");
-}*/
+.loginBoxSkin{
+	skin-class: ClassReference("com.foursquare.skins.login.LoginBoxSkin");
+}
 
+.loginButtonSkin{
+	skin-class: ClassReference("com.foursquare.skins.login.LoginButtonSkin");
+}
+
+/**
+* header
+**/
 .headerSkin{
-	skin-class: ClassReference("com.foursquare.skins.HeaderSkin");
+	skin-class: ClassReference("com.foursquare.skins.header.HeaderSkin");
 }
 
 .navigationButtonBarSkin {
-	skin-class: ClassReference("com.foursquare.skins.NavigationSkin");
+	skin-class: ClassReference("com.foursquare.skins.header.NavigationSkin");
 }
 
+/**
+* checkin
+**/
 .checkinList{
 	border-visible:false;
-	skin-class: ClassReference("com.foursquare.skins.CheckinListSkin");
+	skin-class: ClassReference("com.foursquare.skins.checkin.CheckinListSkin");
 
 }

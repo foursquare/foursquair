@@ -25,7 +25,7 @@ package com.foursquare.controller
 		
 		override public function execute() : void{
 			var oauthFile:File = model.oauthFile;
-			oauthFile.deleteFile();
+			if(oauthFile.exists) oauthFile.deleteFile();
 		}
 
 	}
