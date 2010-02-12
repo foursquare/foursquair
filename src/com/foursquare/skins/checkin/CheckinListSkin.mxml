@@ -88,12 +88,14 @@ in accordance with the terms of the license agreement accompanying it.
 	</s:Rect>-->
 	
 	<!--- The Scroller component to add scroll bars to the list. -->
-	<s:Scroller left="0" top="0" right="0" bottom="0" id="scroller" minViewportInset="1" focusEnabled="false">
+	<s:Scroller left="0" top="0" right="0" bottom="0" id="scroller" 
+				minViewportInset="1" focusEnabled="false" horizontalScrollPolicy="off">
 		<!--- The container for the data items. -->
 		<s:DataGroup id="dataGroup" 
 					 itemRenderer="spark.skins.spark.DefaultItemRenderer">
 			<s:layout>
-				<s:VerticalLayout horizontalAlign="contentJustify" gap="20" />
+				<s:VerticalLayout horizontalAlign="contentJustify"
+								  gap="20" paddingLeft="5" paddingRight="5" />
 			</s:layout>
 		</s:DataGroup>
 	</s:Scroller>

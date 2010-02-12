@@ -43,7 +43,8 @@
 			<s:CheckBox id="rememberMe" selected="true" label="Remember me" color="0x818589" />
 			
 			<s:Button id="loginSubmit" label="Login" click="handleLogin()" horizontalCenter="0"
-					  styleName="loginButtonSkin" color="0xffffff" fontWeight="bold" fontSize="18" />
+					  width="148" height="35"
+					  styleName="greyButtonSkin" color="0xffffff" fontWeight="bold" fontSize="18" />
 		</s:VGroup>
 	</s:SkinnableContainer>
 

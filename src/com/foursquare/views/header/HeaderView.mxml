@@ -4,7 +4,16 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/halo"
 		 xmlns:navigation="com.foursquare.views.navigation.*">
-	<s:Label id="userName" fontWeight="bold" fontSize="12" top="11" width="100%" />
+	<fx:Script>
+		<![CDATA[
+			import com.foursquare.events.LoginEvent;
+		]]>
+	</fx:Script>
+	<s:HGroup  top="11" width="100%">
+		<s:Label id="userName" fontWeight="bold" fontSize="12" />
+		<s:Label text="Logout" click="{dispatchEvent(new LoginEvent(LoginEvent.LOGOUT))}"
+				 fontSize="10" textDecoration="underline"/>
+	</s:HGroup>
 	<navigation:Navigation width="100%" top="31" height="30" />
 	<s:BitmapImage id="userImage" right="0" top="0" />
 </s:SkinnableContainer>

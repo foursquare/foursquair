@@ -2,6 +2,7 @@
 @namespace s "library://ns.adobe.com/flex/spark";
 @namespace mx "library://ns.adobe.com/flex/halo";
 @namespace login "com.foursquare.views.login.*";
+@namespace shout "com.foursquare.views.shout.*";
 
 /*------FONTS------*/
 
@@ -35,28 +36,17 @@
 	
 }
 
-@font-face {
-	src: url("assets/fonts/Arial Bold.ttf");
-	fontFamily: ArialForMx;
-	fontWeight: bold; 
-	embedAsCFF: false; 
-	
-}
-
-@font-face {
-	src: url("assets/fonts/Arial Italic.ttf");
-	fontFamily: ArialForMx;
-	font-style: italic;
-	embedAsCFF: false; 
-	
-}
-
 global{
 	fontFamily: Arial;
 }
 
 s|WindowedApplication{
 	backgroundColor: #999999;
+}
+
+s|VScrollBar {
+	skin-class: ClassReference("com.foursquare.skins.scrollbar.VScrollbar");
+	fixed-thumb-size: false;
 }
 
 mx|ToolTip {
@@ -67,6 +57,14 @@ mx|ToolTip {
 	cornerRadius: 4;
 	fontSize: 11;
 }
+
+/**
+* components
+**/
+.greyButtonSkin{
+	skin-class: ClassReference("com.foursquare.skins.login.GreyButtonSkin");
+}
+
 /**
 * login
 **/
@@ -79,9 +77,6 @@ login|LoginView{
 	skin-class: ClassReference("com.foursquare.skins.login.LoginBoxSkin");
 }
 
-.loginButtonSkin{
-	skin-class: ClassReference("com.foursquare.skins.login.LoginButtonSkin");
-}
 
 /**
 * header
@@ -100,5 +95,11 @@ login|LoginView{
 .checkinList{
 	border-visible:false;
 	skin-class: ClassReference("com.foursquare.skins.checkin.CheckinListSkin");
+}
 
+/**
+* shout
+**/
+shout|ShoutBox{
+	skin-class: ClassReference("com.foursquare.skins.shout.ShoutBoxSkin");
 }

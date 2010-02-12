@@ -23,6 +23,7 @@ package com.foursquare
 		{
 			super();
 			addEventListener( FlexEvent.CREATION_COMPLETE, onCreationComplete);
+			addEventListener( LoginEvent.LOGOUT, logout, true);
 		}
 		
 		private function onCreationComplete(event:FlexEvent):void{
@@ -47,8 +48,8 @@ package com.foursquare
 		 * logout 
 		 * 
 		 */		
-		public function logout():void{
-			dispatchEvent( new LoginEvent(LoginEvent.LOGOUT) );	
+		public function logout(event:LoginEvent):void{
+			dispatchEvent( event );	
 		}
 
 
