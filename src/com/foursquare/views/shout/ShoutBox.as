@@ -6,6 +6,8 @@
 
 package com.foursquare.views.shout
 {
+	import com.foursquare.events.CheckinEvent;
+	
 	import flash.events.MouseEvent;
 	
 	import spark.components.PopUpAnchor;
@@ -52,7 +54,9 @@ package com.foursquare.views.shout
 		
 		private function shoutMessage(event:MouseEvent):void
 		{
-			
+			var checkinEvent:CheckinEvent = new CheckinEvent( CheckinEvent.CREATE );
+			checkinEvent.message = shoutText.text;
+			dispatchEvent( checkinEvent );
 		}
 		
 		private function openPopUp(event:MouseEvent=null):void{

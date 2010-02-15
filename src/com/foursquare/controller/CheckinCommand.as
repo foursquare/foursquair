@@ -33,6 +33,7 @@ package com.foursquare.controller
 		override public function execute():void{
 			switch(event.type){
 				case CheckinEvent.CREATE:
+					//foursquareService.checkin( 
 					break;
 				case CheckinEvent.READ:
 					foursquareService.getCheckins( handleCheckins );
