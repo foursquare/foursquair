@@ -6,10 +6,12 @@
 
 package com.foursquare.views
 {
+	import com.foursquare.events.ErrorEvent;
 	import com.foursquare.events.LoginEvent;
 	import com.foursquare.events.NavigationEvent;
 	import com.foursquare.events.UserEvent;
 	import com.foursquare.models.Section;
+	import com.foursquare.views.alert.Alert;
 	
 	import org.robotlegs.mvcs.Mediator;
 	
@@ -28,6 +30,7 @@ package com.foursquare.views
 		{
 			eventMap.mapListener( eventDispatcher, NavigationEvent.CHANGE, navigateToSection );
 			eventMap.mapListener( eventDispatcher, UserEvent.DETAILS_GOT, onUserDetailsGot );
+			eventMap.mapListener( eventDispatcher, ErrorEvent.ERROR, displayError );
 			eventMap.mapListener( mainView, LoginEvent.LOGOUT, logout );
 		}
 		
@@ -44,11 +47,24 @@ package com.foursquare.views
 				mainView.setCurrentState(navigationEvent.section);
 			}
 		}
-		
+		/**
+		 * show username, in header. 
+		 * @param event
+		 * 
+		 */		
 		private function onUserDetailsGot(event:UserEvent):void{
 			mainView.header.userName.text = event.userVO.firstname +" "+ event.userVO.lastname;
 		}
 		
+		private function displayError(event:ErrorEvent):void{
+			Alert.show( mainView, event.error.message, "hmm...", true );
+		}
+		
+		/**
+		 * logout 
+		 * @param event
+		 * 
+		 */		
 		private function logout(event:LoginEvent):void{
 			dispatch( event.clone() );
 			mainView.setCurrentState(Section.LOGIN);

@@ -61,6 +61,12 @@ mx|ToolTip {
 /**
 * components
 **/
+s|Panel{
+	border-color: white;
+	corner-radius: 8;
+	skin-class: ClassReference("com.foursquare.skins.components.FoursqPanelSkin");
+}
+
 .greyButtonSkin{
 	skin-class: ClassReference("com.foursquare.skins.login.GreyButtonSkin");
 }

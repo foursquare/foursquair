@@ -1,5 +1,6 @@
 package com.foursquare.api
 {
+	import com.foursquare.events.ErrorEvent;
 	import com.foursquare.events.LoginEvent;
 	import com.foursquare.events.UserEvent;
 	import com.foursquare.models.LibraryModel;
@@ -13,7 +14,6 @@ package com.foursquare.api
 	import flash.net.URLVariables;
 	
 	import mx.collections.ArrayCollection;
-	import mx.controls.Alert;
 	
 	import org.flaircode.oauth.*;
 	import org.iotashan.oauth.*;
@@ -120,6 +120,8 @@ package com.foursquare.api
 		}
 
 		/**
+		 * TODO: convert to a service that has a proper handler and uses E4X convert to an Obj.
+		 * 
 		 * GET CHECKINS 
 		 * @param onSuccess
 		 * @param onError
@@ -131,18 +133,20 @@ package com.foursquare.api
 				{
 					var o : ArrayCollection = new ArrayCollection();
 					
-					if (d.checkins.checkin is ArrayCollection)
-					{
-						var checkins : ArrayCollection = d.checkins.checkin as ArrayCollection;
-						for (var i : int = 0; i < d.checkins.checkin.length; i++)
+					if(d.checkins){
+						if (d.checkins.checkin is ArrayCollection)
 						{
-							var c : Object = checkins.getItemAt(i);
-							o.addItem( new CheckinVO(c) );
+							var checkins : ArrayCollection = d.checkins.checkin as ArrayCollection;
+							for (var i : int = 0; i < d.checkins.checkin.length; i++)
+							{
+								var c : Object = checkins.getItemAt(i);
+								o.addItem( new CheckinVO(c) );
+							}
 						}
-					}
-					else
-					{
-						o.addItem( new CheckinVO(d.checkins.checkin) );
+						else
+						{
+							o.addItem( new CheckinVO(d.checkins.checkin) );
+						}
 					}
 
 					onSuccess(o);
@@ -303,7 +307,8 @@ package com.foursquare.api
 					}
 					catch (e : Error)
 					{
-						mx.controls.Alert.show(e.message + "\n\nStack:\n" + e.getStackTrace(), 'XML Parse Error :(');
+						e.message = e.message + "\n\nStack:\n" + e.getStackTrace(), 'XML Parse Error :(';
+						handleError( e );
 					}
 					onSuccess(parsed);
 				});
@@ -312,7 +317,9 @@ package com.foursquare.api
 
 		private function handleError(error : Error) : void
 		{
-
+			var errorEvent:ErrorEvent = new ErrorEvent( ErrorEvent.ERROR);
+			errorEvent.error = error;
+			dispatch(errorEvent);
 		}
 	}
 }
