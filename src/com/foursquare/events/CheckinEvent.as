@@ -6,16 +6,20 @@
 
 package com.foursquare.events
 {
+	import com.foursquare.api.VenueVO;
+	
 	import flash.events.Event;
 	
 	public class CheckinEvent extends Event
 	{
 		
-		public static const CREATE:String = "create";
+		public static const SHOUT:String = "shout";
 		public static const READ:String = "read";
 		
 		public var userId:int;
 		public var message:String;
+		
+		public var venueVO:VenueVO;
 		
 		public function CheckinEvent(type:String)
 		{
@@ -26,6 +30,7 @@ package com.foursquare.events
 			var checkinEvent:CheckinEvent = new CheckinEvent(type);
 			checkinEvent.userId = userId;
 			checkinEvent.message = message;
+			checkinEvent.venueVO = venueVO;
 			return checkinEvent;
 		}
 	}

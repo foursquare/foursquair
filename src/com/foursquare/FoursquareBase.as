@@ -38,10 +38,8 @@ package com.foursquare
  		 * @todo (lucas) Link a shout to a venue without actually counting as a checkin? 
 		 * ie "Anybody want to check out this bar tonight?"
 		 */ 
-		public function handleShout( text:String ):void{
-			var checkinEvent:CheckinEvent = new CheckinEvent(CheckinEvent.CREATE);
-			checkinEvent.message = text;
-			dispatchEvent( checkinEvent );
+		public function handleShout( event:CheckinEvent ):void{
+			dispatchEvent( event.clone() );
 		}
 		
 		/**

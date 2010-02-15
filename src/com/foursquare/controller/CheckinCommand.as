@@ -32,17 +32,34 @@ package com.foursquare.controller
 		
 		override public function execute():void{
 			switch(event.type){
-				case CheckinEvent.CREATE:
-					//foursquareService.checkin( 
+				case CheckinEvent.SHOUT:
+					createCheckin( event ); 
 					break;
 				case CheckinEvent.READ:
-					foursquareService.getCheckins( handleCheckins );
+					getCheckins();
 					break;
 			}
 		}
 		
+		private function createCheckin( event : CheckinEvent ):void{
+			if(!event.venueVO)
+			{
+				foursquareService.checkin( 0, "", event.message, onCheckinSuccess );
+			}else{
+				foursquareService.checkin( event.venueVO.id, event.venueVO.name, event.message, onCheckinSuccess );
+			}
+		}
+		
+		private function getCheckins():void{
+			foursquareService.getCheckins( handleCheckins );
+		}
+		
 		private function handleCheckins( checkins: ArrayCollection ):void{
 			checkinMediator.setCheckins( checkins );
+		}
+		
+		private function onCheckinSuccess( success:Boolean ):void{
+			getCheckins();
 		}
 	}
 }

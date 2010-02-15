@@ -6,6 +6,7 @@
 
 package com.foursquare.views
 {
+	import com.foursquare.events.CheckinEvent;
 	import com.foursquare.events.ErrorEvent;
 	import com.foursquare.events.LoginEvent;
 	import com.foursquare.events.NavigationEvent;
@@ -31,6 +32,8 @@ package com.foursquare.views
 			eventMap.mapListener( eventDispatcher, NavigationEvent.CHANGE, navigateToSection );
 			eventMap.mapListener( eventDispatcher, UserEvent.DETAILS_GOT, onUserDetailsGot );
 			eventMap.mapListener( eventDispatcher, ErrorEvent.ERROR, displayError );
+
+			eventMap.mapListener( mainView, CheckinEvent.SHOUT, shoutMessage );
 			eventMap.mapListener( mainView, LoginEvent.LOGOUT, logout );
 		}
 		
@@ -47,6 +50,11 @@ package com.foursquare.views
 				mainView.setCurrentState(navigationEvent.section);
 			}
 		}
+		
+		private function shoutMessage( event:CheckinEvent ):void{
+			dispatch( event.clone() );
+		}
+		
 		/**
 		 * show username, in header. 
 		 * @param event
@@ -56,6 +64,11 @@ package com.foursquare.views
 			mainView.header.userName.text = event.userVO.firstname +" "+ event.userVO.lastname;
 		}
 		
+		/**
+		 * open alert window and show error message 
+		 * @param event
+		 * 
+		 */		
 		private function displayError(event:ErrorEvent):void{
 			Alert.show( mainView, event.error.message, "hmm...", true );
 		}

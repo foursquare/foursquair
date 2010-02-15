@@ -42,7 +42,7 @@ package com.foursquare
 			//map controller
 			commandMap.mapEvent( StartupEvent.STARTUP, StartupCommand, StartupEvent );
 		
-			commandMap.mapEvent( CheckinEvent.CREATE, CheckinCommand, CheckinEvent );
+			commandMap.mapEvent( CheckinEvent.SHOUT, CheckinCommand, CheckinEvent );
 			commandMap.mapEvent( CheckinEvent.READ, CheckinCommand, CheckinEvent );
 			
 			commandMap.mapEvent( LoginEvent.LOGIN, LoginCommand, LoginEvent );

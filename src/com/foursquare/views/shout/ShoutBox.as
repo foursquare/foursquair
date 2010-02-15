@@ -15,6 +15,12 @@ package com.foursquare.views.shout
 	import spark.components.supportClasses.ButtonBase;
 	import spark.components.supportClasses.SkinnableComponent;
 	
+	/*
+	*  Dispatched when the user clicks SHOUT to send a message
+	*  @eventType com.foursquare.events.CheckinEvent.SHOUT
+	*/
+	[Event(name="shout", type="com.foursquare.events.CheckinEvent")]
+	
 	public class ShoutBox extends SkinnableComponent
 	{
 		
@@ -54,7 +60,7 @@ package com.foursquare.views.shout
 		
 		private function shoutMessage(event:MouseEvent):void
 		{
-			var checkinEvent:CheckinEvent = new CheckinEvent( CheckinEvent.CREATE );
+			var checkinEvent:CheckinEvent = new CheckinEvent( CheckinEvent.SHOUT );
 			checkinEvent.message = shoutText.text;
 			dispatchEvent( checkinEvent );
 		}

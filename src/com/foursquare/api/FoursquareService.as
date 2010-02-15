@@ -94,7 +94,7 @@ package com.foursquare.api
 		 * geolat - (optional, but recommended)
 		 * geolong - (optional, but recommended)
 		 */
-		public function checkin(vid : int, venue : String='', shout : String='', onSuccess : Function=null, onError : Function=null) : void
+		public function checkin(vid : int = 0, venue : String='', shout : String='', onSuccess : Function=null, onError : Function=null) : void
 		{
 			var params : Object = new Object();
 			if (vid > 0)
@@ -111,11 +111,11 @@ package com.foursquare.api
 			}
 			getData('http://api.foursquare.com/v1/checkin.xml', function(d : Object) : void
 				{
-					var c : Object = d.checkin;
+					/*var c : Object = d.checkin;
 					d.user = actor;
 					d.shout = shout;
-					d.created = new Date();
-					onSuccess(new CheckinVO(d));
+					d.created = new Date();*/
+					onSuccess(true);
 				}, true, params);
 		}
 
