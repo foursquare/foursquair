@@ -15,6 +15,7 @@ package com.foursquare.controller
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
 	
+	import org.iotashan.oauth.OAuthToken;
 	import org.robotlegs.mvcs.Command;
 	
 	public class StartupCommand extends Command
@@ -46,8 +47,8 @@ package com.foursquare.controller
 				stream.close();
 				
 				var d:Object = XMLUtil.XMLToObject(filedata);
-				model.oauth_token = d.foursquare.oauth_token;
-				model.oauth_token_secret = d.foursquare.oauth_token_secret;
+				model.oauth_token = new OAuthToken( d.foursquare.oauth_token_key,
+													d.foursquare.oauth_token_secret);
 				
 				//start off process
 				dispatch( new LoginEvent( LoginEvent.LOGIN_SUCCESS ));

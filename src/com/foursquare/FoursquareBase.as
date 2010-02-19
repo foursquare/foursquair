@@ -9,6 +9,7 @@ package com.foursquare
 	import com.foursquare.events.CheckinEvent;
 	import com.foursquare.events.LoginEvent;
 	import com.foursquare.views.nativeWindows.PurrWindow;
+	import com.foursquare.views.shout.ShoutBox;
 	
 	import mx.events.FlexEvent;
 	
@@ -17,7 +18,10 @@ package com.foursquare
 	public class FoursquareBase extends WindowedApplication
 	{
 		
+		public var shoutBox:ShoutBox;
+		
 		private var _selectedSection:int;
+		private var purrWindow:PurrWindow;
 		
 		public function FoursquareBase()
 		{
@@ -28,18 +32,25 @@ package com.foursquare
 		
 		private function onCreationComplete(event:FlexEvent):void{
 			//growl feature.
-			var purrWindow:PurrWindow = new PurrWindow(1);
+			purrWindow = new PurrWindow(1);
 		}
 		
 
 		/**
 		 * handle shout shouts a message.
-		 * 
- 		 * @todo (lucas) Link a shout to a venue without actually counting as a checkin? 
-		 * ie "Anybody want to check out this bar tonight?"
 		 */ 
-		public function handleShout( event:CheckinEvent ):void{
+		public function handleShout( message:String ):void{
+			shoutBox.shoutText.text = "";
+			growl("", message);
+		}
+		
+		public function bounceShoutEvent( event:CheckinEvent ):void{
 			dispatchEvent( event.clone() );
+		}
+			
+		
+		public function growl(title:String, message:String):void{
+			purrWindow.addTextNotificationByParams(title, message);
 		}
 		
 		/**

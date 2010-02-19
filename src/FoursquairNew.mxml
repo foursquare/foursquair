@@ -66,7 +66,7 @@
 						   		hideEffect="{viewStackTransitionEffect}"
 						   		showEffect="{viewStackTransitionEffect}" />
 			
-			<shout:ShoutBox shout="{handleShout(event)}" width="100%" height="30" bottom="0" />
+			<shout:ShoutBox id="shoutBox" shout="{bounceShoutEvent(event)}" width="100%" height="30" bottom="0" />
 		
 		</s:VGroup>
 		

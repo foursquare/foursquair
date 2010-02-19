@@ -37,6 +37,11 @@ package com.foursquare.views
 			eventMap.mapListener( mainView, LoginEvent.LOGOUT, logout );
 		}
 		
+		//returned from a shout message
+		public function handleShout( message :String ) : void{
+			mainView.handleShout( message ); 
+		}
+		
 		/**
 		 * sets the currentState of the app 
 		 * @param navigationEvent

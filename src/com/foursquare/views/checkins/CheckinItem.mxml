@@ -45,7 +45,7 @@
 					dataChanged = false;
 					
 					userLink.replaceText(0, userLink.text.length, data.user.name_with_initial);
-					venueLink.replaceText(0, venueLink.text.length, data.venue.name);
+					if(data.venue) venueLink.replaceText(0, venueLink.text.length, data.venue.name);
 					shoutText.text = data.shout;
 					
 					if(data && data.user.photo!=""){

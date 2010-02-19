@@ -9,6 +9,7 @@ package com.foursquare.controller
 	import com.foursquare.api.IFoursquareService;
 	import com.foursquare.events.CheckinEvent;
 	import com.foursquare.views.CheckinMediator;
+	import com.foursquare.views.MainViewMediator;
 	
 	import mx.collections.ArrayCollection;
 	
@@ -21,6 +22,9 @@ package com.foursquare.controller
 		
 		[Inject]
 		public var foursquareService:IFoursquareService;
+		
+		[Inject]
+		public var mainViewMediator:MainViewMediator;
 		
 		[Inject]
 		public var checkinMediator:CheckinMediator;
@@ -38,26 +42,37 @@ package com.foursquare.controller
 				case CheckinEvent.READ:
 					getCheckins();
 					break;
+				case CheckinEvent.READ_RETURNED:
+					handleCheckins( event.checkins );
+					break;
+				case CheckinEvent.SHOUT_SUCCESS:
+					handleShout(event.message);
+					break;
 			}
 		}
 		
 		private function createCheckin( event : CheckinEvent ):void{
 			if(!event.venueVO)
 			{
-				foursquareService.checkin( 0, "", event.message, onCheckinSuccess );
+				foursquareService.checkin( event.message );
 			}else{
-				foursquareService.checkin( event.venueVO.id, event.venueVO.name, event.message, onCheckinSuccess );
+				foursquareService.checkin( event.message, event.venueVO );
 			}
 		}
 		
 		private function getCheckins():void{
-			foursquareService.getCheckins( handleCheckins );
+			foursquareService.getCheckins();
 		}
 		
 		private function handleCheckins( checkins: ArrayCollection ):void{
 			checkinMediator.setCheckins( checkins );
 		}
 		
+		private function handleShout( message:String ):void{
+			mainViewMediator.handleShout( message );
+			getCheckins();
+		}
+
 		private function onCheckinSuccess( success:Boolean ):void{
 			getCheckins();
 		}

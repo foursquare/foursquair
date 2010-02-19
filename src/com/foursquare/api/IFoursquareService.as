@@ -5,11 +5,11 @@ package com.foursquare.api
 	public interface IFoursquareService
 	{
 		function login(event:LoginEvent):void;
-		function checkin(vid:int, venue:String='', shout:String='', onSuccess:Function=null, onError:Function=null):void;
-		function getCheckins(onSuccess:Function, onError:Function=null):void;
-		function getHistory(limit:int, onSuccess:Function, onError:Function=null):void;
+		function checkin(shout : String="", venueVO:VenueVO=null):void;
+		function getCheckins():void;
+		function getHistory(limit:int):void;
 		function getUserDetails(userVO:UserVO, badges:Boolean=false, mayor:Boolean=false):void;
-		function getVenues(geolat:Number, geolong:Number, r:Number=25, l:int=10, q:String=null, onSuccess:Function=null, onError:Function=null):void;
-		function listCities(onSuccess:Function, onError:Function=null):void;
+		function getVenues(geolat:Number, geolong:Number, r:Number=25, l:int=10, q:String=null):void;
+		function listCities():void;	
 	}
 }

@@ -8,6 +8,7 @@ package com.foursquare.models
 {
 	import flash.filesystem.File;
 	
+	import org.iotashan.oauth.OAuthToken;
 	import org.robotlegs.mvcs.Actor;
 	
 	public class LibraryModel extends Actor
@@ -28,8 +29,15 @@ package com.foursquare.models
 		 */		
 		public var oauthFile:File;
 		
-		public var oauth_token : String;
-		public var oauth_token_secret : String;
+		/**
+		 * oauth token 
+		 */		
+		public var oauth_token : OAuthToken;
+		
+		/**
+		 * used during login 
+		 */		
+		public var rememberMe:Boolean;
 		
 		public function LibraryModel()
 		{

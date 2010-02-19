@@ -50,8 +50,8 @@ package com.foursquare.controller
 		private function loginSuccess( event:LoginEvent ):void{
 			if(event.rememberMe){
 				var d:Object = new Object();
-				d.oauth_token = model.oauth_token;
-				d.oauth_token_secret = model.oauth_token_secret;
+				d.oauth_token_key = model.oauth_token.key;
+				d.oauth_token_secret = model.oauth_token.secret;
 				var contents:String = XMLUtil.objectToXML(d).toXMLString();
 				
 				var stream:FileStream = new FileStream(); 

@@ -43,7 +43,10 @@ package com.foursquare
 			commandMap.mapEvent( StartupEvent.STARTUP, StartupCommand, StartupEvent );
 		
 			commandMap.mapEvent( CheckinEvent.SHOUT, CheckinCommand, CheckinEvent );
+			commandMap.mapEvent( CheckinEvent.SHOUT_SUCCESS, CheckinCommand, CheckinEvent );
+			
 			commandMap.mapEvent( CheckinEvent.READ, CheckinCommand, CheckinEvent );
+			commandMap.mapEvent( CheckinEvent.READ_RETURNED, CheckinCommand, CheckinEvent );
 			
 			commandMap.mapEvent( LoginEvent.LOGIN, LoginCommand, LoginEvent );
 			commandMap.mapEvent( LoginEvent.LOGOUT, Logout, LoginEvent );
