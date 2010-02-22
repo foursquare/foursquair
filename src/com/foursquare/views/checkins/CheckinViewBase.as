@@ -26,10 +26,6 @@ package com.foursquare.views.checkins
 		public function CheckinViewBase()
 		{
 			super();
-			addEventListener( FlexEvent.CREATION_COMPLETE, onCreationComplete);
-		}
-		
-		private function onCreationComplete(event:FlexEvent):void{
 		}
 		
 		override protected function commitProperties() : void{

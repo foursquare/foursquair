@@ -19,10 +19,12 @@ package com.foursquare
 	import com.foursquare.events.UserEvent;
 	import com.foursquare.models.LibraryModel;
 	import com.foursquare.views.CheckinMediator;
+	import com.foursquare.views.HistoryMediator;
 	import com.foursquare.views.LoginMediator;
 	import com.foursquare.views.MainViewMediator;
 	import com.foursquare.views.NavigationMediator;
 	import com.foursquare.views.checkins.CheckinView;
+	import com.foursquare.views.history.HistoryView;
 	import com.foursquare.views.login.LoginView;
 	import com.foursquare.views.navigation.Navigation;
 	
@@ -65,6 +67,7 @@ package com.foursquare
 			mediatorMap.mapView( Navigation, NavigationMediator );
 			mediatorMap.mapView( LoginView, LoginMediator );
 			mediatorMap.mapView( CheckinView, CheckinMediator );
+			mediatorMap.mapView( HistoryView, HistoryMediator );
 			mediatorMap.mapView( FoursquairNew, MainViewMediator );
 
 			//app starts by checking for updates.

@@ -59,7 +59,7 @@
 			<checkins:CheckinView	id="checkinView" includeIn="checkin" height="100%" width="100%" 
 							   	hideEffect="{viewStackTransitionEffect}"
 							   	showEffect="{viewStackTransitionEffect}"/>
-			<history:History 	id="historyView" includeIn="history" height="100%" width="100%" 
+			<history:HistoryView 	id="historyView" includeIn="history" height="100%" width="100%" 
 							 	hideEffect="{viewStackTransitionEffect}"
 							 	showEffect="{viewStackTransitionEffect}"/>
 			<venues:Venues 		id="venueView" includeIn="search" height="100%" width="100%" 

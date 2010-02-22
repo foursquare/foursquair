@@ -103,6 +103,7 @@ package com.foursquare.api
 		
 		public function getHistory(limit:int):void
 		{
+		
 		}
 		
 		public function getUserDetails(userVO:UserVO, badges:Boolean=false, mayor:Boolean=false):void

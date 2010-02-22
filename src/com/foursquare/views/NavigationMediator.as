@@ -27,6 +27,7 @@ package com.foursquare.views
 			eventMap.mapListener( navigation, NavigationEvent.CHANGE, bounceEvent );
 		}
 		
+		//make robotlegs aware of the change.
 		private function bounceEvent(event:NavigationEvent):void{
 			eventDispatcher.dispatchEvent( event );
 		}
