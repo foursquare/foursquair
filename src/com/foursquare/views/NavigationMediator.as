@@ -6,6 +6,7 @@
 
 package com.foursquare.views
 {
+	import com.foursquare.events.LoginEvent;
 	import com.foursquare.events.NavigationEvent;
 	import com.foursquare.views.navigation.Navigation;
 	
@@ -24,12 +25,20 @@ package com.foursquare.views
 		
 		override public function onRegister():void
 		{
+			//listen for a click
 			eventMap.mapListener( navigation, NavigationEvent.CHANGE, bounceEvent );
+
+			eventMap.mapListener( eventDispatcher, LoginEvent.LOGOUT, onLogout );
+		}
+
+		private function onLogout(event:LoginEvent):void{
+			navigation.buttonBar.selectedIndex = 0;
 		}
 		
 		//make robotlegs aware of the change.
 		private function bounceEvent(event:NavigationEvent):void{
 			eventDispatcher.dispatchEvent( event );
 		}
+		
 	}
 }

@@ -7,6 +7,7 @@
 package com.foursquare.controller
 {
 	import com.foursquare.models.LibraryModel;
+	import com.foursquare.views.navigation.Navigation;
 	
 	import flash.filesystem.File;
 	

@@ -11,19 +11,16 @@
 			import com.foursquare.events.NavigationEvent;
 			import com.foursquare.models.Section;
 			
-			import mx.collections.ArrayCollection;
-			import mx.resources.ResourceManager;
-			
-			import spark.events.IndexChangeEvent;
+			import flash.events.MouseEvent;
 
 			/*******************************************
 			 * map button index to section and dispatch
 			 * @event
 			 * ****************************************/
-			private function onButtonBarChange(event : IndexChangeEvent):void{
+			private function onButtonBarChange(event : MouseEvent):void{
 				var navigationEvent:NavigationEvent = new NavigationEvent( NavigationEvent.CHANGE )
-				if(event.newIndex >= 0){
-					switch(event.newIndex){
+				if(buttonBar.selectedIndex >= 0){
+					switch( buttonBar.selectedIndex ){
 						case 0:
 							navigationEvent.section = Section.CHECKIN;
 							break;
@@ -43,7 +40,7 @@
 		]]>
 	</fx:Script>
 	
-	<s:ButtonBar id="buttonBar" change="onButtonBarChange(event)" selectedIndex="0"
+	<s:ButtonBar id="buttonBar" click="onButtonBarChange(event)" selectedIndex="0"
 				 styleName="navigationButtonBarSkin" requireSelection="true">
 		<s:dataProvider>
 			  <s:ArrayList>
