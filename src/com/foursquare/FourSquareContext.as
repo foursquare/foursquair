@@ -9,11 +9,13 @@ package com.foursquare
 	import com.foursquare.api.FoursquareService;
 	import com.foursquare.api.IFoursquareService;
 	import com.foursquare.controller.CheckinCommand;
+	import com.foursquare.controller.HistoryCommand;
 	import com.foursquare.controller.LoginCommand;
 	import com.foursquare.controller.Logout;
 	import com.foursquare.controller.StartupCommand;
 	import com.foursquare.controller.UserCommand;
 	import com.foursquare.events.CheckinEvent;
+	import com.foursquare.events.HistoryEvent;
 	import com.foursquare.events.LoginEvent;
 	import com.foursquare.events.StartupEvent;
 	import com.foursquare.events.UserEvent;
@@ -49,6 +51,9 @@ package com.foursquare
 			
 			commandMap.mapEvent( CheckinEvent.READ, CheckinCommand, CheckinEvent );
 			commandMap.mapEvent( CheckinEvent.READ_RETURNED, CheckinCommand, CheckinEvent );
+			
+			commandMap.mapEvent( HistoryEvent.READ, HistoryCommand, HistoryEvent );
+			commandMap.mapEvent( HistoryEvent.READ_RETURNED, HistoryCommand, HistoryEvent );
 			
 			commandMap.mapEvent( LoginEvent.LOGIN, LoginCommand, LoginEvent );
 			commandMap.mapEvent( LoginEvent.LOGOUT, Logout, LoginEvent );

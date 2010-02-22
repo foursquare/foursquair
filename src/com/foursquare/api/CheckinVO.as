@@ -13,7 +13,7 @@ package com.foursquare.api{
 		
 		public function CheckinVO(remote:Object){
 			this.id = remote.id;
-			this.user = new UserVO(remote.user);
+			if(remote.user) this.user = new UserVO(remote.user);
 			this.venue = (remote.venue && remote.venue!= null) ? new VenueVO(remote.venue) : null;
 			this.display = remote.display;
 			this.shout = remote.shout || '';

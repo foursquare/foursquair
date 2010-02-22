@@ -8,6 +8,10 @@ package com.foursquare.controller
 {
 	import com.foursquare.api.IFoursquareService;
 	import com.foursquare.events.HistoryEvent;
+	import com.foursquare.models.Constants;
+	import com.foursquare.views.HistoryMediator;
+	
+	import mx.collections.ArrayCollection;
 	
 	import org.robotlegs.mvcs.Command;
 	
@@ -20,6 +24,9 @@ package com.foursquare.controller
 		[Inject]
 		public var foursquareService:IFoursquareService;
 		
+		[Inject]
+		public var historyMediator:HistoryMediator;
+		
 		public function HistoryCommand()
 		{
 			super();
@@ -31,13 +38,17 @@ package com.foursquare.controller
 					getHistory();
 					break;
 				case HistoryEvent.READ_RETURNED:
-					onReturn_getHistory( event.history );
+					historyReturned( event.history );
 					break;
 			}
 		}
 		
 		private function getHistory():void{
-			foursquareService.getHistory(
+			foursquareService.getHistory( Constants.historyLimit );
+		}
+		
+		private function historyReturned( value:ArrayCollection ):void{
+			historyMediator.setHistory( value );
 		}
 	}
 }

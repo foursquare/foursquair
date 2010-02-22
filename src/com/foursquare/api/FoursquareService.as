@@ -8,6 +8,7 @@ package com.foursquare.api
 {
 	import com.foursquare.events.CheckinEvent;
 	import com.foursquare.events.ErrorEvent;
+	import com.foursquare.events.HistoryEvent;
 	import com.foursquare.events.LoginEvent;
 	import com.foursquare.models.LibraryModel;
 	import com.foursquare.util.XMLUtil;
@@ -75,10 +76,11 @@ package com.foursquare.api
 			
 			if (shout.length > 1) params.shout = shout;
 			
-			var request : URLRequest = oauth.buildRequest(	URLRequestMethod.POST,
-															_url+"checkin.xml",
-															model.oauth_token,
-															params);
+			var request : URLRequest = oauth.buildRequest(
+				URLRequestMethod.POST,
+				_url+"checkin.xml",
+				model.oauth_token,
+				params);
 			
 			var loader : URLLoader = new URLLoader();
 			loader.addEventListener(IOErrorEvent.IO_ERROR, onIOError);
@@ -91,9 +93,10 @@ package com.foursquare.api
 		 */		
 		public function getCheckins():void
 		{
-			var request : URLRequest = oauth.buildRequest(	URLRequestMethod.GET, 
-															_url+'checkins.xml',
-															model.oauth_token);
+			var request : URLRequest = oauth.buildRequest(
+				URLRequestMethod.GET, 
+				_url+'checkins.xml',
+				model.oauth_token);
 			
 			var loader : URLLoader = new URLLoader();
 			loader.addEventListener(IOErrorEvent.IO_ERROR, onIOError);
@@ -103,7 +106,16 @@ package com.foursquare.api
 		
 		public function getHistory(limit:int):void
 		{
-		
+			var request : URLRequest = oauth.buildRequest(
+				URLRequestMethod.GET, 
+				_url+'history.xml',
+				model.oauth_token,
+				{l:limit});
+			
+			var loader : URLLoader = new URLLoader();
+			loader.addEventListener(IOErrorEvent.IO_ERROR, onIOError);
+			loader.addEventListener(Event.COMPLETE, onResult_getHistory);
+			loader.load(request);
 		}
 		
 		public function getUserDetails(userVO:UserVO, badges:Boolean=false, mayor:Boolean=false):void
@@ -158,7 +170,7 @@ package com.foursquare.api
 		 * @param event
 		 * 
 		 */		
-		private function onResult_getCheckins(event:Event):void{
+		private function onResult_getCheckins(event : Event):void{
 			var checkins:Array = new Array();
 			var xml:XML = new XML((event.target as URLLoader).data);
 			
@@ -171,6 +183,21 @@ package com.foursquare.api
 			var checkinEvent:CheckinEvent = new CheckinEvent(CheckinEvent.READ_RETURNED);
 			checkinEvent.checkins = new ArrayCollection( checkins );
 			dispatch( checkinEvent );
+		}
+		
+		private function onResult_getHistory(event : Event):void{
+			var history:Array = new Array();
+			var xml:XML = new XML((event.target as URLLoader).data);
+			
+			//loop through xml and create VOs
+			for each( var checkin : XML in xml..checkin){
+				history.push( new CheckinVO( XMLUtil.XMLToObject( checkin.children() )) );
+			}
+			
+			//dispatch event
+			var historyEvent:HistoryEvent = new HistoryEvent(HistoryEvent.READ_RETURNED);
+			historyEvent.history = new ArrayCollection( history );
+			dispatch( historyEvent );
 		}
 		
 		/**
