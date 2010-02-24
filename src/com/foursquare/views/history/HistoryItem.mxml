@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:SkinnableContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					  xmlns:s="library://ns.adobe.com/flex/spark" 
+					  xmlns:mx="library://ns.adobe.com/flex/halo" width="100%" maxHeight="200">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+
+			private var _date:Date;
+			private var dateChanged:Boolean;
+			
+			private var _checkins:ArrayCollection;
+			private var checkinsChanged:Boolean;
+			
+			override protected function commitProperties() : void{
+				if(dateChanged){
+					dateChanged = false;
+					dateLabel.text = date.month + "/" + date.date +"/"+ date.fullYear;
+				}
+				if(checkinsChanged){
+					checkinsChanged = false;
+					checkinList.dataProvider = _checkins;
+				}
+			}
+			
+			public function get checkins():ArrayCollection
+			{
+				return _checkins;
+			}
+
+			public function set checkins(value:ArrayCollection):void
+			{
+				_checkins = value;
+				checkinsChanged = true;
+				invalidateProperties();
+			}
+
+			public function get date():Date
+			{
+				return _date;
+			}
+
+			public function set date(value:Date):void
+			{
+				_date = value;
+				dateChanged = true;
+				invalidateProperties();
+			}
+
+
+		]]>
+	</fx:Script>
+	
+	<s:layout><s:HorizontalLayout /></s:layout>
+	<s:Label id="dateLabel" maxWidth="100" />
+	<s:List id="checkinList" width="100%" height="100%" />
+</s:SkinnableContainer>

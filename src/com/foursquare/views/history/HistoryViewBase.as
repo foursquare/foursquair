@@ -6,6 +6,10 @@
 
 package com.foursquare.views.history
 {
+	import com.foursquare.api.CheckinVO;
+	
+	import flash.utils.Dictionary;
+	
 	import mx.collections.ArrayCollection;
 	
 	import spark.components.SkinnableContainer;
@@ -15,6 +19,11 @@ package com.foursquare.views.history
 		
 		private var _history:ArrayCollection;
 		private var historyChanged:Boolean;
+		
+		//stores dates
+		// key:Date=month+day+year
+		// value:Array of CheckinVOs on that date
+		private var dateDictionary:Dictionary;
 		
 		public function HistoryViewBase()
 		{
@@ -26,15 +35,48 @@ package com.foursquare.views.history
 			
 			if( historyChanged ){
 				historyChanged = true;
+				createHistoryBuckets();
 				createHistory();
 			}
 		}
 		
-		private function createHistory():void{
-			//addElement(historyItems);
+		/**
+		 * sorts the history by date 
+		 */		
+		private function createHistoryBuckets():void{
+			dateDictionary = new Dictionary();
+
+			//bucket checkins by date
+			var i:int=0;
+			while(i < _history.length){
+				var date:Date = (_history[i] as CheckinVO).created;
+				
+				//create key
+				var dateKey:String = new Date(date.fullYear,date.month, date.date).time.toString();
+				
+				//if dictionary key doesn't exist, create new arraycollection
+				if(!dateDictionary[dateKey]) dateDictionary[dateKey] = new ArrayCollection();
+				
+				//add checkinVO to dictionary.
+				(dateDictionary[dateKey] as ArrayCollection).addItem( _history[i]);
+				
+				i++;
+			}
 		}
 		
-		[Bindable]
+		/**
+		 * creates history items 
+		 * 
+		 */		
+		private function createHistory():void{
+			for(var time:String in dateDictionary){
+				var historyItem:HistoryItem = new HistoryItem();
+				historyItem.date = new Date(Number(time));
+				historyItem.checkins = dateDictionary[time];
+				addElement( historyItem );
+			}
+		}
+		
 		public function get history():ArrayCollection
 		{
 			return _history;
