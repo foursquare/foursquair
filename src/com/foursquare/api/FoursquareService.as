@@ -18,6 +18,7 @@ package com.foursquare.api
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
+	import flash.utils.Dictionary;
 	
 	import mx.collections.ArrayCollection;
 	
@@ -111,7 +112,7 @@ package com.foursquare.api
 				_url+'history.xml',
 				model.oauth_token,
 				{l:limit});
-			
+
 			var loader : URLLoader = new URLLoader();
 			loader.addEventListener(IOErrorEvent.IO_ERROR, onIOError);
 			loader.addEventListener(Event.COMPLETE, onResult_getHistory);
@@ -140,14 +141,14 @@ package com.foursquare.api
 			{
 				//set token info.
 				var xml : XML = new XML(loader.data);
-				
+
 				var oauthToken:OAuthToken = new OAuthToken(
-												xml.descendants('oauth_token').toString(),
-												xml.descendants('oauth_token_secret').toString()
-											);
-				
+					xml.descendants('oauth_token').toString(),
+					xml.descendants('oauth_token_secret').toString()
+					);
+
 				model.oauth_token = oauthToken;
-				
+
 				//dispatch event
 				var successEvent:LoginEvent = new LoginEvent( LoginEvent.LOGIN_SUCCESS );
 				successEvent.rememberMe = model.rememberMe;
@@ -185,18 +186,33 @@ package com.foursquare.api
 			dispatch( checkinEvent );
 		}
 		
+		/**
+		 * create and return a history dictionary of checkinVOs
+		 * dictionary key: day, mo, year
+		 * dictionary value: CheckinVO
+		 * @param event
+		 * 
+		 */		
 		private function onResult_getHistory(event : Event):void{
-			var history:Array = new Array();
 			var xml:XML = new XML((event.target as URLLoader).data);
-			
-			//loop through xml and create VOs
-			for each( var checkin : XML in xml..checkin){
-				history.push( new CheckinVO( XMLUtil.XMLToObject( checkin.children() )) );
+
+			var history:Dictionary = new Dictionary();
+			for each( var checkin:XML in xml..checkin){
+
+				var day:String = checkin.created.slice(0,14);
+
+				//if date is new to dictionary, create new ArrayCollection
+				if( !history[day] ) history[day] = new ArrayCollection();
+
+				//add item.
+				history[day].addItem(	new CheckinVO(
+					XMLUtil.XMLToObject( checkin.children() )
+					));
 			}
-			
+
 			//dispatch event
 			var historyEvent:HistoryEvent = new HistoryEvent(HistoryEvent.READ_RETURNED);
-			historyEvent.history = new ArrayCollection( history );
+			historyEvent.history = history;
 			dispatch( historyEvent );
 		}
 		

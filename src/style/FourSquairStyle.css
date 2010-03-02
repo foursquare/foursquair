@@ -3,6 +3,7 @@
 @namespace mx "library://ns.adobe.com/flex/halo";
 @namespace login "com.foursquare.views.login.*";
 @namespace shout "com.foursquare.views.shout.*";
+@namespace history "com.foursquare.views.history.*";
 
 /*------FONTS------*/
 
@@ -109,3 +110,15 @@ login|LoginView{
 shout|ShoutBox{
 	skin-class: ClassReference("com.foursquare.skins.shout.ShoutBoxSkin");
 }
+
+/**
+* history
+**/
+history|HistoryView{
+	skin-class: ClassReference("com.foursquare.skins.history.HistoryViewSkin");
+}
+
+history|SingleDay{
+	skin-class: ClassReference("com.foursquare.skins.history.SingleDaySkin");
+}
+

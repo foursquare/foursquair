@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+
+ADOBE SYSTEMS INCORPORATED
+Copyright 2008 Adobe Systems Incorporated
+All Rights Reserved.
+
+NOTICE: Adobe permits you to use, modify, and distribute this file
+in accordance with the terms of the license agreement accompanying it.
+
+-->
+
+<!--- The default skin class for a Spark SkinnableContainer container.  
+
+@see spark.components.SkinnableContainer
+
+@langversion 3.0
+@playerversion Flash 10
+@playerversion AIR 1.5
+@productversion Flex 4
+-->
+<s:Skin xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" 
+		xmlns:fb="http://ns.adobe.com/flashbuilder/2009" alpha.disabled="0.5" 
+		minHeight="63">
+	
+	<fx:Metadata>
+		<![CDATA[ 
+		/** 
+		* @copy spark.skins.spark.ApplicationSkin#hostComponent
+		*/
+		[HostComponent("spark.components.SkinnableContainer")]
+		]]>
+	</fx:Metadata> 
+	
+	<s:states>
+		<s:State name="normal" />
+		<s:State name="disabled" />
+	</s:states>
+
+	
+	<s:Rect id="background" left="0" right="0" top="0" bottom="0">
+		<s:fill>
+			<!--- @private -->
+			<s:SolidColor id="bgFill" color="#FFFFFF"/>
+		</s:fill>
+	</s:Rect>
+	
+	<s:Rect left="11" top="11" width="41" height="41" radiusX="4" radiusY="4">
+		<s:fill>
+			<!--- @private -->
+			<s:SolidColor color="#555665"/>
+		</s:fill>
+	</s:Rect>
+	
+	<s:VGroup top="15" left="17" height="36" width="36" gap="0" >
+		<s:Label id="monthLabel" color="0xffffff" fontSize="14"
+				 horizontalCenter="0"/>
+		<s:Label id="dayLabel" color="0xffffff" fontSize="24" fontWeight="bold" 
+				 horizontalCenter="0"/>
+	</s:VGroup>
+	
+	<!--- @copy spark.components.SkinnableContainer#contentGroup -->
+	<s:Group id="contentGroup" left="62" right="11" top="11" bottom="11"
+			 minWidth="0" minHeight="0">
+		<s:layout>
+			<s:BasicLayout/>
+		</s:layout>
+	</s:Group>
+
+</s:Skin>

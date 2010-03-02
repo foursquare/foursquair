@@ -10,5 +10,4 @@
 	<s:List id="checkinList" width="100%" height="100%" styleName="checkinList"
 			itemRenderer="com.foursquare.views.checkins.CheckinItem"
 			/>
-	<!--<s:Button label="Check for new checkins" right="100" fontWeight="normal" click="getCheckins()"/>-->
 </checkins:CheckinViewBase>

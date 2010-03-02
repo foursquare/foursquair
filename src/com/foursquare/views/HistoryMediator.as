@@ -9,7 +9,7 @@ package com.foursquare.views
 	import com.foursquare.events.HistoryEvent;
 	import com.foursquare.views.history.HistoryView;
 	
-	import mx.collections.ArrayCollection;
+	import flash.utils.Dictionary;
 	
 	import org.robotlegs.mvcs.Mediator;
 	
@@ -29,7 +29,7 @@ package com.foursquare.views
 			getHistory( new HistoryEvent( HistoryEvent.READ ) );			
 		}
 		
-		public function setHistory( history: ArrayCollection ):void{
+		public function setHistory( history: Dictionary ):void{
 			historyView.history = history;
 		}
 		

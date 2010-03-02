@@ -11,7 +11,7 @@ package com.foursquare.controller
 	import com.foursquare.models.Constants;
 	import com.foursquare.views.HistoryMediator;
 	
-	import mx.collections.ArrayCollection;
+	import flash.utils.Dictionary;
 	
 	import org.robotlegs.mvcs.Command;
 	
@@ -47,7 +47,7 @@ package com.foursquare.controller
 			foursquareService.getHistory( Constants.historyLimit );
 		}
 		
-		private function historyReturned( value:ArrayCollection ):void{
+		private function historyReturned( value:Dictionary ):void{
 			historyMediator.setHistory( value );
 		}
 	}
