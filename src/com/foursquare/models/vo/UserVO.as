@@ -1,4 +1,4 @@
-package com.foursquare.api{
+package com.foursquare.models.vo{
 	import mx.collections.ArrayCollection;
 	
 	public class UserVO{

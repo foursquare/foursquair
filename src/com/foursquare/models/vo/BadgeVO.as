@@ -1,4 +1,4 @@
-package com.foursquare.api{
+package com.foursquare.models.vo{
 	public class BadgeVO{
 	   [Bindable] public var id:int;
 	   [Bindable] public var name:String;

@@ -1,6 +1,8 @@
-package com.foursquare.api
+package com.foursquare.services
 {
 	import com.foursquare.events.LoginEvent;
+	import com.foursquare.models.vo.VenueVO;
+	import com.foursquare.models.vo.UserVO;
 
 	public interface IFoursquareService
 	{

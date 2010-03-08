@@ -1,4 +1,4 @@
-package com.foursquare.api{
+package com.foursquare.models.vo{
 	[Bindable]
 	public class VenueVO{
 		public var id:int;

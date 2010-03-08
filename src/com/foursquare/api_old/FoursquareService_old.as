@@ -18,6 +18,11 @@ package com.foursquare.api
 	import org.flaircode.oauth.*;
 	import org.iotashan.oauth.*;
 	import org.robotlegs.mvcs.Actor;
+	import com.foursquare.models.vo.VenueVO;
+	import com.foursquare.models.vo.UserVO;
+	import com.foursquare.models.vo.CityVO;
+	import com.foursquare.models.vo.CheckinVO;
+	import com.foursquare.services.IFoursquareService;
 	
 	public class FoursquareService_old extends Actor implements IFoursquareService
 	{

@@ -1,4 +1,4 @@
-package com.foursquare.api{
+package com.foursquare.models.vo{
 	import com.foursquare.util.TimeAgoInWords;
 	
 	public class CheckinVO{

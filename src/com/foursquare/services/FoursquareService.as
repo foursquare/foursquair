@@ -4,13 +4,18 @@
 // Created: Feb 18, 2010 
 ////////////////////////////////////////////////////////////
 
-package com.foursquare.api
+package com.foursquare.services
 {
 	import com.foursquare.events.CheckinEvent;
 	import com.foursquare.events.ErrorEvent;
 	import com.foursquare.events.HistoryEvent;
 	import com.foursquare.events.LoginEvent;
+	import com.foursquare.events.SearchEvent;
+	import com.foursquare.events.UserEvent;
 	import com.foursquare.models.LibraryModel;
+	import com.foursquare.models.vo.CheckinVO;
+	import com.foursquare.models.vo.UserVO;
+	import com.foursquare.models.vo.VenueVO;
 	import com.foursquare.util.XMLUtil;
 	
 	import flash.events.Event;
@@ -50,7 +55,9 @@ package com.foursquare.api
 		
 		public function login(event:LoginEvent):void
 		{
-			var request : URLRequest = oauth.buildRequest(	URLRequestMethod.POST, _url+'authexchange',null, 
+			var request : URLRequest = oauth.buildRequest(
+				URLRequestMethod.POST, _url+'authexchange',
+				null, 
 				{fs_username: event.username, fs_password: event.password});
 			
 			var loader : URLLoader = new URLLoader();
@@ -105,6 +112,10 @@ package com.foursquare.api
 			loader.load(request);
 		}
 		
+		/**
+		 * GET HISTORY 
+		 * @param limit
+		 * */
 		public function getHistory(limit:int):void
 		{
 			var request : URLRequest = oauth.buildRequest(
@@ -119,12 +130,53 @@ package com.foursquare.api
 			loader.load(request);
 		}
 		
+		/**
+		 * GET USER DETAILS 
+		 * @param uid
+		 * @param badges
+		 * @param mayor
+		 * 
+		 */	
 		public function getUserDetails(userVO:UserVO, badges:Boolean=false, mayor:Boolean=false):void
 		{
+			var request : URLRequest = oauth.buildRequest(
+				URLRequestMethod.GET, 
+				_url+'user.xml',
+				model.oauth_token);
+			
+			var loader : URLLoader = new URLLoader();
+			loader.addEventListener(IOErrorEvent.IO_ERROR, onIOError);
+			loader.addEventListener(Event.COMPLETE, onResult_getUserDetails);
+			loader.load(request);
 		}
 		
+		/**
+		 * GET VENUES
+		 * geolat - latitude (required)
+		 * geolong - longitude (required)
+		 * r - radius in miles (optional)
+		 * l - limit of results (optional, default 10)
+		 * q - keyword search (optional)
+		 */
 		public function getVenues(geolat:Number, geolong:Number, r:Number=25, l:int=10, q:String=null):void
 		{
+			var params : Object = new Object();
+			params.geolat = geolat;
+			params.geolong = geolong;
+			params.r = r;
+			params.l = l;
+			if(q) params.q = q;
+			
+			var request : URLRequest = oauth.buildRequest(
+				URLRequestMethod.GET,
+				_url+"venues.xml",
+				model.oauth_token,
+				params);
+			
+			var loader : URLLoader = new URLLoader();
+			loader.addEventListener(IOErrorEvent.IO_ERROR, onIOError);
+			loader.addEventListener(Event.COMPLETE, onReturned_venues);
+			loader.load(request);
 		}
 		
 		public function listCities():void
@@ -159,11 +211,6 @@ package com.foursquare.api
 				var error : Error = e;
 				handleError(error);
 			}
-		}
-		
-		private function onLoginError(event:IOErrorEvent):void{
-			var error : Error = new Error("Incorrect username/password or couldnt talk to foursquare");
-			handleError(error);
 		}
 		
 		/**
@@ -226,6 +273,48 @@ package com.foursquare.api
 			var checkinEvent:CheckinEvent = new CheckinEvent( CheckinEvent.SHOUT_SUCCESS );
 			checkinEvent.message = xml..message;
 			dispatch( checkinEvent );
+		}
+		
+		/**
+		 * returns userdetails 
+		 * @param event
+		 * 
+		 */		
+		private function onResult_getUserDetails(event:Event):void{
+			var xml:XML = new XML((event.target as URLLoader).data);
+			
+			var userEvent:UserEvent = new UserEvent( UserEvent.DETAILS_GOT );
+			userEvent.userVO = new UserVO( XMLUtil.XMLToObject(xml.children()) );
+			dispatch( userEvent );
+		}
+		
+		/**
+		 * returned following a getVenue call 
+		 * @param event
+		 * 
+		 */		
+		private function onReturned_venues(event:Event) : void {
+			var venues:Array = new Array();
+			var xml:XML = new XML((event.target as URLLoader).data);
+			
+			//loop through xml and create VOs
+			for each( var venue : XML in xml..venue){
+				venues.push( new VenueVO( XMLUtil.XMLToObject( venue.children() )) );
+			}
+			
+			//dispatch event
+			var searchEvent:SearchEvent = new SearchEvent(SearchEvent.QUERY_RETURNED);
+			searchEvent.results = new ArrayCollection( venues );
+			dispatch( searchEvent );
+		}
+		
+		//*****************************************
+		// ERROR HANDLERS
+		//*****************************************	
+		
+		private function onLoginError(event:IOErrorEvent):void{
+			var error : Error = new Error("Incorrect username/password or couldnt talk to foursquare");
+			handleError(error);
 		}
 		
 		private function onIOError(event:IOErrorEvent):void{
