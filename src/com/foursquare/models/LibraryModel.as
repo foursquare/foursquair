@@ -6,6 +6,8 @@
 
 package com.foursquare.models
 {
+	import com.foursquare.models.vo.UserVO;
+	
 	import flash.filesystem.File;
 	
 	import org.iotashan.oauth.OAuthToken;
@@ -38,6 +40,11 @@ package com.foursquare.models
 		 * used during login 
 		 */		
 		public var rememberMe:Boolean;
+		
+		/**
+		 * current user details 
+		 */		
+		public var currentUser:UserVO;
 		
 		public function LibraryModel()
 		{

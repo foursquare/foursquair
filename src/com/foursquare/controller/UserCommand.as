@@ -6,8 +6,9 @@
 
 package com.foursquare.controller
 {
-	import com.foursquare.api.IFoursquareService;
 	import com.foursquare.events.UserEvent;
+	import com.foursquare.models.LibraryModel;
+	import com.foursquare.services.IFoursquareService;
 	
 	import org.robotlegs.mvcs.Command;
 	
@@ -19,6 +20,9 @@ package com.foursquare.controller
 		
 		[Inject]
 		public var foursquareService:IFoursquareService;
+
+		[Inject]
+		public var libraryModel:LibraryModel;
 		
 		public function UserCommand()
 		{
@@ -31,6 +35,7 @@ package com.foursquare.controller
 					foursquareService.getUserDetails( event.userVO );
 					break;
 				case UserEvent.DETAILS_GOT:
+					libraryModel.currentUser = event.userVO;
 					break;
 			}
 		}
