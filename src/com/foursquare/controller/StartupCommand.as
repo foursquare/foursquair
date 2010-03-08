@@ -6,7 +6,7 @@
 
 package com.foursquare.controller
 {
-	import com.foursquare.api.IFoursquareService;
+	import com.foursquare.services.IFoursquareService;
 	import com.foursquare.events.LoginEvent;
 	import com.foursquare.models.LibraryModel;
 	import com.foursquare.util.XMLUtil;

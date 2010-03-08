@@ -6,7 +6,7 @@
 
 package com.foursquare.controller
 {
-	import com.foursquare.api.IFoursquareService;
+	import com.foursquare.services.IFoursquareService;
 	import com.foursquare.events.CheckinEvent;
 	import com.foursquare.views.CheckinMediator;
 	import com.foursquare.views.MainViewMediator;

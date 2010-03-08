@@ -6,7 +6,7 @@
 
 package com.foursquare.controller
 {
-	import com.foursquare.api.IFoursquareService;
+	import com.foursquare.services.IFoursquareService;
 	import com.foursquare.events.HistoryEvent;
 	import com.foursquare.models.Constants;
 	import com.foursquare.views.HistoryMediator;

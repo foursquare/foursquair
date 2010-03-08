@@ -6,7 +6,7 @@
 
 package com.foursquare.views.history
 {
-	import com.foursquare.api.CheckinVO;
+	import com.foursquare.models.vo.CheckinVO;
 	
 	import mx.collections.ArrayCollection;
 	

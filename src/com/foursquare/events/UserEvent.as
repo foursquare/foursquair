@@ -6,7 +6,7 @@
 
 package com.foursquare.events
 {
-	import com.foursquare.api.UserVO;
+	import com.foursquare.models.vo.UserVO;
 	
 	import flash.events.Event;
 	

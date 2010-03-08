@@ -5,7 +5,7 @@
 				width="100%">
 	<fx:Script>
 		<![CDATA[
-			import com.foursquare.api.CheckinVO;
+			import com.foursquare.models.vo.CheckinVO;
 			
 			import mx.formatters.DateFormatter;
 			
