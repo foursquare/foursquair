@@ -4,6 +4,7 @@
 @namespace login "com.foursquare.views.login.*";
 @namespace shout "com.foursquare.views.shout.*";
 @namespace history "com.foursquare.views.history.*";
+@namespace search "com.foursquare.views.search.*";
 
 /*------FONTS------*/
 
@@ -121,4 +122,16 @@ history|HistoryView{
 history|SingleDay{
 	skin-class: ClassReference("com.foursquare.skins.history.SingleDaySkin");
 }
+
+/**
+* search
+**/
+search|SearchView{
+	skin-class: ClassReference("com.foursquare.skins.search.SearchViewSkin");
+}
+
+.searchButton{
+	skin-class: ClassReference("com.foursquare.skins.search.SearchButton");
+}
+
 

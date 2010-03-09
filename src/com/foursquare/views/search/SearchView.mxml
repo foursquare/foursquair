@@ -1,18 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search:SearchViewBase xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					   xmlns:s="library://ns.adobe.com/flex/spark" 
-					   xmlns:mx="library://ns.adobe.com/flex/halo" xmlns:search="com.foursquare.views.search.*" width="100%" height="100%">
+					   xmlns:mx="library://ns.adobe.com/flex/halo"
+					   xmlns:search="com.foursquare.views.search.*"
+					   width="100%" height="100%">
 	
-	<fx:Declarations>
-		<!-- Place non-visual elements (e.g., services, value objects) here -->
-	</fx:Declarations>
+	<search:layout><s:VerticalLayout /></search:layout>
 	
-	<s:HGroup>
-		<s:TextInput id="searchInput" />
-		<s:Button id="searchButton" />
-	</s:HGroup>
+	<fx:Script>
+		<![CDATA[
+			import com.foursquare.events.SearchEvent;
+			import com.foursquare.models.vo.CityVO;
+
+			public function setCity(city:CityVO):void{
+				searchInput.text = "Popular Venues Near " + city.name;
+			}
+			
+			private function onSearchClick(event:Event):void{
+				var searchEvent:SearchEvent = new SearchEvent(SearchEvent.QUERY);
+				searchEvent.keyword = searchInput.text;
+				dispatchEvent( searchEvent );
+				
+				setFocus();
+			}
+		]]>
+	</fx:Script>
 	
-	<s:List id="searchList" width="100%" height="100%" />
+	<s:Group width="100%" height="30">
+		<s:TextInput id="searchInput" focusIn="{searchInput.selectAll()}"
+					 enter="onSearchClick(event)"
+					 width="100%" />
+		<s:Button id="searchButton"
+				  click="onSearchClick(event)"
+				  right="5" top="5" styleName="searchButton" />
+	</s:Group>
 	
-	
+	<s:Group width="100%" height="100%">
+		<s:Rect width="100%" height="100%">
+			<s:fill>
+				<s:SolidColor color="0xffffff" />
+			</s:fill>
+		</s:Rect>
+		
+		<s:Label text="Results:" top="10" left="10" fontWeight="bold" />
+		
+		<s:List id="searchList"
+				top="28"
+				borderVisible="false"
+				labelField="name"
+				itemRenderer="com.foursquare.views.search.VenueItem"
+				width="100%" height="100%">
+			<s:layout><s:VerticalLayout gap="10" horizontalAlign="justify" /></s:layout>
+		</s:List>
+	</s:Group>	
+
 </search:SearchViewBase>

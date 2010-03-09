@@ -24,12 +24,14 @@ package com.foursquare
 	import com.foursquare.services.IFoursquareService;
 	import com.foursquare.services.IGeoService;
 	import com.foursquare.views.CheckinMediator;
+	import com.foursquare.views.HeaderMediator;
 	import com.foursquare.views.HistoryMediator;
 	import com.foursquare.views.LoginMediator;
 	import com.foursquare.views.MainViewMediator;
 	import com.foursquare.views.NavigationMediator;
 	import com.foursquare.views.SearchMediator;
 	import com.foursquare.views.checkins.CheckinView;
+	import com.foursquare.views.header.HeaderView;
 	import com.foursquare.views.history.HistoryView;
 	import com.foursquare.views.login.LoginView;
 	import com.foursquare.views.navigation.Navigation;
@@ -86,6 +88,7 @@ package com.foursquare
 			mediatorMap.mapView( CheckinView, CheckinMediator );
 			mediatorMap.mapView( HistoryView, HistoryMediator );
 			mediatorMap.mapView( SearchView, SearchMediator );
+			mediatorMap.mapView( HeaderView, HeaderMediator );
 			mediatorMap.mapView( FoursquairNew, MainViewMediator );
 
 			//app starts by checking for updates.

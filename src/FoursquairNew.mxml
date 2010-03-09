@@ -11,12 +11,16 @@
 	xmlns:notification="com.adobe.air.notification.*" 
 	xmlns:navigation="com.foursquare.views.navigation.*" 
 	xmlns:header="com.foursquare.views.header.*"
-	height="100%" xmlns:shout="com.foursquare.views.shout.*" xmlns:search="com.foursquare.views.search.*">
+	xmlns:search="com.foursquare.views.search.*"
+	xmlns:shout="com.foursquare.views.shout.*"
+	height="100%" 
+	>
 
 	<fx:Style source="style/FourSquairStyle.css" />
 	
 	<fx:Declarations>
 		<foursquare:FourSquareContext contextView="{this}"/>
+		
 		<s:Parallel id="viewStackTransitionEffect">
 			<s:Move id="ViewStackTransitionEffectStart" duration="500" xTo="0" />
 			<s:Move id="ViewStackTransitionEffectEnd" duration="500"/>
@@ -62,9 +66,6 @@
 			<history:HistoryView 	id="historyView" includeIn="history" height="100%" width="100%" 
 							 	hideEffect="{viewStackTransitionEffect}"
 							 	showEffect="{viewStackTransitionEffect}" />
-			<!--<venues:Venues 		id="venueView" includeIn="search" height="100%" width="100%" 
-						   		hideEffect="{viewStackTransitionEffect}"
-						   		showEffect="{viewStackTransitionEffect}" />-->
 			<search:SearchView id="searchView" includeIn="search" height="100%" width="100%" 
 							   hideEffect="{viewStackTransitionEffect}"
 							   showEffect="{viewStackTransitionEffect}" />

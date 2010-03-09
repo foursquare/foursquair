@@ -37,7 +37,7 @@ package com.foursquare.views
 		}
 		
 		public function setUserLocation(cityVO:CityVO):void{
-			
+			searchView.setCity( cityVO );	
 		}
 		
 		public function setQueryResults( results: ArrayCollection ):void{

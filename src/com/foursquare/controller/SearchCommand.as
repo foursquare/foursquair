@@ -13,6 +13,7 @@ package com.foursquare.controller
 	import com.foursquare.models.vo.UserVO;
 	import com.foursquare.services.IFoursquareService;
 	import com.foursquare.services.IGeoService;
+	import com.foursquare.views.SearchMediator;
 	
 	import mx.collections.ArrayCollection;
 	
@@ -32,6 +33,10 @@ package com.foursquare.controller
 		
 		[Inject]
 		public var libraryModel:LibraryModel;
+		
+		[Inject]
+		public var searchMediator:SearchMediator;
+		
 		
 		public function SearchCommand()
 		{
@@ -82,10 +87,14 @@ package com.foursquare.controller
 			var cityVO:CityVO = new CityVO(null);
 			cityVO.geolat = xml.geoip_latitude.@value;
 			cityVO.geolong = xml.geoip_longitude.@value;
+			cityVO.name = xml.geoip_city.@value + ", " + xml.geoip_region.@value;
 
 			//set to currentUser
 			var currentUser:UserVO = libraryModel.currentUser;
 			currentUser.city = cityVO;
+			
+			//set mediator
+			searchMediator.setUserLocation( cityVO );
 			
 			//do first query
 			query();
@@ -103,7 +112,7 @@ package com.foursquare.controller
 		 * 
 		 */		
 		private function handleQuery(results : ArrayCollection):void{
-			
+			searchMediator.setQueryResults( results );
 		}
 	}
 }
