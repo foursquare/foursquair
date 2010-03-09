@@ -15,7 +15,7 @@
 	<s:Button id="track" y="0" x="-1" skinClass="com.foursquare.skins.scrollbar.VscrollTrack"
 			  height="{hostComponent.height}"  />
 	
-	<s:Button id="thumb" x="0" y="17" skinClass="com.foursquare.skins.scrollbar.VScrollThumb"/>
+	<s:Button id="thumb" x="7" y="17" skinClass="com.foursquare.skins.scrollbar.VScrollThumb"/>
 	
 	
 </s:Skin>

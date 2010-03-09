@@ -14,7 +14,7 @@
 	
 	<s:Rect y="0" x="0.5" width="28" height="{hostComponent.height -1}">
 		<s:fill>
-			<s:SolidColor color="0x999999" />
+			<s:SolidColor color="0x999999" alpha="0" />
 		</s:fill>
 	</s:Rect>
 	
