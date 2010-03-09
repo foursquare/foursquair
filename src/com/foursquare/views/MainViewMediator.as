@@ -30,7 +30,6 @@ package com.foursquare.views
 		override public function onRegister():void
 		{
 			eventMap.mapListener( eventDispatcher, NavigationEvent.CHANGE, navigateToSection );
-			eventMap.mapListener( eventDispatcher, UserEvent.DETAILS_GOT, onUserDetailsGot );
 			eventMap.mapListener( eventDispatcher, ErrorEvent.ERROR, displayError );
 
 			eventMap.mapListener( mainView, CheckinEvent.SHOUT, shoutMessage );
@@ -58,15 +57,6 @@ package com.foursquare.views
 		
 		private function shoutMessage( event:CheckinEvent ):void{
 			dispatch( event.clone() );
-		}
-		
-		/**
-		 * show username, in header. 
-		 * @param event
-		 * 
-		 */		
-		private function onUserDetailsGot(event:UserEvent):void{
-			mainView.header.userName.text = event.userVO.firstname +" "+ event.userVO.lastname;
 		}
 		
 		/**
