@@ -7,6 +7,7 @@ package com.foursquare.models.vo{
 		public var crossstreet:String;
 		public var geolat:Number;
 		public var geolong:Number;
+		public var stats:StatsVO;
 		
 		public function VenueVO(remote:Object=null){
 			if(remote){
@@ -16,6 +17,8 @@ package com.foursquare.models.vo{
 				this.crossstreet = remote.crossstreet;
 				this.geolat = Number(remote.geolat);
 				this.geolong = Number(remote.geolong);
+				this.stats = (remote.stats) ? new StatsVO(remote.stats) : null;
+				
 			}
 		}
 	}
