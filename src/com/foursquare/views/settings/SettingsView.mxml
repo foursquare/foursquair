@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:SkinnableContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					  xmlns:s="library://ns.adobe.com/flex/spark" 
+					  xmlns:mx="library://ns.adobe.com/flex/halo" width="100%" height="100%" xmlns:ns="library://ns.adobe.com/flex/mx">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.foursquare.events.SettingsEvent;
+			
+			import flash.events.Event;
+			
+			import mx.collections.ArrayCollection;
+			
+			import spark.events.IndexChangeEvent;
+			[Bindable]
+			private var pollTimes:ArrayCollection = new ArrayCollection([	
+													{label:'1 minute',	time: 60},
+													{label:'2 minutes',	time: 120},
+													{label:'5 minute', 	time: 300},
+													{label:'10 minute',	time: 600},
+													{label:'15 minute',	time: 900},
+													{label:'30 minute',	time: 1500}
+													]);
+			
+			private function onRepeatTimeChange(event:IndexChangeEvent):void{
+				var settingsEvent:SettingsEvent = new SettingsEvent(SettingsEvent.CHANGE_POLL_TIME);
+				settingsEvent.pollTime = pollTimes.getItemAt(event.newIndex).time;
+				dispatchEvent(settingsEvent);
+			}
+			
+			private function onDisplayGrowlChange(event:Event):void{
+				//TODO
+			}
+		]]>
+	</fx:Script>
+	
+	<s:Group width="100%" left="10" top="10" right="10">
+		<s:Rect radiusX="2" left="0" right="0" top="0" bottom="0">
+			<s:fill>
+				<s:LinearGradient>
+					<s:GradientEntry color="0xE0EDED" />
+					<s:GradientEntry color="0xBECBCB" />
+				</s:LinearGradient>
+			</s:fill>
+		</s:Rect>
+		<s:VGroup height="96" gap="10" width="100%" horizontalAlign="center">
+			<ns:Spacer height="10" />
+			
+			<s:HGroup horizontalAlign="center" verticalAlign="middle">
+				<s:Label text="Update every" color="0x1d2020" />
+				<!--todo store selection in prefs-->
+				<s:DropDownList change="onRepeatTimeChange(event)"
+								dataProvider="{pollTimes}" selectedIndex="2" />
+			</s:HGroup>
+			
+			<s:Group height="2" width="100%">
+				<s:Line width="100%"><s:stroke><s:SolidColorStroke color="0xbbc2c3" /></s:stroke></s:Line>
+				<s:Line width="100%"><s:stroke><s:SolidColorStroke color="0xffffff" /></s:stroke></s:Line>
+			</s:Group>
+		
+			<s:CheckBox id="displayGrowlCheckBox" label="Display Growl Notification Popups"
+						bottom="10"
+						change="onDisplayGrowlChange(event)" selected="true"/>
+		</s:VGroup>
+	</s:Group>
+
+</s:SkinnableContainer>
