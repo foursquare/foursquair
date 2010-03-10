@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<application xmlns="http://ns.adobe.com/air/application/2.0beta">
+<application xmlns="http://ns.adobe.com/air/application/1.5.3">
+<!--<application xmlns="http://ns.adobe.com/air/application/2.0beta">-->
 
 <!-- Adobe AIR Application Descriptor File Template.
 
@@ -14,17 +15,17 @@
 -->
 
 	<!-- The application identifier string, unique to this application. Required. -->
-	<id>FoursquairNew</id>
+	<id>fourSq.air</id>
 
 	<!-- Used as the filename for the application. Required. -->
-	<filename>FoursquairNew</filename>
+	<filename>fourSq.air</filename>
 
 	<!-- The name that is displayed in the AIR application installer. 
 	     May have multiple values for each language. See samples or xsd schema file. Optional. -->
-	<name>FoursquairNew</name>
+	<name>fourSq.air</name>
 
 	 <!-- An application version designator (such as "v1", "2.5", or "Alpha 1"). Required. -->
-    <version>0.62</version>
+    <version>0.9</version>
 
 	<!-- Description, displayed in the AIR application installer.
 	     May have multiple values for each language. See samples or xsd schema file. Optional. -->
@@ -58,7 +59,7 @@
 		<!-- <maximizable></maximizable> -->
 
 		<!-- Whether the user can resize the window. Optional. Default true. -->
-		<!-- <resizable></resizable> -->
+		<resizable>false</resizable>
 
 		 <!-- The window's initial width. Optional. -->
         <width>288</width>

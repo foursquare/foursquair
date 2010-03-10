@@ -43,7 +43,7 @@
 	<s:Graphic id="gr"
 			   creationComplete="gr_creationComplete(event);"
 			   horizontalCenter="0" verticalCenter="0">
-		<s:BitmapImage id="img" />
+		<s:BitmapImage id="img" smooth="true" />
 	</s:Graphic>
 
 	<s:Path data="H 0 0 L 8 -8 L 16 0" includeIn="selectedStates">

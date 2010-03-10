@@ -8,6 +8,8 @@ package com.foursquare.views.history
 {
 	import flash.utils.Dictionary;
 	
+	import mx.formatters.DateFormatter;
+	
 	import spark.components.SkinnableContainer;
 	import spark.layouts.VerticalLayout;
 	
@@ -45,13 +47,28 @@ package com.foursquare.views.history
 		 */		
 		private function createHistory():void{
 			
-			//TODO Seth: sort history by date first.
+			var dateFormatter:DateFormatter = new DateFormatter();
 			
 			for(var time:String in _history){
 				var historyItem:SingleDay = new SingleDay();
 				historyItem.date = time;
 				historyItem.checkins = _history[time];
-				addElement( historyItem );
+
+				var date:Date = new Date( dateFormatter.format(time) );
+				historyItem.time = date.getTime();
+				
+				if(numElements==0){
+					addElement( historyItem );
+				}else{
+					for(var i:int=0; i<numElements; i++){
+						if( historyItem.time > (getElementAt(i) as SingleDay).time){
+							addElementAt( historyItem, i );
+							break;
+						}
+						addElement( historyItem );
+					}
+				}
+				
 			}
 		}
 		

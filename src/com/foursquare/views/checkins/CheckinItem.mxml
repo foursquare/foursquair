@@ -3,6 +3,7 @@
 		xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		xmlns:s="library://ns.adobe.com/flex/spark"
 		xmlns:elements="flashx.textLayout.elements.*"
+		xmlns:mx="library://ns.adobe.com/flex/mx"
 		width="100%"
 		creationComplete="creationComplete();"
 		>
@@ -10,9 +11,13 @@
 
 	<fx:Script>
 		<![CDATA[
+			import com.foursquare.models.vo.CheckinVO;
+			
 			import flash.utils.Timer;
 			
 			import flashx.textLayout.events.FlowElementMouseEvent;
+			
+			import spark.utils.TextFlowUtil;
 
 			private var t:Timer;
 			private var dataChanged:Boolean;
@@ -40,22 +45,30 @@
 			
 			override protected function commitProperties() : void{
 				super.commitProperties();
-				
+
 				if(dataChanged){
 					dataChanged = false;
-					
+
 					userLink.replaceText(0, userLink.text.length, data.user.name_with_initial);
+
 					if(data.venue) venueLink.replaceText(0, venueLink.text.length, data.venue.name);
-					shoutText.text = data.shout;
-					
-					if(data && data.user.photo!=""){
-						userImage.source = data.user.photo;
-					}else{
-						userImage.source = "http://playfoursquare.s3.amazonaws.com/userpix_thumbs/blank_boy.png";
+
+					shoutText.text = data.shout; 
+
+					if(data){
+						if(data.user.photo!=""){
+							userImage.source = data.user.photo;
+						}else{
+							if( (data as CheckinVO).user.gender == "male"){
+								userImage.source = "http://playfoursquare.s3.amazonaws.com/userpix_thumbs/blank_boy.png";
+							}else{
+								userImage.source = "http://playfoursquare.s3.amazonaws.com/userpix_thumbs/blank_girl.png";
+							}
+						}
 					}
 				}
 			}
-			
+
 			override public function set data(value:Object) : void{
 				super.data = value;
 				if(data){
@@ -71,7 +84,7 @@
 				<s:SolidColorStroke color="white" />
 			</s:stroke>
 		</s:Rect>
-		<s:BitmapImage id="userImage" left="1" top="1" right="1" bottom="1" />
+		<mx:Image id="userImage" smoothBitmapContent="true" left="1" top="1" right="1" bottom="1" />
 	</s:Group>
 	
 	<s:Group width="100%" height="100%">
@@ -87,18 +100,16 @@
 			</s:fill>
 		</s:Rect>
 		
-		<s:RichEditableText editable="false" selectable="false" top="10" left="10" right="10" bottom="20">
-			<s:TextFlow id="textFlow">
-				<s:p>
-					<s:a click="onNameClick(event);" ><elements:SpanElement id="userLink" color="0x2b6786" fontWeight="bold" fontSize="12" text="un" /></s:a>
-					at
-					<s:a click="onVenueClick(event);" ><elements:SpanElement id="venueLink" color="0x2b6786" fontWeight="bold" fontSize="12" text="vn" /></s:a>
-				</s:p>
-				<s:p paddingTop="10">
-					<elements:SpanElement id="shoutText" color="0x000000" fontSize="12" />
-				</s:p>
-			</s:TextFlow>
-		</s:RichEditableText>
+		<s:RichText top="10" left="10" right="10" bottom="20">
+			<s:p>
+			<s:a click="onNameClick(event);" ><elements:SpanElement id="userLink" color="0x2b6786" fontWeight="bold" fontSize="12" text="un" /></s:a>
+			at
+			<s:a click="onVenueClick(event);" ><elements:SpanElement id="venueLink" color="0x2b6786" fontWeight="bold" fontSize="12" text="vn" /></s:a>
+			</s:p>
+			<s:p paddingTop="10">
+			<elements:SpanElement id="shoutText" color="0x000000" fontSize="12" />
+			</s:p>
+		</s:RichText>
 		<s:Label text="{data.created_in_words}" id="timeAgo" color="0x666666" fontSize="10" bottom="0" right="5"/>
 	</s:Group>
 	

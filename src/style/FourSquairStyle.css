@@ -1,10 +1,11 @@
 /* CSS file */
 @namespace s "library://ns.adobe.com/flex/spark";
-@namespace mx "library://ns.adobe.com/flex/halo";
+@namespace mx "library://ns.adobe.com/flex/mx";
 @namespace login "com.foursquare.views.login.*";
 @namespace shout "com.foursquare.views.shout.*";
 @namespace history "com.foursquare.views.history.*";
 @namespace search "com.foursquare.views.search.*";
+@namespace checkins "com.foursquare.views.checkins.*";
 
 /*------FONTS------*/
 
@@ -100,9 +101,8 @@ login|LoginView{
 /**
 * checkin
 **/
-.checkinList{
-	border-visible:false;
-	skin-class: ClassReference("com.foursquare.skins.checkin.CheckinListSkin");
+checkins|CheckinView {
+	skin-class: ClassReference("com.foursquare.skins.checkin.CheckinViewSkin");
 }
 
 /**

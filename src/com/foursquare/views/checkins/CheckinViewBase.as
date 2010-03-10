@@ -8,17 +8,14 @@ package com.foursquare.views.checkins
 {
 	
 	import com.foursquare.events.CheckinEvent;
+	import com.foursquare.models.vo.CheckinVO;
 	
 	import mx.collections.ArrayCollection;
-	import mx.events.FlexEvent;
 	
-	import spark.components.List;
 	import spark.components.SkinnableContainer;
 	
 	public class CheckinViewBase extends SkinnableContainer
 	{
-		
-		public var checkinList:List;
 		
 		private var _checkins:ArrayCollection;
 		private var checkinsChanged:Boolean;
@@ -33,7 +30,11 @@ package com.foursquare.views.checkins
 			
 			if( checkinsChanged ){
 				checkinsChanged = true;
-				checkinList.dataProvider = _checkins;
+				for each(var checkin:CheckinVO in _checkins){
+					var checkinItem:CheckinItem = new CheckinItem();
+					checkinItem.data = checkin;
+					addElement( checkinItem );
+				}
 			}
 		}
 

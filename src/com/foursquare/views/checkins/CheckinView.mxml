@@ -4,10 +4,8 @@
 					xmlns:s="library://ns.adobe.com/flex/spark"
 					xmlns:views="com.foursquare.views.*"
 					xmlns:checkins="com.foursquare.views.checkins.*"
-					width="100%" height="100%" >
+					width="100%" height="100%" 
+					rollOverColor="0x999999">
 	<checkins:layout><s:VerticalLayout /></checkins:layout>
 	
-	<s:List id="checkinList" width="100%" height="100%" styleName="checkinList"
-			itemRenderer="com.foursquare.views.checkins.CheckinItem"
-			/>
 </checkins:CheckinViewBase>

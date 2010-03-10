@@ -18,7 +18,7 @@ package com.foursquare.views
 		
 		[Inject]
 		public var checkinView:CheckinView;
-		
+
 		public function CheckinMediator()
 		{
 			super();

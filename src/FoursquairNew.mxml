@@ -14,7 +14,7 @@
 	xmlns:search="com.foursquare.views.search.*"
 	xmlns:shout="com.foursquare.views.shout.*"
 	height="100%" 
-	>
+	xmlns:settings="com.foursquare.views.settings.*">
 
 	<fx:Style source="style/FourSquairStyle.css" />
 	
@@ -66,6 +66,9 @@
 			<history:HistoryView 	id="historyView" includeIn="history" height="100%" width="100%" 
 							 	hideEffect="{viewStackTransitionEffect}"
 							 	showEffect="{viewStackTransitionEffect}" />
+			<settings:SettingsView id="settingsView" includeIn="settings" height="100%" width="100%"
+								   hideEffect="{viewStackTransitionEffect}"
+								   showEffect="{viewStackTransitionEffect}" />
 			<search:SearchView id="searchView" includeIn="search" height="100%" width="100%" 
 							   hideEffect="{viewStackTransitionEffect}"
 							   showEffect="{viewStackTransitionEffect}" />

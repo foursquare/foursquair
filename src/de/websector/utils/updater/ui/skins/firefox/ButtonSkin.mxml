@@ -5,7 +5,7 @@
 <s:Skin 
 	xmlns:fx="http://ns.adobe.com/mxml/2009" 
 	xmlns:s="library://ns.adobe.com/flex/spark" 
-	xmlns:mx="library://ns.adobe.com/flex/halo" 	
+	xmlns:mx="library://ns.adobe.com/flex/mx" 	
 	minWidth="21" minHeight="16" 
 	alpha.disabled="0.5"
 	>
