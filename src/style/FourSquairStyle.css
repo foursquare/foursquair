@@ -1,20 +1,138 @@
 /* CSS file */
+@namespace s "library://ns.adobe.com/flex/spark";
+@namespace mx "library://ns.adobe.com/flex/mx";
+@namespace login "com.foursquare.views.login.*";
+@namespace shout "com.foursquare.views.shout.*";
+@namespace history "com.foursquare.views.history.*";
+@namespace search "com.foursquare.views.search.*";
+@namespace checkins "com.foursquare.views.checkins.*";
+
+/*------FONTS------*/
+
+/*fonts for use with spark components*/
+@font-face {
+	src: url("assets/fonts/arial.ttf");
+	fontFamily: Arial;
+	
+}
+
+@font-face {
+	src: url("assets/fonts/Arial Bold.ttf");
+	fontFamily: Arial;
+	fontWeight: bold;
+	
+}
+
+@font-face {
+	src: url("assets/fonts/Arial Italic.ttf");
+	fontFamily: Arial;
+	font-style: italic;
+	
+}
+
+/*for Halo components*/
+
+@font-face {
+	src: url("assets/fonts/arial.ttf");
+	fontFamily: ArialForMx;
+	embedAsCFF: false; 
+	
+}
+
 global{
 	fontFamily: Arial;
 }
 
-.mainSkin{
+s|WindowedApplication{
+	backgroundColor: #999999;
 	skin-class: ClassReference("com.foursquare.skins.MainAppSkin");
-	backgroundColor: #FFFFFF;
 }
 
-Button{
-	cornerRadius:3;
-	fillAlphas: 1.0, 1.0;
+s|VScrollBar {
+	skin-class: ClassReference("com.foursquare.skins.scrollbar.VScrollbar");
+	fixed-thumb-size: false;
+}
+
+mx|ToolTip {
+	font-family: ArialForMx;
+	backgroundAlpha: .5;
+	backgroundColor: black;
+	color: white;
+	cornerRadius: 4;
 	fontSize: 11;
 }
-Button.selected{
-	fillColors: #B1CD45, #9CB92E;
-	borderColor:#698109;
-	color: #FFFFFF;
+
+/**
+* components
+**/
+s|Panel{
+	border-color: white;
+	corner-radius: 8;
+	skin-class: ClassReference("com.foursquare.skins.components.FoursqPanelSkin");
 }
+
+.greyButtonSkin{
+	skin-class: ClassReference("com.foursquare.skins.login.GreyButtonSkin");
+}
+
+/**
+* login
+**/
+login|LoginView{
+	skin-class: ClassReference("com.foursquare.skins.login.LoginViewSkin");
+}
+
+
+.loginBoxSkin{
+	skin-class: ClassReference("com.foursquare.skins.login.LoginBoxSkin");
+}
+
+
+/**
+* header
+**/
+.headerSkin{
+	skin-class: ClassReference("com.foursquare.skins.header.HeaderSkin");
+}
+
+.navigationButtonBarSkin {
+	skin-class: ClassReference("com.foursquare.skins.header.NavigationSkin");
+}
+
+/**
+* checkin
+**/
+checkins|CheckinView {
+	skin-class: ClassReference("com.foursquare.skins.checkin.CheckinViewSkin");
+}
+
+/**
+* shout
+**/
+shout|ShoutBox{
+	skin-class: ClassReference("com.foursquare.skins.shout.ShoutBoxSkin");
+}
+
+/**
+* history
+**/
+history|HistoryView{
+	skin-class: ClassReference("com.foursquare.skins.history.HistoryViewSkin");
+}
+
+history|SingleDay{
+	skin-class: ClassReference("com.foursquare.skins.history.SingleDaySkin");
+}
+
+/**
+* search
+**/
+search|SearchView{
+	skin-class: ClassReference("com.foursquare.skins.search.SearchViewSkin");
+}
+
+.searchButton{
+	skin-class: ClassReference("com.foursquare.skins.search.SearchButton");
+}
+
+

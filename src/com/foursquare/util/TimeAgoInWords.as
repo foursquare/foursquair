@@ -4,10 +4,10 @@ package com.foursquare.util{
 		  if(fromTime==null){
 		  	fromTime = new Date();
 		  }
-		  var fromSeconds = fromTime.getTime();
-		  var toSeconds = toTime.getTime();
-		  var distanceInSeconds = Math.round(Math.abs(fromSeconds - toSeconds) / 1000)
-		  var distanceInMinutes = Math.round(distanceInSeconds / 60)
+		  var fromSeconds:Number = fromTime.getTime();
+		  var toSeconds:Number = toTime.getTime();
+		  var distanceInSeconds:Number = Math.round(Math.abs(fromSeconds - toSeconds) / 1000)
+		  var distanceInMinutes:Number = Math.round(distanceInSeconds / 60)
 		  if (distanceInMinutes <= 1) {
 		    if (!includeSeconds)
 		      return (distanceInMinutes == 0) ? 'less than a minute' : '1 minute'

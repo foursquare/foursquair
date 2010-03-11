@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx"
+				width="100%">
+	
+	<fx:Script>
+		<![CDATA[
+			import com.foursquare.models.vo.VenueVO;
+			override public function set data(value:Object) : void{
+				super.data = value;
+				if(value){
+					addressDisplay.text = 	(value as VenueVO).address +
+											" " + (value as VenueVO).crossstreet;
+					if( (value as VenueVO).stats ) statsDisplay.text = "here now: "+(value as VenueVO).stats.herenow;
+				}
+				
+			}
+		]]>
+	</fx:Script>
+
+	<s:VGroup left="12" right="0" >
+		<s:Label id="labelDisplay" width="100%" color="0x2b6786" fontWeight="bold"/>
+		<s:Label id="addressDisplay" width="100%" color="0x000000"/>
+		<s:Label id="statsDisplay" width="100%" color="0x000000"/>
+		<mx:Spacer height="10" />	
+	</s:VGroup>
+	
+	
+	<s:Line left="12" bottom="0" right="0">
+		<s:stroke>
+			<s:SolidColorStroke color="0xdadada" weight="1" />
+		</s:stroke>
+	</s:Line>
+	
+</s:ItemRenderer>

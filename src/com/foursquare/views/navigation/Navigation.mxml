@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		  xmlns:s="library://ns.adobe.com/flex/spark" 
+		  xmlns:mx="library://ns.adobe.com/flex/mx">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import com.foursquare.events.NavigationEvent;
+			import com.foursquare.models.Section;
+			
+			import flash.events.MouseEvent;
+
+			/*******************************************
+			 * map button index to section and dispatch
+			 * @event
+			 * ****************************************/
+			private function onButtonBarChange(event : MouseEvent):void{
+				var navigationEvent:NavigationEvent = new NavigationEvent( NavigationEvent.CHANGE )
+				if(buttonBar.selectedIndex >= 0){
+					switch( buttonBar.selectedIndex ){
+						case 0:
+							navigationEvent.section = Section.CHECKIN;
+							break;
+						case 1:
+							navigationEvent.section = Section.HISTORY;
+							break;
+						case 2:
+							navigationEvent.section = Section.SETTINGS;
+							break;
+						case 3:
+							navigationEvent.section = Section.SEARCH;
+							break;
+					}
+					dispatchEvent( navigationEvent );
+				}
+			}
+		]]>
+	</fx:Script>
+	
+	<s:ButtonBar id="buttonBar" click="onButtonBarChange(event)" selectedIndex="0"
+				 styleName="navigationButtonBarSkin" requireSelection="true">
+		<s:dataProvider>
+			  <s:ArrayList>
+				  <fx:Object label="{resourceManager.getString('myResources', 'CHECKIN')}"
+							 icon="@Embed('assets/icons/icon-checkin.png')" />
+				  <fx:Object label="{resourceManager.getString('myResources', 'HISTORY')}"
+							 icon="@Embed('assets/icons/icon-history.png')" />
+				  <fx:Object label="{resourceManager.getString('myResources', 'SETTINGS')}"
+							 icon="@Embed('assets/icons/icon-settings.png')" />
+				  <fx:Object label="{resourceManager.getString('myResources', 'SEARCH')}"
+							 icon="@Embed('assets/icons/icon-search.png')" />
+			  </s:ArrayList>
+		  </s:dataProvider>
+
+	</s:ButtonBar>
+	
+</s:HGroup>

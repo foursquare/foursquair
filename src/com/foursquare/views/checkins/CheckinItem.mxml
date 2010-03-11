@@ -1,38 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%"
-		 horizontalScrollPolicy="off" verticalScrollPolicy="off"
-		 creationComplete="creationComplete();">
-	
-	<mx:Script>
+<s:ItemRenderer
+		xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		xmlns:s="library://ns.adobe.com/flex/spark"
+		xmlns:elements="flashx.textLayout.elements.*"
+		xmlns:mx="library://ns.adobe.com/flex/mx"
+		width="100%"
+		creationComplete="creationComplete();"
+		>
+	<s:layout><s:HorizontalLayout gap="12" /></s:layout>
+
+	<fx:Script>
 		<![CDATA[
-			import com.foursquare.util.TimeAgoInWords;
+			import com.foursquare.models.vo.CheckinVO;
 			
 			import flash.utils.Timer;
+			
+			import flashx.textLayout.events.FlowElementMouseEvent;
+			
+			import spark.utils.TextFlowUtil;
+
 			private var t:Timer;
+			private var dataChanged:Boolean;
 			
 			private function creationComplete():void{
-				if(t==null && data!=null){
+				//TODO (seth) move this to a place in the View so that the timer isn't created
+				//multiple times.
+				
+				/* if(t==null && data!=null){
 					t = new Timer(60000);
 					t.addEventListener(TimerEvent.TIMER, function(e:TimerEvent):void{
 						timeAgo.text = TimeAgoInWords.format(data.created)+' ago';
 					});
 					t.start();
+				} */
+			}
+			
+			public function onNameClick(event:FlowElementMouseEvent):void{
+				trace("test");
+			}
+
+			public function onVenueClick(event:FlowElementMouseEvent):void{
+				trace("test");
+			}
+			
+			override protected function commitProperties() : void{
+				super.commitProperties();
+
+				if(dataChanged){
+					dataChanged = false;
+
+					userLink.replaceText(0, userLink.text.length, data.user.name_with_initial);
+
+					if(data.venue) venueLink.replaceText(0, venueLink.text.length, data.venue.name);
+
+					shoutText.text = data.shout; 
+
+					if(data){
+						if(data.user.photo!=""){
+							userImage.source = data.user.photo;
+						}else{
+							if( (data as CheckinVO).user.gender == "male"){
+								userImage.source = "http://playfoursquare.s3.amazonaws.com/userpix_thumbs/blank_boy.png";
+							}else{
+								userImage.source = "http://playfoursquare.s3.amazonaws.com/userpix_thumbs/blank_girl.png";
+							}
+						}
+					}
+				}
+			}
+
+			override public function set data(value:Object) : void{
+				super.data = value;
+				if(data){
+					dataChanged = true;
+					invalidateProperties();
 				}
 			}
 		]]>
-	</mx:Script>
+	</fx:Script>
+	<s:Group height="38" width="38">
+		<s:Rect>
+			<s:stroke>
+				<s:SolidColorStroke color="white" />
+			</s:stroke>
+		</s:Rect>
+		<mx:Image id="userImage" smoothBitmapContent="true" left="1" top="1" right="1" bottom="1" />
+	</s:Group>
 	
-	<mx:Canvas width="75" height="75" backgroundImage="http://playfoursquare.s3.amazonaws.com/userpix_thumbs/blank_boy.png" backgroundSize="100%">
-		<mx:Image source="{data.user.photo}" height="75" width="75" />
-	</mx:Canvas>
+	<s:Group width="100%" height="100%">
+		<!--triangle-->
+		<s:Path top="9" data="H 0 0 L -6 6 L 0 12">
+			<s:fill>
+				<s:SolidColor color="0xffffff" />
+			</s:fill>
+		</s:Path>
+		<s:Rect width="100%" height="100%">
+			<s:fill>
+				<s:SolidColor color="white" />
+			</s:fill>
+		</s:Rect>
+		
+		<s:RichText top="10" left="10" right="10" bottom="20">
+			<s:p>
+			<s:a click="onNameClick(event);" ><elements:SpanElement id="userLink" color="0x2b6786" fontWeight="bold" fontSize="12" text="un" /></s:a>
+			at
+			<s:a click="onVenueClick(event);" ><elements:SpanElement id="venueLink" color="0x2b6786" fontWeight="bold" fontSize="12" text="vn" /></s:a>
+			</s:p>
+			<s:p paddingTop="10">
+			<elements:SpanElement id="shoutText" color="0x000000" fontSize="12" />
+			</s:p>
+		</s:RichText>
+		<s:Label text="{data.created_in_words}" id="timeAgo" color="0x666666" fontSize="10" bottom="0" right="5"/>
+	</s:Group>
 	
-	<mx:VBox verticalGap="0" width="100%" borderStyle="solid" cornerRadius="3" horizontalScrollPolicy="off" verticalScrollPolicy="off" backgroundColor="#FFFFFF" paddingLeft="5" paddingRight="5" paddingBottom="5" paddingTop="5">
-		<mx:HBox width="100%">
-			<mx:Text text="{data.user.name_with_initial}" width="100%" fontSize="11" fontWeight="bold" />
-			<mx:Text text="{data.created_in_words}" fontSize="9" id="timeAgo" />
-		</mx:HBox>
-		<mx:Text text="@ {data.venue.name}" width="100%" fontWeight="bold" fontSize="10" />
-		<mx:Text text="&quot;{data.shout}&quot;" includeInLayout="{data.shout!=''}" visible="{data.shout!=''}" width="100%" fontSize="10" />
-	</mx:VBox>
-	
-</mx:HBox>
+</s:ItemRenderer>

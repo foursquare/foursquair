@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////
 // Project: foursquair 
-// Author: Lucas Hrabovsky, Seth Hillinger 
-// Created: Nov 16, 2009 
+// Author: Seth Hillinger
+// Created: Jan 23, 2010 
 ////////////////////////////////////////////////////////////
 
 package com.foursquare
@@ -41,15 +41,15 @@ package com.foursquare
 	import mx.controls.TextArea;
 	import mx.controls.TextInput;
 	import mx.effects.Parallel;
-	import mx.events.FlexEvent;
-	import mx.events.IndexChangedEvent;
-	import mx.events.StateChangeEvent;
+
+	import com.foursquare.events.CheckinEvent;
+	import com.foursquare.events.LoginEvent;
+	import com.foursquare.views.nativeWindows.PurrWindow;
+	import com.foursquare.views.shout.ShoutBox;
 	
-	import spark.components.Button;
-	import spark.components.ButtonBar;
+	import mx.events.FlexEvent;
+	
 	import spark.components.WindowedApplication;
-	import spark.effects.Move;
-	import spark.events.IndexChangeEvent;
 	
 	public class FourSquareBase_old extends WindowedApplication
 	{
@@ -77,10 +77,7 @@ package com.foursquare
 		public var searchLoadingIndicator:SWFLoader;
 		public var shoutLoadingIndicator:SWFLoader;
 		
-		//public var nav:HBox;
-		public var buttonBar:ButtonBar;
-		public var password:TextInput;
-		public var rememberMe:CheckBox;
+		public var shoutBox:ShoutBox;
 		
 		[Bindable] public var shoutSubmit:Button;
 		public var shoutText:TextInput;
@@ -112,15 +109,18 @@ package com.foursquare
 			addEventListener(StateChangeEvent.CURRENT_STATE_CHANGE, onStateChange);
 		}
 		
-		public function checkForAppUpdates():void{
-			appUpdater.checkNow();
+		private function onCreationComplete(event:FlexEvent):void{
+			//growl feature.
+			purrWindow = new PurrWindow(1);
 		}
 		
-		public function log(msg:String):void{
-			logText += "DEBUG: "+msg+"\n";
-			trace("DEBUG: "+msg);
-			
-			if(debug) debug.verticalScrollPosition = debug.maxVerticalScrollPosition;
+
+		/**
+		 * handle shout shouts a message.
+		 */ 
+		public function handleShout( message:String ):void{
+			shoutBox.shoutText.text = "";
+			growl("", message);
 		}
 		
 		public function error(e:Object):void{
@@ -187,10 +187,17 @@ package com.foursquare
 			appUpdater.checkNow();
 		}
 		
+		public function bounceShoutEvent( event:CheckinEvent ):void{
+			dispatchEvent( event.clone() );
+		}
+			
+		
+		public function growl(title:String, message:String):void{
+			purrWindow.addTextNotificationByParams(title, message);
+		}
+		
 		/**
-		 * sets up data when state changes. Its impt to do this here rather than on init b/c the state may not exist yet.
-		 *  
-		 * @param event
+		 * logout 
 		 * 
 		 */		
 		private function onStateChange(event:StateChangeEvent):void{
@@ -215,29 +222,10 @@ package com.foursquare
 			} 
 		}
 		
-		private function onVenueShout(event:VenueEvent):void{
-			shoutText.text = event.shoutText;
+		public function logout(event:LoginEvent):void{
+			dispatchEvent( event );	
 		}
-		
-		private function onIndexChange(event:IndexChangeEvent):void{
-			if(event.newIndex > event.oldIndex){
-				ViewStackTransitionEffectStart.xFrom = viewStack.width;
-				ViewStackTransitionEffectEnd.xTo = 0-viewStack.width;
-			}
-			else{
-				ViewStackTransitionEffectStart.xFrom = 0-viewStack.width;
-				ViewStackTransitionEffectEnd.xTo = viewStack.width;
-			}
-			
-			
-			if(event.newIndex >= 0) ViewStackTransitionEffectStart.target = viewStack.getChildAt( event.newIndex );
-			if(event.oldIndex >= 0) ViewStackTransitionEffectEnd.target= viewStack.getChildAt( event.oldIndex );
 
-			viewStack.selectedIndex = event.newIndex;
-		}	
-		
-		private function onViewChange(event:IndexChangedEvent):void{
-		}
 		
 		public function checkForUpdates(...rest):void{
 			log('checking for updates');

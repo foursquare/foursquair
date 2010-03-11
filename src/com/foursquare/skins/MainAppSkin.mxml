@@ -1,117 +1,111 @@
-<?xml version="1.0" encoding="utf-8"?>
-
 <!--
 
 ADOBE SYSTEMS INCORPORATED
-Copyright 2008 Adobe Systems Incorporated
+Copyright 2009 Adobe Systems Incorporated
 All Rights Reserved.
 
 NOTICE: Adobe permits you to use, modify, and distribute this file
 in accordance with the terms of the license agreement accompanying it.
 
 -->
+<!--- A skin class for the Spark WindowedApplication and Window containers. 
+This class defines just a border and status bar, but no gripper button, 
+title bar, or title bar buttons.
 
-<!--- The default skin class for the Spark Application component. 
+<p>You can either use  system chrome, the FlexChromSkin class, or 
+the WindowedApplicationSkin class to define the appearance of 
+the WindowedApplication and Window containers. 
+To use the WindowedApplicationSkin class with the WindowedApplication container, 
+set <code>systemChrome</code> to "none" 
+in the application's .xml file, and set the <code>skinClass</code> style to
+spark.skins.spark.WindowedApplicationSkin. 
+To use the WindowedApplicationSkin class with the Window container, 
+set the <code>Window.systemChrome</code> property to "none", 
+and set the <code>skinClass</code> style to
+spark.skins.spark.WindowedApplicationSkin.</p>
+
+@see spark.components.WindowedApplication
 
 @langversion 3.0
 @playerversion Flash 10
 @playerversion AIR 1.5
-@productversion Flex 4
+@productversion Flex 4 
+
 -->
-<s:Skin xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark"
-	alpha.disabled="0.5" >
-
-<fx:Metadata>
-	<![CDATA[ 
-	/** 
-	* A strongly typed property that references the component to which this skin is applied.
-	*/
-	[HostComponent("spark.components.WindowedApplication")]
-	]]>
-</fx:Metadata> 
-<fx:Script>
-	<![CDATA[
-		import mx.graphics.BitmapResizeMode;
-	]]>
-</fx:Script>
-
-<s:states>
-	<s:State name="normal" />
-	<s:State name="disabled" />
+<s:SparkSkin xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" 
+			 xmlns:fb="http://ns.adobe.com/flashbuilder/2009" alpha.disabledGroup="0.5" >
 	
-	<s:State name="normalAndInactive" />
-	<s:State name="disabledAndInactive" />
+	<fx:Metadata>
+		/** 
+		* @copy spark.skins.spark.ApplicationSkin#hostComponent
+		*/
+		[HostComponent("Object")]
+	</fx:Metadata>
 	
-	<s:State name="normalWithControlBar" />
-	<s:State name="disabledWithControlBar" />
-</s:states>
-
-<!-- fill -->
-<!--- 
-A rectangle with a solid color fill that forms the background of the application.
-The color of the fill is set to the Application's backgroundColor property.
--->
-<s:Rect id="backgroundRect" left="0" right="0" top="0" bottom="0"  >
-	<s:fill>
-		<s:SolidColor color="{getStyle('backgroundColor')}" />
-	</s:fill>
-</s:Rect>
-
-<s:Group left="0" right="0" top="0" bottom="0">
-	<s:layout>
-		<s:VerticalLayout gap="0" horizontalAlign="justify" />
-	</s:layout>
+	<fx:Script fb:purpose="styling">
+		/*  Define the skin elements that should not be colorized. 
+		*  For WindowedApplication, border and status bar background are colorized,
+		*  but the content area and status text are not. 
+		*  Exclude the titleBar and scroller because they are SparkSkins and we 
+		*  don't want to colorize them twice.
+		* 
+		* @langversion 3.0
+		* @playerversion Flash 10
+		* @playerversion AIR 1.5
+		* @productversion Flex 4 
+		*/
+		static private const exclusions:Array = ["backgroundRect", "contentGroup"];
+		
+		/**
+		 * @private
+		 */
+		override public function get colorizeExclusions():Array {return exclusions;}
+		
+		/**
+		 * @private
+		 */
+		override protected function initializationComplete():void
+		{
+			useChromeColor = true;
+			super.initializationComplete();
+		} 
+		
+		/**
+		 *  @private
+		 */
+		override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number) : void
+		{
+			backgroundFill.color = getStyle("backgroundColor");
+			backgroundFill.alpha = getStyle("backgroundAlpha");
+			super.updateDisplayList(unscaledWidth, unscaledHeight);
+		}
+	</fx:Script>
 	
-	<!--- 
-	Application Control Bar
-	-->
-	<s:Group id="topGroup" minWidth="0" minHeight="0"
-			 includeIn="normalWithControlBar, disabledWithControlBar" >
+	<s:states>
+		<s:State name="normal" />
+		<s:State name="disabled" stateGroups="disabledGroup" />
+		<s:State name="normalAndInactive" stateGroups="inactiveGroup" />
+		<s:State name="disabledAndInactive" stateGroups="disabledGroup, inactiveGroup" />
+	</s:states>
+	
+	<!-- layer 1: background fill -->
+	<!--- Defines the background color of the skin. -->
+	<s:Rect id="backgroundRect" left="0" right="0" top="0" bottom="0" >
+		<s:fill>
+			<!--- @private -->
+			<s:SolidColor id="backgroundFill" />
+		</s:fill>
+	</s:Rect>
+	
+	<!-- layer 2: content + status bar -->
+	<s:Group left="0" right="0" top="0" bottom="0" minHeight="24" minWidth="0" >
+		<s:layout>
+			<s:VerticalLayout gap="0"/>
+		</s:layout>
 		
-		<!-- layer 0: control bar highlight -->
-		<s:Rect left="0" right="0" top="0" bottom="1" >
-			<s:stroke>
-				<s:LinearGradientStroke rotation="90" weight="1">
-					<s:GradientEntry color="0xFFFFFF" />
-					<s:GradientEntry color="0xD8D8D8" />
-				</s:LinearGradientStroke>
-			</s:stroke>
-		</s:Rect>
-		
-		<!-- layer 1: control bar fill -->
-		<s:Rect left="1" right="1" top="1" bottom="2" >
-			<s:fill>
-				<s:LinearGradient rotation="90">
-					<s:GradientEntry color="0xEDEDED" />
-					<s:GradientEntry color="0xCDCDCD" />
-				</s:LinearGradient>
-			</s:fill>
-		</s:Rect>
-		
-		<!-- layer 2: control bar divider line -->
-		<s:Rect left="0" right="0" bottom="0" height="1" alpha="0.55">
-			<s:fill>
-				<s:SolidColor color="0x000000" />
-			</s:fill>
-		</s:Rect>
-		
-		<!-- layer 3: control bar -->
-		<s:Group id="controlBarGroup" left="0" right="0" top="1" bottom="1" minWidth="0" minHeight="0">
-			<s:layout>
-				<s:HorizontalLayout paddingLeft="10" paddingRight="10" paddingTop="7" paddingBottom="7" gap="10" />
-			</s:layout>
-		</s:Group>
+		<!-- content -->
+		<!--- @copy spark.components.SkinnableContainer#contentGroup -->
+		<s:Group id="contentGroup" width="100%" height="100%" minHeight="0" minWidth="0"/>
 	</s:Group>
 	
-	<!-- background image-->
-	<s:BitmapImage source="@Embed('assets/images/foursquare_header_background.png')"
-				   resizeMode="{BitmapResizeMode.NOSCALE}"
-				   horizontalCenter="0" verticalCenter="0"/>	
-	<!--- 
-	@copy spark.components.SkinnableContainer#contentGroup
-	-->
-	<s:Group id="contentGroup" width="100%" height="100%" minWidth="0" minHeight="0" />
-	
-</s:Group>
-
-</s:Skin>
+</s:SparkSkin>

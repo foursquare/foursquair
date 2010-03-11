@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Panel xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%"
+		 >
+	
+	<s:layout><s:VerticalLayout /></s:layout>
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.events.CloseEvent;
+		]]>
+	</fx:Script>
+	
+	<s:TextArea id="text" width="100%" height="100%" borderVisible="false" editable="false" />
+	
+	<s:controlBarContent>
+		<s:Button	id="okButton" label="ok" horizontalCenter="0"
+					styleName="greyButtonSkin"
+					color="0xffffff"
+				  	click="{ dispatchEvent( new CloseEvent(CloseEvent.CLOSE) ) }" />
+	</s:controlBarContent>
+	
+</s:Panel>

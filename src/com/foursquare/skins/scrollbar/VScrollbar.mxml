@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark"
+		alpha.disabled="0.5" minWidth="15" minHeight="35">
+	
+	<fx:Metadata>
+		[HostComponent("spark.components.VScrollBar")]
+	</fx:Metadata> 
+	
+	<s:states>
+		<s:State name="normal" />
+		<s:State name="disabled" />
+		<s:State name="inactive" />
+	</s:states>
+	
+	<s:Button id="track" y="0" x="-1" skinClass="com.foursquare.skins.scrollbar.VscrollTrack"
+			  height="{hostComponent.height}"  />
+	
+	<s:Button id="thumb" x="7" y="17" skinClass="com.foursquare.skins.scrollbar.VScrollThumb"/>
+	
+	
+</s:Skin>

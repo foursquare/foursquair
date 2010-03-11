@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:SkinnableContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					  xmlns:s="library://ns.adobe.com/flex/spark" 
+					  xmlns:mx="library://ns.adobe.com/flex/mx" 
+					  width="100%" xmlns:history="com.foursquare.views.history.*">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			
+			import spark.components.Label;
+
+			public var time:int;
+			
+			private var _date:String;
+			private var dateChanged:Boolean;
+			
+			private var _checkins:ArrayCollection;
+			private var checkinsChanged:Boolean;
+			
+			[SkinPart(required="true")]
+			[Bindable]
+			public var monthLabel:Label;
+
+			[SkinPart(required="true")]
+			[Bindable]
+			public var dayLabel:Label;
+			
+			override protected function commitProperties() : void{
+				if(dateChanged){
+					dateChanged = false;
+					monthLabel.text = _date.slice(8, 11).toUpperCase();
+					dayLabel.text = _date.slice(5, 8);
+				}
+				if(checkinsChanged){
+					checkinsChanged = false;
+					checkinList.dataProvider = _checkins;
+				}
+			}
+			
+			public function get checkins():ArrayCollection
+			{
+				return _checkins;
+			}
+
+			public function set checkins(value:ArrayCollection):void
+			{
+				_checkins = value;
+				checkinsChanged = true;
+				invalidateProperties();
+			}
+
+			public function get date():String
+			{
+				return _date;
+			}
+
+			public function set date(value:String):void
+			{
+				_date = value;
+				dateChanged = true;
+				invalidateProperties();
+			}
+
+
+		]]>
+	</fx:Script>
+	
+	<s:layout><s:HorizontalLayout /></s:layout>
+	
+	<history:SingleDayCheckinList id="checkinList" width="100%" height="100%" />
+
+</s:SkinnableContainer>
