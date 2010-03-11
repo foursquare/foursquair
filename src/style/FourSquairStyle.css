@@ -45,6 +45,7 @@ global{
 
 s|WindowedApplication{
 	backgroundColor: #999999;
+	skin-class: ClassReference("com.foursquare.skins.MainAppSkin");
 }
 
 s|VScrollBar {

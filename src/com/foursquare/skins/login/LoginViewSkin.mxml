@@ -10,7 +10,13 @@
 		<s:State name="disabled" />
 	</s:states>
 	
-	<s:BitmapImage source="@Embed('assets/images/bg-login.png')" />
+	<s:Rect left="0" right="0" top="0" bottom="0">
+		<s:fill>
+			<s:SolidColor color="0x000000" />
+		</s:fill>
+	</s:Rect>
+	
+	<s:BitmapImage source="@Embed('assets/images/bg-login.png')" verticalCenter="0" horizontalCenter="0" />
 	
 	<s:Group id="contentGroup" left="0" right="0" top="0" bottom="0" minWidth="0" minHeight="0">
 		<s:layout>

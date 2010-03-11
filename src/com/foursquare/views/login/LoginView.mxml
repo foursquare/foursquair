@@ -29,10 +29,12 @@
 		]]>
 	</fx:Script>
 
+	<!-- background image-->
+	
 	<s:SkinnableContainer styleName="loginBoxSkin" width="250" height="280" verticalCenter="0" horizontalCenter="0">
 		<s:layout><s:BasicLayout /></s:layout>
 		<s:VGroup verticalCenter="0" left="20" right="20">
-			<s:RichText color="0x818589"><s:span fontWeight='bold' color="0x000000">User Name</s:span> or Mobile #</s:RichText>
+			<s:RichText color="0x818589"><s:span fontWeight='bold' color="0x000000">Email Address</s:span> or Phone Number</s:RichText>
 			<s:TextInput id="username" borderVisible="false"
 						 lineHeight="30" height="30" fontSize="18" width="100%" />
 			

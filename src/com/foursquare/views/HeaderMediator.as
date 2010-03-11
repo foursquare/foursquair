@@ -32,7 +32,9 @@ package com.foursquare.views
 		 * 
 		 */		
 		private function onUserDetailsGot(event:UserEvent):void{
-			headerView.userName.text = event.userVO.firstname +" "+ event.userVO.lastname;
+			var lastName:String;
+			event.userVO.lastname ? lastName = event.userVO.lastname : lastName = "";
+			headerView.userName.text = event.userVO.firstname +" "+ lastName;
 			headerView.userImage.source = event.userVO.photo;
 		}
 	}

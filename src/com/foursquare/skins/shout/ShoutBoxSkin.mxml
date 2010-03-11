@@ -66,7 +66,8 @@ is defined by the DropDownListButtonSkin class.
 			
 			<s:Button id="closeButton" left="0" right="0" top="0" bottom="0"
 					  skinClass="com.foursquare.skins.shout.ShoutBarButtonSkin" />
-			<s:TextArea id="shoutText" width="250" height="100" verticalCenter="0" horizontalCenter="0" />
+			<s:TextArea id="shoutText" minWidth="250" width="90%" height="100"
+						verticalCenter="0" horizontalCenter="0" />
 			<s:Button id="shoutButton" label="Shout" styleName="greyButtonSkin"
 					  color="0xffffff" fontWeight="bold" fontSize="16"
 					  width="102" height="22" bottom="5" right="20" />
