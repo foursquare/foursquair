@@ -89,7 +89,7 @@ package com.foursquare
 			mediatorMap.mapView( HistoryView, HistoryMediator );
 			mediatorMap.mapView( SearchView, SearchMediator );
 			mediatorMap.mapView( HeaderView, HeaderMediator );
-			mediatorMap.mapView( FoursquairNew, MainViewMediator );
+			mediatorMap.mapView( Foursquair, MainViewMediator );
 
 			//app starts by checking for updates.
 			dispatchEvent( new StartupEvent(StartupEvent.STARTUP) );
