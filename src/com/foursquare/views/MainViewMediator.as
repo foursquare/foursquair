@@ -20,7 +20,7 @@ package com.foursquare.views
 	{
 		
 		[Inject]
-		public var mainView:FoursquairNew;
+		public var mainView:Foursquair;
 
 		public function MainViewMediator()
 		{
