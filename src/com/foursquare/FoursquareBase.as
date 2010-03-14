@@ -40,7 +40,7 @@ package com.foursquare
 		 * handle shout shouts a message.
 		 */ 
 		public function handleShout( message:String ):void{
-			shoutBox.shoutText.text = "";
+			shoutBox.shoutSent();
 			growl("", message);
 		}
 		

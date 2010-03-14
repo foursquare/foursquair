@@ -63,6 +63,13 @@ package com.foursquare.views.shout
 			var checkinEvent:CheckinEvent = new CheckinEvent( CheckinEvent.SHOUT );
 			checkinEvent.message = shoutText.text;
 			dispatchEvent( checkinEvent );
+			
+			shoutButton.enabled = false;
+		}
+		
+		public function shoutSent():void{
+			shoutText.text = "";
+			shoutButton.enabled = true;
 		}
 		
 		private function openPopUp(event:MouseEvent=null):void{
