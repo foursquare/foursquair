@@ -168,25 +168,27 @@
 		mode="manual"
 		/>
 	
-	<!--removed (seth)
+	<s:Label
+		id="displayLabel"
+		maxDisplayedLines="4"
+		lineHeight="10"
+		minHeight="14"
+		maxWidth="120"
+		verticalAlign="top"
+		
+		top="2" left="{ PADDING_LEFT }" right="{ bContainer.width + PADDING_RIGHT + 5 }"
+		text=""
 		text.checkForUpdate="{ resourceManager.getString('ApplicationUpdaterDialogs', 'titleCheck' ) }"
 		text.updateAvailable="{ resourceManager.getString('ApplicationUpdaterDialogs', 'titleUpdate' ) }"
 		text.installUpdate="{ resourceManager.getString('ApplicationUpdaterDialogs', 'titleInstall' ) }"
-	-->
-	<s:Label
-		id="displayLabel"
-		maxDisplayedLines="1"
-		maxWidth="100"
-		top="{ PADDING_TOP + 3 }" left="{ PADDING_LEFT }" right="{ bContainer.width + PADDING_RIGHT + 5 }"
-		text=""
 		text.noUpdateAvailable="{ resourceManager.getString('ApplicationUpdaterDialogs', 'titleCheckNoUpdates' ) }"
 		text.updateError="{ resourceManager.getString('ApplicationUpdaterDialogs', 'msgCheckError', [ hostComponent.errorID ] ) }"
 		text.downloadError="{ resourceManager.getString('ApplicationUpdaterDialogs', 'msgDownloadError', [ hostComponent.errorID ] ) }"
 		text.unexpectedError="{ resourceManager.getString('ApplicationUpdaterDialogs', 'msgUnexpectedError', [ hostComponent.errorID ] ) }"
 		text.fileError="{ resourceManager.getString('ApplicationUpdaterDialogs', 'msgFileError', [ hostComponent.errorID ] ) }"
-		color="#FFFFFF"		
+		color="#000000"		
 		color.noUpdateAvailable="#333333"
-		fontWeight="bold"
+		fontSize="11"
 		/>
 
 	
