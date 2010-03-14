@@ -10,8 +10,8 @@ package com.foursquare.views
 	import com.foursquare.events.ErrorEvent;
 	import com.foursquare.events.LoginEvent;
 	import com.foursquare.events.NavigationEvent;
-	import com.foursquare.events.UserEvent;
 	import com.foursquare.models.Section;
+	import com.foursquare.models.vo.CheckinVO;
 	import com.foursquare.views.alert.Alert;
 	
 	import org.robotlegs.mvcs.Mediator;
@@ -21,6 +21,12 @@ package com.foursquare.views
 		
 		[Inject]
 		public var mainView:Foursquair;
+		
+		/**
+		 * flag for whether to "growl"
+		 * @see PurrWindow
+		 */		
+		public var showGrowl:Boolean;
 
 		public function MainViewMediator()
 		{
@@ -39,6 +45,14 @@ package com.foursquare.views
 		//returned from a shout message
 		public function handleShout( message :String ) : void{
 			mainView.handleShout( message ); 
+		}
+		
+		public function growl( checkin:CheckinVO ):void{
+			if( checkin.is_shout_only){
+				mainView.growl( checkin.user.name_with_initial, checkin.shout);
+			}else{
+				mainView.growl( checkin.user.name_with_initial, checkin.venue.name +" at "+checkin.created_in_words +" /n "+checkin.shout);
+			}
 		}
 		
 		/**

@@ -23,7 +23,8 @@ package com.foursquare.views.nativeWindows
 			super(idleThreshold);
 			
 			//assign icon to "growl-like" notifications
-			var i:Image = new Image;
+			//TODO Seth: doesnt look good. need to figure out how to pass in the checkinUsers.image.
+			/*var i:Image = new Image;
 			i.addEventListener(Event.COMPLETE, function(event:Event):void{
 				var bmp: Bitmap = Bitmap(Image(event.target).content);
 				setIcons([bmp.bitmapData], "foursquair: all the cool kids are doing it.");
@@ -33,7 +34,7 @@ package com.foursquare.views.nativeWindows
 				setMenu(m);
 				
 			});
-			i.load( Constants.iconURL );
+			i.load( Constants.iconURL );*/
 		}
 	}
 }
