@@ -50,7 +50,7 @@ in accordance with the terms of the license agreement accompanying it.
 	size will not be thwarted by this skin part's minimum size.   This is a compromise,
 	more about it here: http://bugs.adobe.com/jira/browse/SDK-21143
 	-->
-	<s:Group id="contentGroup" left="0" right="0" top="0" bottom="0" minWidth="0" minHeight="0">
+	<s:Group id="contentGroup" left="10" right="10" top="0" bottom="0" minWidth="0" minHeight="0">
 		<s:layout>
 			<s:BasicLayout/>
 		</s:layout>
