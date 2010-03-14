@@ -16,8 +16,6 @@
 			import flash.utils.Timer;
 			
 			import flashx.textLayout.events.FlowElementMouseEvent;
-			
-			import spark.utils.TextFlowUtil;
 
 			private var t:Timer;
 			private var dataChanged:Boolean;
@@ -110,7 +108,7 @@
 			<elements:SpanElement id="shoutText" color="0x000000" fontSize="12" />
 			</s:p>
 		</s:RichText>
-		<s:Label text="{data.created_in_words}" id="timeAgo" color="0x666666" fontSize="10" bottom="0" right="5"/>
+		<s:Label text="{(data as CheckinVO).created_in_words}" id="timeAgo" color="0x666666" fontSize="10" bottom="0" right="5"/>
 	</s:Group>
 	
 </s:ItemRenderer>

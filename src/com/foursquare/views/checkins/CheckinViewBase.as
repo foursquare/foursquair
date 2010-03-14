@@ -30,6 +30,9 @@ package com.foursquare.views.checkins
 			
 			if( checkinsChanged ){
 				checkinsChanged = true;
+				
+				removeAllElements();
+				
 				for each(var checkin:CheckinVO in _checkins){
 					var checkinItem:CheckinItem = new CheckinItem();
 					checkinItem.data = checkin;
