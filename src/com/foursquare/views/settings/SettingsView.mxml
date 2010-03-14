@@ -7,7 +7,7 @@
 	</fx:Declarations>
 	<fx:Script>
 		<![CDATA[
-			import com.foursquare.events.SettingsEvent;
+			import com.foursquare.events.CheckinEvent;
 			
 			import flash.events.Event;
 			
@@ -15,23 +15,25 @@
 			
 			import spark.events.IndexChangeEvent;
 			[Bindable]
-			private var pollTimes:ArrayCollection = new ArrayCollection([	
-													{label:'1 minute',	time: 60},
-													{label:'2 minutes',	time: 120},
-													{label:'5 minute', 	time: 300},
-													{label:'10 minute',	time: 600},
-													{label:'15 minute',	time: 900},
-													{label:'30 minute',	time: 1500}
+			private var pollIntervals:ArrayCollection = new ArrayCollection([	
+													{label:'1 minute',	interval: 60000},
+													{label:'2 minutes',	interval: 120000},
+													{label:'5 minute', 	interval: 300000},
+													{label:'10 minute',	interval: 600000},
+													{label:'15 minute',	interval: 900000},
+													{label:'30 minute',	interval: 1500000}
 													]);
 			
 			private function onRepeatTimeChange(event:IndexChangeEvent):void{
-				var settingsEvent:SettingsEvent = new SettingsEvent(SettingsEvent.CHANGE_POLL_TIME);
-				settingsEvent.pollTime = pollTimes.getItemAt(event.newIndex).time;
+				var settingsEvent:CheckinEvent = new CheckinEvent(CheckinEvent.CHANGE_POLL_INTERVAL);
+				settingsEvent.interval = pollIntervals.getItemAt(event.newIndex).interval;
 				dispatchEvent(settingsEvent);
 			}
 			
 			private function onDisplayGrowlChange(event:Event):void{
-				//TODO
+				var settingsEvent:CheckinEvent = new CheckinEvent(CheckinEvent.TOGGLE_GROWL_MESSAGING);
+				settingsEvent.useGrowl = displayGrowlCheckBox.selected;
+				dispatchEvent(settingsEvent);
 			}
 		]]>
 	</fx:Script>
@@ -52,7 +54,7 @@
 				<s:Label text="Update every" color="0x1d2020" />
 				<!--todo store selection in prefs-->
 				<s:DropDownList change="onRepeatTimeChange(event)"
-								dataProvider="{pollTimes}" selectedIndex="2" />
+								dataProvider="{pollIntervals}" selectedIndex="2" />
 			</s:HGroup>
 			
 			<s:Group height="2" width="100%">

@@ -30,12 +30,14 @@ package com.foursquare
 	import com.foursquare.views.MainViewMediator;
 	import com.foursquare.views.NavigationMediator;
 	import com.foursquare.views.SearchMediator;
+	import com.foursquare.views.SettingsMediator;
 	import com.foursquare.views.checkins.CheckinView;
 	import com.foursquare.views.header.HeaderView;
 	import com.foursquare.views.history.HistoryView;
 	import com.foursquare.views.login.LoginView;
 	import com.foursquare.views.navigation.Navigation;
 	import com.foursquare.views.search.SearchView;
+	import com.foursquare.views.settings.SettingsView;
 	import com.quilix.maxmind.GeoIPService;
 	
 	import flash.display.DisplayObjectContainer;
@@ -58,6 +60,9 @@ package com.foursquare
 			commandMap.mapEvent( CheckinEvent.SHOUT_SUCCESS, CheckinCommand, CheckinEvent );
 			commandMap.mapEvent( CheckinEvent.READ, CheckinCommand, CheckinEvent );
 			commandMap.mapEvent( CheckinEvent.READ_RETURNED, CheckinCommand, CheckinEvent );
+			//settings event also handled by CheckinCommand
+			commandMap.mapEvent( CheckinEvent.CHANGE_POLL_INTERVAL, CheckinCommand, CheckinEvent );
+			commandMap.mapEvent( CheckinEvent.TOGGLE_GROWL_MESSAGING, CheckinCommand, CheckinEvent );
 			
 			commandMap.mapEvent( HistoryEvent.READ, HistoryCommand, HistoryEvent );
 			commandMap.mapEvent( HistoryEvent.READ_RETURNED, HistoryCommand, HistoryEvent );
@@ -85,7 +90,8 @@ package com.foursquare
 			//map view
 			mediatorMap.mapView( Navigation, NavigationMediator );
 			mediatorMap.mapView( LoginView, LoginMediator );
-			mediatorMap.mapView( CheckinView, CheckinMediator );
+			mediatorMap.mapView( SettingsView, SettingsMediator );
+			mediatorMap.mapView( CheckinView, CheckinMediator, null,true, false );
 			mediatorMap.mapView( HistoryView, HistoryMediator );
 			mediatorMap.mapView( SearchView, SearchMediator );
 			mediatorMap.mapView( HeaderView, HeaderMediator );

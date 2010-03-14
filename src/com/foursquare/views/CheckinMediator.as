@@ -7,7 +7,11 @@
 package com.foursquare.views
 {
 	import com.foursquare.events.CheckinEvent;
+	import com.foursquare.models.Constants;
 	import com.foursquare.views.checkins.CheckinView;
+	
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
 	
 	import mx.collections.ArrayCollection;
 	
@@ -19,6 +23,19 @@ package com.foursquare.views
 		[Inject]
 		public var checkinView:CheckinView;
 
+		private var _checkins:ArrayCollection;
+		
+		/**
+		 * flag for when to start polling 
+		 */		
+		private var _firstRead:Boolean = true;
+		/**
+		 * delay between timer events in milliseconds 
+		 */
+		private var _pollInterval:int = Constants.defaultPollInterval;
+		
+		private var timer:Timer;
+		
 		public function CheckinMediator()
 		{
 			super();
@@ -27,15 +44,51 @@ package com.foursquare.views
 		override public function onRegister() : void{
 			eventMap.mapListener( checkinView, CheckinEvent.READ, getCheckins );
 			
-			getCheckins( new CheckinEvent( CheckinEvent.READ ) );			
+			getCheckins();			
 		}
 		
-		public function setCheckins( checkins: ArrayCollection ):void{
-			checkinView.checkins = checkins;
+		public function startPolling():void{
+			if(!timer){
+				timer = new Timer(_pollInterval);
+				timer.addEventListener(TimerEvent.TIMER, getCheckins );
+			}
+			timer.start();
 		}
 		
-		private function getCheckins(event:CheckinEvent):void{
-			eventDispatcher.dispatchEvent( event.clone() );
+		public function stopPolling():void{
+			timer.stop();
+		}
+		
+		public function set checkins( value: ArrayCollection ):void{
+			_checkins = value;
+			checkinView.checkins = _checkins;
+			
+			if(_firstRead){
+				_firstRead = false;
+				startPolling();
+			}
+		}
+		
+		public function get checkins():ArrayCollection{
+			return _checkins;
+		}
+		
+		private function getCheckins(event:TimerEvent=null):void{
+			eventDispatcher.dispatchEvent( new CheckinEvent( CheckinEvent.READ ) );
+		}
+		
+		public function get firstRead():Boolean{
+			return _firstRead;
+		}
+		
+		public function set pollInterval( interval : int ):void{
+			_pollInterval = interval;
+			timer.delay = _pollInterval;
+			timer.reset();
+		}
+		
+		public function get pollInterval():int{
+			return _pollInterval;
 		}
 	}
 }

@@ -21,12 +21,18 @@ package com.foursquare.events
 		public static const READ:String = "read";
 		public static const READ_RETURNED:String = "readReturned";
 		
+		//at a future date perhaps refactor this into a settingsevent
+		public static const CHANGE_POLL_INTERVAL:String = "changePollInterval";
+		public static const TOGGLE_GROWL_MESSAGING:String = "toggleGrowlMessaging";
 		
 		public var userId:int;
 		public var message:String;
 		
 		public var venueVO:VenueVO;
 		public var checkins:ArrayCollection;
+		
+		public var interval:int;
+		public var useGrowl:Boolean;
 		
 		public function CheckinEvent(type:String)
 		{
@@ -39,6 +45,8 @@ package com.foursquare.events
 			checkinEvent.message = message;
 			checkinEvent.venueVO = venueVO;
 			checkinEvent.checkins = checkins;
+			checkinEvent.interval = interval;
+			checkinEvent.useGrowl = useGrowl;
 			return checkinEvent;
 		}
 	}

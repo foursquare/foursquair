@@ -6,10 +6,13 @@
 
 package com.foursquare.controller
 {
-	import com.foursquare.services.IFoursquareService;
 	import com.foursquare.events.CheckinEvent;
+	import com.foursquare.models.Constants;
+	import com.foursquare.models.vo.CheckinVO;
+	import com.foursquare.services.IFoursquareService;
 	import com.foursquare.views.CheckinMediator;
 	import com.foursquare.views.MainViewMediator;
+	import com.foursquare.views.SettingsMediator;
 	
 	import mx.collections.ArrayCollection;
 	
@@ -48,6 +51,12 @@ package com.foursquare.controller
 				case CheckinEvent.SHOUT_SUCCESS:
 					handleShout(event.message);
 					break;
+				case CheckinEvent.CHANGE_POLL_INTERVAL:
+					checkinMediator.pollInterval = (event as CheckinEvent).interval;
+					break;
+				case CheckinEvent.TOGGLE_GROWL_MESSAGING:
+					mainViewMediator.showGrowl =  (event as CheckinEvent).useGrowl;
+					break;
 			}
 		}
 		
@@ -65,7 +74,46 @@ package com.foursquare.controller
 		}
 		
 		private function handleCheckins( checkins: ArrayCollection ):void{
-			checkinMediator.setCheckins( checkins );
+			
+			if( !checkinMediator.firstRead && mainViewMediator.showGrowl){
+				var newCheckins:ArrayCollection = findNewCheckins( checkins );
+				for each(var checkin:CheckinVO in newCheckins){
+					mainViewMediator.growl( checkin );
+				}
+			}
+
+			checkinMediator.checkins = checkins;
+				
+		}
+		
+		/**
+		 * checks for new checkins since last timerEvent...
+		 * @param currentCheckin
+		 * @param newCheckin
+		 * @return 
+		 * 
+		 */		
+		private function findNewCheckins(checkins:ArrayCollection):ArrayCollection{
+			
+			var timeFromLastPoll:int = new Date().getTime() - checkinMediator.pollInterval;
+			var newCheckins:ArrayCollection = new ArrayCollection();
+			
+			for each(var checkin:CheckinVO in checkins){
+				if( checkin.created.getTime() > timeFromLastPoll){
+					newCheckins.addItem( checkin );
+				}else{
+					break;
+				}
+			}
+			return newCheckins;			
+		}
+		
+		private function startPolling():void{
+			checkinMediator.startPolling();
+		}
+
+		private function stopPolling():void{
+			checkinMediator.stopPolling();
 		}
 		
 		private function handleShout( message:String ):void{
@@ -73,8 +121,5 @@ package com.foursquare.controller
 			getCheckins();
 		}
 
-		private function onCheckinSuccess( success:Boolean ):void{
-			getCheckins();
-		}
 	}
 }
