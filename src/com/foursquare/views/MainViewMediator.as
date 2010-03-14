@@ -44,7 +44,7 @@ package com.foursquare.views
 		
 		//returned from a shout message
 		public function handleShout( message :String ) : void{
-			mainView.handleShout( message ); 
+			mainView.handleShout( message );
 		}
 		
 		public function growl( checkin:CheckinVO ):void{
