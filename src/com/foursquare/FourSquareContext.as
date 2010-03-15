@@ -93,7 +93,7 @@ package com.foursquare
 			mediatorMap.mapView( SettingsView, SettingsMediator );
 			mediatorMap.mapView( CheckinView, CheckinMediator, null,true, false );
 			mediatorMap.mapView( HistoryView, HistoryMediator );
-			mediatorMap.mapView( SearchView, SearchMediator );
+			mediatorMap.mapView( SearchView, SearchMediator, null,true, false );
 			mediatorMap.mapView( HeaderView, HeaderMediator );
 			mediatorMap.mapView( Foursquair, MainViewMediator );
 
