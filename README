@@ -18,16 +18,14 @@ It's currently under heavy development, so make sure to hit that check for
 updates link at the bottom early and often.  If you dont, that's ok. The app will 
 update on it's own when new code is pushed.  
 
-It's built on Adobe AIR using Flex.
+It's built on Adobe AIR using <u>Flex 4</u>
 
 -------------------------------------------
 Future
 -------------------------------------------
- - Finish adding all API methods to foursquareservice 
- - Make as3foursquarelib so that anybody can get up and running quickly
- - Refactor notifications to not use as3notification lib and to be sexier
- - A sexy design
- - Learn how to spell foursquair
+ - Continue to add  API calls foursquareservice as the modify
+ - make as3notification lib and to be sexier
+ - Add google mapping and improve search
  
 -------------------------------------------
 Building
@@ -51,8 +49,6 @@ Building
 -------------------------------------------
 Managing Updates
 -------------------------------------------
-    Automatic Updates are provided by ApplicationUpdater_UI (http://livedocs.adobe.com/flex/3/langref/air/update/ApplicationUpdaterUI.html)
-    
     src/updateConfig.xml provides the parameters to the local App Install for how often updates should be checked for and from where.
     
     So you want to release a new version?
@@ -67,9 +63,11 @@ Libraries Used
 -------------------------------------------
  - AS3 OAuth http://github.com/srohde/OAuth
  - AS3 Notification Lib http://code.google.com/p/as3notificationlib/ (Plan on writing a new version of this thats more flex-y)
+ - Geolocation provided by http://www.maxmind.com/
+ - Automatic Updater (http://www.websector.de/blog/2009/09/09/custom-applicationupdaterui-for-using-air-updater-framework-in-flex-4/)
 
 -------------------------------------------
 Troubleshooting
 -------------------------------------------
  - Q: I can't build it... says there is some kind of weird problem.
- - A: Make sure you're using at least the Flex 3.2 SDK.
+ - A: Make sure you're using at least the Flex 4 SDK.
