@@ -37,6 +37,7 @@ package com.foursquare.views.history
 			
 			if( historyChanged ){
 				historyChanged = true;
+				removeAllElements();
 				createHistory();
 			}
 		}
@@ -50,6 +51,7 @@ package com.foursquare.views.history
 			var dateFormatter:DateFormatter = new DateFormatter();
 			
 			for(var time:String in _history){
+				//create new day
 				var historyItem:SingleDay = new SingleDay();
 				historyItem.date = time;
 				historyItem.checkins = _history[time];
@@ -57,19 +59,34 @@ package com.foursquare.views.history
 				var date:Date = new Date( dateFormatter.format(time) );
 				historyItem.time = date.getTime();
 				
-				if(numElements==0){
-					addElement( historyItem );
-				}else{
-					for(var i:int=0; i<numElements; i++){
-						if( historyItem.time > (getElementAt(i) as SingleDay).time){
-							addElementAt( historyItem, i );
-							break;
-						}
-						addElement( historyItem );
-					}
-				}
-				
+				//since history is NOT returned sorted
+				//we need to sort each day by date
+				addElementAt( historyItem, findIndex(historyItem) );
 			}
+		}
+		
+		/**
+		 * helper to sort day by date. 
+		 * @param item
+		 * @return 
+		 * 
+		 */		
+		private function findIndex(item:SingleDay):int{
+			var index:int;
+			
+			if(numElements==0){
+				index = 0;
+			}else{
+				for(var i:int=0; i<numElements; i++){
+					if( item.time > (getElementAt(i) as SingleDay).time){
+						index = i;
+						break;
+					}
+					index = numElements;
+				}
+			}
+			
+			return index;
 		}
 		
 		public function get history():Dictionary
