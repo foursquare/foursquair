@@ -6,9 +6,9 @@
 
 package com.foursquare.controller
 {
-	import com.foursquare.services.IFoursquareService;
 	import com.foursquare.events.HistoryEvent;
 	import com.foursquare.models.Constants;
+	import com.foursquare.services.IFoursquareService;
 	import com.foursquare.views.HistoryMediator;
 	
 	import flash.utils.Dictionary;

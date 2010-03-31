@@ -91,9 +91,9 @@ package com.foursquare
 			mediatorMap.mapView( Navigation, NavigationMediator );
 			mediatorMap.mapView( LoginView, LoginMediator );
 			mediatorMap.mapView( SettingsView, SettingsMediator );
-			mediatorMap.mapView( CheckinView, CheckinMediator, null,true, false );
-			mediatorMap.mapView( HistoryView, HistoryMediator );
-			mediatorMap.mapView( SearchView, SearchMediator, null,true, false );
+			mediatorMap.mapView( CheckinView, CheckinMediator, null, true, false );
+			mediatorMap.mapView( HistoryView, HistoryMediator, null, true, false );
+			mediatorMap.mapView( SearchView, SearchMediator, null, true, false );
 			mediatorMap.mapView( HeaderView, HeaderMediator );
 			mediatorMap.mapView( Foursquair, MainViewMediator );
 

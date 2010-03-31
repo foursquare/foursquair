@@ -13,7 +13,7 @@
 			
 			import spark.components.Label;
 
-			public var time:int;
+			public var time:Number;
 			
 			private var _date:String;
 			private var dateChanged:Boolean;

@@ -29,6 +29,10 @@ package com.foursquare.views
 			getHistory( new HistoryEvent( HistoryEvent.READ ) );			
 		}
 		
+		override public function onRemove() : void{
+			super.onRemove();
+		}
+		
 		public function setHistory( history: Dictionary ):void{
 			historyView.history = history;
 		}

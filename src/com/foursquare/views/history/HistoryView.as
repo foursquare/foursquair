@@ -36,8 +36,7 @@ package com.foursquare.views.history
 			super.commitProperties();
 			
 			if( historyChanged ){
-				historyChanged = true;
-				removeAllElements();
+				historyChanged = false;
 				createHistory();
 			}
 		}
@@ -57,7 +56,7 @@ package com.foursquare.views.history
 				historyItem.checkins = _history[time];
 
 				var date:Date = new Date( dateFormatter.format(time) );
-				historyItem.time = date.getTime();
+				historyItem.time = date.time;
 				
 				//since history is NOT returned sorted
 				//we need to sort each day by date
