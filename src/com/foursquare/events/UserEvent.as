@@ -22,5 +22,11 @@ package com.foursquare.events
 		{
 			super(type);
 		}
+		
+		override public function clone():Event{
+			var userEvent:UserEvent = new UserEvent( type );
+			userEvent.userVO = userVO;
+			return userEvent;
+		}
 	}
 }
