@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:ItemRenderer
+<s:Group
 		xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		xmlns:s="library://ns.adobe.com/flex/spark"
 		xmlns:elements="flashx.textLayout.elements.*"
@@ -11,34 +11,31 @@
 
 	<fx:Script>
 		<![CDATA[
+			import com.foursquare.events.UserEvent;
+			import com.foursquare.events.VenueEvent;
 			import com.foursquare.models.vo.CheckinVO;
 			
-			import flash.utils.Timer;
-			
 			import flashx.textLayout.events.FlowElementMouseEvent;
+			
+			import mx.events.FlexEvent;
 
 			private var t:Timer;
 			private var dataChanged:Boolean;
+			private var _checkinVO:CheckinVO;
 			
 			private function creationComplete():void{
-				//TODO (seth) move this to a place in the View so that the timer isn't created
-				//multiple times.
-				
-				/* if(t==null && data!=null){
-					t = new Timer(60000);
-					t.addEventListener(TimerEvent.TIMER, function(e:TimerEvent):void{
-						timeAgo.text = TimeAgoInWords.format(data.created)+' ago';
-					});
-					t.start();
-				} */
 			}
 			
 			public function onNameClick(event:FlowElementMouseEvent):void{
-				trace("test");
+				var userEvent:UserEvent = new UserEvent( UserEvent.GET_DETAILS );
+				userEvent.userVO = _checkinVO.user;
+				dispatchEvent( userEvent );
 			}
 
 			public function onVenueClick(event:FlowElementMouseEvent):void{
-				trace("test");
+				var venueEvent:VenueEvent = new VenueEvent( VenueEvent.GET_VENUE_DETAILS );
+				venueEvent.venue = _checkinVO.venue;
+				dispatchEvent( venueEvent );
 			}
 			
 			override protected function commitProperties() : void{
@@ -47,33 +44,44 @@
 				if(dataChanged){
 					dataChanged = false;
 
-					userLink.replaceText(0, userLink.text.length, data.user.name_with_initial);
+					userLink.replaceText(0, userLink.text.length, _checkinVO.user.name_with_initial);
 
-					if(data.venue) venueLink.replaceText(0, venueLink.text.length, data.venue.name);
+					if(_checkinVO.venue) venueLink.replaceText(0, venueLink.text.length, _checkinVO.venue.name);
 
-					shoutText.text = data.shout; 
+					shoutText.text = _checkinVO.shout; 
+					
+					timeAgo.text = _checkinVO.created_in_words
 
-					if(data){
-						if(data.user.photo!=""){
-							userImage.source = data.user.photo;
+					if(_checkinVO.user.photo!=""){
+						userImage.source = _checkinVO.user.photo;
+					}else{
+						if( (_checkinVO as CheckinVO).user.gender == "male"){
+							userImage.source = "http://playfoursquare.s3.amazonaws.com/userpix_thumbs/blank_boy.png";
 						}else{
-							if( (data as CheckinVO).user.gender == "male"){
-								userImage.source = "http://playfoursquare.s3.amazonaws.com/userpix_thumbs/blank_boy.png";
-							}else{
-								userImage.source = "http://playfoursquare.s3.amazonaws.com/userpix_thumbs/blank_girl.png";
-							}
+							userImage.source = "http://playfoursquare.s3.amazonaws.com/userpix_thumbs/blank_girl.png";
 						}
 					}
 				}
 			}
+			
+			public function unload():void{
+				userImage.source = "";
+			}
 
-			override public function set data(value:Object) : void{
-				super.data = value;
-				if(data){
+			public function get checkinVO():CheckinVO
+			{
+				return _checkinVO;
+			}
+			
+			public function set checkinVO(value:CheckinVO):void
+			{
+				_checkinVO = value;
+				if(_checkinVO){
 					dataChanged = true;
 					invalidateProperties();
 				}
 			}
+			
 		]]>
 	</fx:Script>
 	<s:Group height="38" width="38">
@@ -98,17 +106,23 @@
 			</s:fill>
 		</s:Rect>
 		
-		<s:RichText top="10" left="10" right="10" bottom="20">
+		<s:RichEditableText id="richText" editable="false" selectable="false"
+					top="10" left="10" right="10" bottom="20"
+					>
 			<s:p>
-			<s:a click="onNameClick(event);" ><elements:SpanElement id="userLink" color="0x2b6786" fontWeight="bold" fontSize="12" text="un" /></s:a>
-			at
-			<s:a click="onVenueClick(event);" ><elements:SpanElement id="venueLink" color="0x2b6786" fontWeight="bold" fontSize="12" text="vn" /></s:a>
+				<s:a click="onNameClick(event)">
+					<s:span id="userLink" styleName="linkElement" text="un"/>
+				</s:a>
+				at
+				<s:a click="onVenueClick(event);" >
+					<elements:SpanElement id="venueLink" styleName="linkElement" text="vn" />
+				</s:a>
 			</s:p>
 			<s:p paddingTop="10">
 			<elements:SpanElement id="shoutText" color="0x000000" fontSize="12" />
 			</s:p>
-		</s:RichText>
-		<s:Label text="{(data as CheckinVO).created_in_words}" id="timeAgo" color="0x666666" fontSize="10" bottom="0" right="5"/>
+		</s:RichEditableText>
+		<s:Label id="timeAgo" color="0x666666" fontSize="10" bottom="0" right="5"/>
 	</s:Group>
 	
-</s:ItemRenderer>
+</s:Group>
