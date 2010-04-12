@@ -95,11 +95,11 @@ package com.foursquare.controller
 		 */		
 		private function findNewCheckins(checkins:ArrayCollection):ArrayCollection{
 			
-			var timeFromLastPoll:int = new Date().getTime() - checkinMediator.pollInterval;
+			var timeFromLastPoll:Number = new Date().time - checkinMediator.pollInterval;
 			var newCheckins:ArrayCollection = new ArrayCollection();
 			
 			for each(var checkin:CheckinVO in checkins){
-				if( checkin.created.getTime() > timeFromLastPoll){
+				if( checkin.created.time > timeFromLastPoll){
 					newCheckins.addItem( checkin );
 				}else{
 					break;
