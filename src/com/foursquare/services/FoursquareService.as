@@ -26,9 +26,14 @@ package com.foursquare.services
 	import flash.utils.Dictionary;
 	
 	import mx.collections.ArrayCollection;
+	import mx.rpc.AsyncToken;
+	import mx.rpc.events.FaultEvent;
+	import mx.rpc.events.ResultEvent;
+	import mx.rpc.http.HTTPService;
 	
 	import org.flaircode.oauth.IOAuth;
 	import org.flaircode.oauth.OAuth;
+	import org.iotashan.oauth.OAuthRequest;
 	import org.iotashan.oauth.OAuthToken;
 	import org.robotlegs.mvcs.Actor;
 
@@ -101,6 +106,19 @@ package com.foursquare.services
 		 */		
 		public function getCheckins():void
 		{
+			/*var service:HTTPService = new HTTPService();
+			
+			OAuthRequest = new OAuthRequest(
+			
+			service.url = oauth.buildRequest(
+				URLRequestMethod.GET, 
+				_url+'checkins.xml',
+				model.oauth_token);
+
+			service.addEventListener(FaultEvent.FAULT, onFault);
+			service.addEventListener(ResultEvent.RESULT, onResult_getCheckins);
+			var token:AsyncToken = service.send();*/
+			
 			var request : URLRequest = oauth.buildRequest(
 				URLRequestMethod.GET, 
 				_url+'checkins.xml',
@@ -139,10 +157,17 @@ package com.foursquare.services
 		 */	
 		public function getUserDetails(userVO:UserVO, badges:Boolean=false, mayor:Boolean=false):void
 		{
+			var params : Object = new Object();
+			if(userVO){
+				params.uid = userVO.id;
+				params.badges = true;
+				params.mayor = true;
+			}
+			
 			var request : URLRequest = oauth.buildRequest(
 				URLRequestMethod.GET, 
 				_url+'user.xml',
-				model.oauth_token);
+				model.oauth_token, params);
 			
 			var loader : URLLoader = new URLLoader();
 			loader.addEventListener(IOErrorEvent.IO_ERROR, onIOError);
@@ -311,6 +336,10 @@ package com.foursquare.services
 		//*****************************************
 		// ERROR HANDLERS
 		//*****************************************	
+		
+		private function onFault(event:FaultEvent):void{
+			
+		}
 		
 		private function onLoginError(event:IOErrorEvent):void{
 			var error : Error = new Error("Incorrect username/password or couldnt talk to foursquare");

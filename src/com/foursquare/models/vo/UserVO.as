@@ -3,14 +3,14 @@ package com.foursquare.models.vo{
 	
 	public class UserVO{
 		
-		[Bindable] public var id:int;
-		[Bindable] public var firstname:String;
-		[Bindable] public var lastname:String;
-		[Bindable] public var name_with_initial:String;
-		[Bindable] public var photo:String;
-		[Bindable] public var gender:String;
-		[Bindable] public var badges:Array = new Array();
-		[Bindable] public var city:CityVO;
+		public var id:int;
+		public var firstname:String;
+		public var lastname:String;
+		public var name_with_initial:String;
+		public var photo:String;
+		public var gender:String;
+		public var badges:Array = new Array();
+		public var city:CityVO;
 		
 		public function UserVO(remote:Object){
 			this.id = remote.id;

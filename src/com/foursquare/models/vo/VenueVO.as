@@ -1,5 +1,5 @@
 package com.foursquare.models.vo{
-	[Bindable]
+	
 	public class VenueVO{
 		public var id:int;
 		public var name:String;
