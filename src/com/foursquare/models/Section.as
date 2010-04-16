@@ -10,7 +10,7 @@ package com.foursquare.models
 	{
 		public static const LOGIN:String = "login";
 		public static const SPLASH:String = "splash";
-		public static const CHECKIN:String = "checkin";
+		public static const CHECKINS:String = "checkins";
 		public static const HISTORY:String = "history";
 		public static const SETTINGS:String = "settings";
 		public static const SEARCH:String = "search";

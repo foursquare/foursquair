@@ -34,7 +34,7 @@ in accordance with the terms of the license agreement accompanying it.
 		<s:State name="disabled" />
 	</s:states>
 	
-	<s:Rect left="0" right="0" top="0" bottom="0" >
+	<!--<s:Rect left="0" right="0" top="0" bottom="0" >
 		<s:fill>
 			<s:LinearGradient id="bgFill" rotation="90">
 				<s:entries>
@@ -42,6 +42,23 @@ in accordance with the terms of the license agreement accompanying it.
 					<s:GradientEntry color="0x89b0c3" />
 				</s:entries>
 			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>-->
+	
+	<s:Rect top="0" bottom="0" left="0" right="0"
+			alpha="1">
+		<s:fill>
+			<s:LinearGradient rotation="90" >
+				<s:GradientEntry color="0x94bccf" />
+				<s:GradientEntry color="0x457b9b" />
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	<s:Rect top="0" bottom="0" left="0" right="0"
+			alpha=".2">
+		<s:fill>
+			<s:BitmapFill fillMode="repeat"
+						  source="@Embed('assets/images/repeatingBG.png')"/>
 		</s:fill>
 	</s:Rect>
 	

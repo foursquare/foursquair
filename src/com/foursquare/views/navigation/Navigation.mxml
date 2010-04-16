@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		  xmlns:s="library://ns.adobe.com/flex/spark" 
-		  xmlns:mx="library://ns.adobe.com/flex/mx">
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  >
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
 	
 	<fx:Script>
 		<![CDATA[
+			import com.foursquare.events.LoginEvent;
 			import com.foursquare.events.NavigationEvent;
 			import com.foursquare.models.Section;
 			
@@ -22,7 +24,7 @@
 				if(buttonBar.selectedIndex >= 0){
 					switch( buttonBar.selectedIndex ){
 						case 0:
-							navigationEvent.section = Section.CHECKIN;
+							navigationEvent.section = Section.CHECKINS;
 							break;
 						case 1:
 							navigationEvent.section = Section.HISTORY;
@@ -37,6 +39,7 @@
 					dispatchEvent( navigationEvent );
 				}
 			}
+			
 		]]>
 	</fx:Script>
 	
@@ -44,7 +47,7 @@
 				 styleName="navigationButtonBarSkin" requireSelection="true">
 		<s:dataProvider>
 			  <s:ArrayList>
-				  <fx:Object label="{resourceManager.getString('myResources', 'CHECKIN')}"
+				  <fx:Object label="{resourceManager.getString('myResources', 'CHECKINS')}"
 							 icon="@Embed('assets/icons/icon-checkin.png')" />
 				  <fx:Object label="{resourceManager.getString('myResources', 'HISTORY')}"
 							 icon="@Embed('assets/icons/icon-history.png')" />

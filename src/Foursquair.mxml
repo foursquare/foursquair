@@ -1,88 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<foursquare:FoursquareBase
-	xmlns:foursquare="com.foursquare.*"
-	xmlns:fx="http://ns.adobe.com/mxml/2009" 
-	xmlns:s="library://ns.adobe.com/flex/spark" 
-	xmlns:login="com.foursquare.views.login.*"
-	xmlns:checkins="com.foursquare.views.checkins.*"
-	xmlns:history="com.foursquare.views.history.*"
-	xmlns:venues="com.foursquare.views.venues.*"
-	xmlns:ws="de.websector.utils.updater.ui.*" 
-	xmlns:notification="com.adobe.air.notification.*" 
-	xmlns:navigation="com.foursquare.views.navigation.*" 
-	xmlns:header="com.foursquare.views.header.*"
-	xmlns:search="com.foursquare.views.search.*"
-	xmlns:shout="com.foursquare.views.shout.*"
-	height="100%" 
-	xmlns:settings="com.foursquare.views.settings.*">
+<foursquare:FoursquareBase height="100%"
+						   xmlns:foursquare="com.foursquare.*"
+						   xmlns:fx="http://ns.adobe.com/mxml/2009"
+						   xmlns:s="library://ns.adobe.com/flex/spark"
+						   xmlns:login="com.foursquare.views.login.*"
+						   xmlns:checkins="com.foursquare.views.checkins.*"
+						   xmlns:history="com.foursquare.views.history.*"
+						   xmlns:venues="com.foursquare.views.venues.*"
+						   xmlns:ws="de.websector.utils.updater.ui.*"
+						   xmlns:notification="com.adobe.air.notification.*"
+						   xmlns:navigation="com.foursquare.views.navigation.*"
+						   xmlns:header="com.foursquare.views.header.*"
+						   xmlns:search="com.foursquare.views.search.*"
+						   xmlns:shout="com.foursquare.views.shout.*"
+						   xmlns:settings="com.foursquare.views.settings.*">
 
-	<fx:Style source="style/FourSquairStyle.css" />
-	
+	<fx:Style source="style/FourSquairStyle.css"/>
+
 	<fx:Declarations>
 		<foursquare:FourSquareContext contextView="{this}"/>
-		
+
 		<s:Parallel id="viewStackTransitionEffect">
-			<s:Move id="ViewStackTransitionEffectStart" duration="500" xTo="0" />
-			<s:Move id="ViewStackTransitionEffectEnd" duration="500"/>
+			<s:Move id="ViewStackTransitionEffectStart"
+					duration="500"
+					xTo="0"/>
+			<s:Move id="ViewStackTransitionEffectEnd"
+					duration="500"/>
 		</s:Parallel>
 	</fx:Declarations>
-	
+
 	<fx:Metadata>
 		[ResourceBundle("myResources")]
 	</fx:Metadata>
-	
-	<foursquare:states>
-		<s:State name="login" />
-		<s:State name="splash" />
-		<s:State name="checkin" />
-		<s:State name="history" />
-		<s:State name="settings" />
-		<s:State name="search" />
-	</foursquare:states>
-	
-	
-	<s:VGroup width="100%" height="100%">
-		<!--todo - increment update file to tell users to download the latest.-->
-		
-		<ws:ApplicationUpdaterUI
-			id="updater"
-			width="100%" height="50"
-			configurationFile="{ new File ( 'app:/updateConfig.xml' ) }"
-			skinClass="de.websector.utils.updater.ui.skins.firefox.AppUpdaterUIFirefoxSkin"
-			useWindow="false"
-			invisibleCheck="true"
-			/>
-		
-		<login:LoginView id="loginView" includeIn="login" 
-						 horizontalCenter="0" verticalCenter="0" />
 
-		<s:VGroup width="100%" height="100%" excludeFrom="login">
-			<header:HeaderView id="header" width="100%" height="73"
-							   
-							   styleName="headerSkin" />
-			<checkins:CheckinView	id="checkinView" includeIn="checkin" height="100%" width="100%" 
-							   	hideEffect="{viewStackTransitionEffect}"
-							   	showEffect="{viewStackTransitionEffect}" />
-			<history:HistoryView 	id="historyView" includeIn="history" height="100%" width="100%" 
-							 	hideEffect="{viewStackTransitionEffect}"
-							 	showEffect="{viewStackTransitionEffect}" />
-			<settings:SettingsView id="settingsView" includeIn="settings" height="100%" width="100%"
+	<foursquare:states>
+		<s:State name="login"/>
+		<s:State name="splash"/>
+		<s:State name="checkins"/>
+		<s:State name="history"/>
+		<s:State name="settings"/>
+		<s:State name="search"/>
+	</foursquare:states>
+
+
+	<s:VGroup height="100%" width="100%">
+		<!--todo - increment update file to tell users to download the latest.-->
+
+		<ws:ApplicationUpdaterUI id="updater" height="50" width="100%"
+								 configurationFile="{ new File ( 'app:/updateConfig.xml' ) }"
+								 skinClass="de.websector.utils.updater.ui.skins.firefox.AppUpdaterUIFirefoxSkin"
+								 useWindow="false"
+								 invisibleCheck="true"/>
+
+		<login:LoginView id="loginView"
+						 verticalCenter="0" horizontalCenter="0"
+						 includeIn="login"/>
+
+		<s:VGroup height="100%" width="100%"
+				  excludeFrom="login">
+			<header:HeaderView id="header" styleName="headerSkin" height="73" width="100%"
+							   sectionName="{currentState}"/>
+			<checkins:CheckinView id="checkinView" height="100%" width="100%"
+								  includeIn="checkins"
+								  hideEffect="{viewStackTransitionEffect}"
+								  showEffect="{viewStackTransitionEffect}"/>
+			<history:HistoryView id="historyView" height="100%" width="100%"
+								 includeIn="history"
+								 hideEffect="{viewStackTransitionEffect}"
+								 showEffect="{viewStackTransitionEffect}"/>
+			<settings:SettingsView id="settingsView" height="100%" width="100%"
+								   includeIn="settings"
 								   hideEffect="{viewStackTransitionEffect}"
-								   showEffect="{viewStackTransitionEffect}" />
-			<search:SearchView id="searchView" includeIn="search" height="100%" width="100%" 
+								   showEffect="{viewStackTransitionEffect}"/>
+			<search:SearchView id="searchView" height="100%" width="100%"
+							   includeIn="search"
 							   hideEffect="{viewStackTransitionEffect}"
-							   showEffect="{viewStackTransitionEffect}" />
-			
-			<shout:ShoutBox id="shoutBox" shout="{bounceShoutEvent(event)}" width="100%" height="30" bottom="0" />
-		
+							   showEffect="{viewStackTransitionEffect}"/>
+
+			<shout:ShoutBox id="shoutBox" height="30" width="100%"
+							bottom="0"
+							shout="{bounceShoutEvent(event)}"/>
+
 		</s:VGroup>
-		
+
 	</s:VGroup>
-	
-	<s:VGroup width="100%" height="100%" includeIn="splash" horizontalAlign="center" horizontalCenter="0" verticalCenter="0" >
-		<s:BitmapImage source="@Embed(source='assets/images/foursquare_splash.png')" horizontalCenter="0" verticalCenter="0"/>
+
+	<s:VGroup height="100%" width="100%"
+			  verticalCenter="0" horizontalCenter="0" horizontalAlign="center"
+			  includeIn="splash">
+		<s:BitmapImage verticalCenter="0" horizontalCenter="0"
+					   source="@Embed(source='assets/images/foursquare_splash.png')"/>
 		<!--<mx:SWFLoader id="splashLoadingIndicator" source="@Embed(source='assets/swf/foursquare_loader.swf')"
-					  width="16" height="16" autoLoad="true" horizontalCenter="0" verticalCenter="0"/>-->
+			 width="16" height="16" autoLoad="true" horizontalCenter="0" verticalCenter="0"/>-->
 	</s:VGroup>
 	<!--<s:Label fontSize="11" text="v. {updater.installedVersion}" right="5"/>-->
 </foursquare:FoursquareBase>

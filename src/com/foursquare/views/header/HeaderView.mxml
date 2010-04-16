@@ -7,22 +7,41 @@
 	<fx:Script>
 		<![CDATA[
 			import com.foursquare.events.LoginEvent;
+			
+			private var _sectionName:String;
+
+			public function get sectionName():String
+			{
+				return _sectionName;
+			}
+
+			public function set sectionName(value:String):void
+			{
+				_sectionName = value;
+				selectedSection.text = _sectionName.toUpperCase();
+			}
+
 		]]>
 	</fx:Script>
-	<s:HGroup  top="11" width="100%">
-		<s:Label id="userName" fontWeight="bold" fontSize="12" />
-		<s:Label text="Logout" click="{dispatchEvent(new LoginEvent(LoginEvent.LOGOUT))}"
-				 fontSize="10" textDecoration="underline"/>
-	</s:HGroup>
-	<navigation:Navigation width="100%" top="31" height="30" />
+
+	<s:Label id="selectedSection" color="0xffffff" fontSize="14" top="15" />
+	
+	<navigation:Navigation width="100%" bottom="12" height="30" />
 	
 	<!--image with 1 px white border-->
-	<s:Group width="52" height="52" right="12" top="12">
+	<s:Group width="42" height="42" right="0" top="10">
 		<s:Rect width="100%" height="100%">
 			<s:stroke>
 				<s:SolidColorStroke color="0xffffff" />
 			</s:stroke>
 		</s:Rect>
-		<mx:Image id="userImage" smoothBitmapContent="true" width="50" height="50" left="1" top="1" />
+		<mx:Image id="userImage" smoothBitmapContent="true" width="40" height="40" left="1" top="1" />
 	</s:Group>
+
+	<s:HGroup bottom="0" right="0" >
+		<s:Label id="userName" textAlign="right" color="0xffffff"
+				 fontSize="14" />
+		<s:Label text="Logout" click="{dispatchEvent(new LoginEvent(LoginEvent.LOGOUT))}"
+				 fontSize="12" color="0xCCCCCC"/>
+	</s:HGroup>
 </s:SkinnableContainer>

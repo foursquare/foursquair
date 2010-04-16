@@ -55,16 +55,17 @@ s|VScrollBar {
 
 mx|ToolTip {
 	font-family: ArialForMx;
+	font-weight: bold;
 	backgroundAlpha: .5;
 	backgroundColor: black;
 	color: white;
 	cornerRadius: 4;
-	fontSize: 11;
+	fontSize: 12;
 }
 
-/**
+/****************************************************************
 * components
-**/
+****************************************************************/
 s|Panel{
 	border-color: white;
 	corner-radius: 8;
@@ -75,22 +76,37 @@ s|Panel{
 	skin-class: ClassReference("com.foursquare.skins.login.GreyButtonSkin");
 }
 
-/**
+/****************************************************************
 * login
-**/
+****************************************************************/
 login|LoginView{
 	skin-class: ClassReference("com.foursquare.skins.login.LoginViewSkin");
 }
 
+.loginTitle {
+	fontSize: 24;
+	fontWeight: bold;
+	color: #ffffff;
+}
+
+.loginTagline {
+	fontSize: 16;
+	color: #000000;
+}
+
+.loginFooter {
+	fontSize: 12;
+	color: #ffffff;
+}
 
 .loginBoxSkin{
 	skin-class: ClassReference("com.foursquare.skins.login.LoginBoxSkin");
 }
 
 
-/**
+/****************************************************************
 * header
-**/
+****************************************************************/
 .headerSkin{
 	skin-class: ClassReference("com.foursquare.skins.header.HeaderSkin");
 }
@@ -99,23 +115,29 @@ login|LoginView{
 	skin-class: ClassReference("com.foursquare.skins.header.NavigationSkin");
 }
 
-/**
+/****************************************************************
 * checkin
-**/
+****************************************************************/
 checkins|CheckinView {
 	skin-class: ClassReference("com.foursquare.skins.checkin.CheckinViewSkin");
 }
 
-/**
+.linkElement {
+	color:#2b6786;
+	fontWeight:"bold";
+	fontSize:12;
+}
+
+/****************************************************************
 * shout
-**/
+****************************************************************/
 shout|ShoutBox{
 	skin-class: ClassReference("com.foursquare.skins.shout.ShoutBoxSkin");
 }
 
-/**
+/****************************************************************
 * history
-**/
+****************************************************************/
 history|HistoryView{
 	skin-class: ClassReference("com.foursquare.skins.history.HistoryViewSkin");
 }
@@ -124,9 +146,9 @@ history|SingleDay{
 	skin-class: ClassReference("com.foursquare.skins.history.SingleDaySkin");
 }
 
-/**
+/****************************************************************
 * search
-**/
+****************************************************************/
 search|SearchView{
 	skin-class: ClassReference("com.foursquare.skins.search.SearchViewSkin");
 }

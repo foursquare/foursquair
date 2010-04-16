@@ -33,7 +33,7 @@
 			protected function gr_creationComplete(evt:FlexEvent):void {
 				var dataObj:Object = hostComponent.data;
 				img.source = dataObj.icon;
-				hostComponent.toolTip = dataObj.label;
+				//hostComponent.toolTip = dataObj.label;
 			}
 			
 		]]>
@@ -48,7 +48,7 @@
 
 	<s:Path data="H 0 0 L 8 -8 L 16 0" includeIn="selectedStates">
 		<s:fill>
-			<s:SolidColor color="0x666666" />
+			<s:SolidColor color="0x999999" />
 		</s:fill>
 	</s:Path>
 	

@@ -26,6 +26,8 @@
 				   top="5" left="5" />
 		<s:BitmapImage source="@Embed('assets/icons/dimple-shoutbox.png')"
 				   top="7" horizontalCenter="0"/>
+		
+		<s:Label text="SHOUT" color="0xffffff" fontSize="14" top="7" left="25" />
 	</s:Group>
 	
 </s:Skin>
