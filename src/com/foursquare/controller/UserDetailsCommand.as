@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////
 // Project: foursquair 
 // Author: Seth Hillinger
-// Created: Feb 7, 2010 
+// Created: April 16, 2010 
 ////////////////////////////////////////////////////////////
 
 package com.foursquare.controller
@@ -9,10 +9,11 @@ package com.foursquare.controller
 	import com.foursquare.events.UserEvent;
 	import com.foursquare.models.LibraryModel;
 	import com.foursquare.services.IFoursquareService;
+	import com.foursquare.views.CheckinMediator;
 	
 	import org.robotlegs.mvcs.Command;
 	
-	public class UserCommand extends Command
+	public class UserDetailsCommand extends Command
 	{
 		
 		[Inject]
@@ -20,11 +21,14 @@ package com.foursquare.controller
 		
 		[Inject]
 		public var foursquareService:IFoursquareService;
-
+		
 		[Inject]
 		public var libraryModel:LibraryModel;
 		
-		public function UserCommand()
+		[Inject]
+		public var checkinMediator:CheckinMediator;
+		
+		public function UserDetailsCommand()
 		{
 			super();
 		}
@@ -35,7 +39,7 @@ package com.foursquare.controller
 					foursquareService.getUserDetails( event.userVO );
 					break;
 				case UserEvent.DETAILS_GOT:
-					libraryModel.currentUser = event.userVO;
+					checkinMediator.setUserDetails( event.userVO );
 					break;
 			}
 		}

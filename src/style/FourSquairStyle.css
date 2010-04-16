@@ -6,6 +6,7 @@
 @namespace history "com.foursquare.views.history.*";
 @namespace search "com.foursquare.views.search.*";
 @namespace checkins "com.foursquare.views.checkins.*";
+@namespace user "com.foursquare.views.user.*";
 
 /*------FONTS------*/
 
@@ -120,6 +121,11 @@ login|LoginView{
 ****************************************************************/
 checkins|CheckinView {
 	skin-class: ClassReference("com.foursquare.skins.checkin.CheckinViewSkin");
+}
+
+user|UserDetailsView {
+	border-color: white;
+	skin-class: ClassReference("com.foursquare.skins.user.UserDetailsTitleWindowSkin");
 }
 
 .linkElement {

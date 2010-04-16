@@ -7,12 +7,17 @@
 package com.foursquare.views.checkins
 {
 	
+	import com.foursquare.controller.UserDetailsCommand;
 	import com.foursquare.events.CheckinEvent;
 	import com.foursquare.events.UserEvent;
 	import com.foursquare.events.VenueEvent;
 	import com.foursquare.models.vo.CheckinVO;
+	import com.foursquare.models.vo.UserVO;
+	import com.foursquare.views.user.UserDetailsView;
 	
 	import mx.collections.ArrayCollection;
+	import mx.events.CloseEvent;
+	import mx.managers.PopUpManager;
 	
 	import spark.components.SkinnableContainer;
 	
@@ -53,6 +58,17 @@ package com.foursquare.views.checkins
 		public function getCheckins():void{
 			var checkinEvent:CheckinEvent = new CheckinEvent( CheckinEvent.READ );
 			dispatchEvent( checkinEvent );
+		}
+		
+		public function openUserDetails(userVO:UserVO):void{
+			var userDetails:UserDetailsView = new UserDetailsView();
+			userDetails.addEventListener(CloseEvent.CLOSE, onDetailsClose);
+			userDetails.user = userVO;
+			PopUpManager.addPopUp( userDetails,this);
+		}
+		
+		private function onDetailsClose(event:CloseEvent):void{
+			PopUpManager.removePopUp( event.currentTarget as UserDetailsView );
 		}
 		
 		private function getUserDetails(event:UserEvent):void{

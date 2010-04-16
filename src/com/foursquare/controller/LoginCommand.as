@@ -61,7 +61,7 @@ package com.foursquare.controller
 			}
 			
 			//fire off getUserDetails
-			var userEvent:UserEvent = new UserEvent( UserEvent.GET_DETAILS );
+			var userEvent:UserEvent = new UserEvent( UserEvent.GET_MY_DETAILS );
 			dispatch( userEvent );
 			
 			//navigate to Checkin.

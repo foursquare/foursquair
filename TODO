@@ -1,0 +1,6 @@
+//TODO
+- change Fs icon to look different than Adobe's scheme
+- clicking on name - get/show userdetails 
+- clicking on venue - get/show venue details
+- on logout, wipe lists.
+- test with no internet connection and show readable error message

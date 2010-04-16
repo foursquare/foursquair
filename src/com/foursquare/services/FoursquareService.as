@@ -149,6 +149,31 @@ package com.foursquare.services
 		}
 		
 		/**
+		 * GET MY DETAILS 
+		 * @param uid
+		 * 
+		 */	
+		public function getMyDetails(userVO:UserVO):void
+		{
+			var params : Object = new Object();
+			if(userVO){
+				params.uid = userVO.id;
+				params.badges = true;
+				params.mayor = true;
+			}
+			
+			var request : URLRequest = oauth.buildRequest(
+				URLRequestMethod.GET, 
+				_url+'user.xml',
+				model.oauth_token, params);
+			
+			var loader : URLLoader = new URLLoader();
+			loader.addEventListener(IOErrorEvent.IO_ERROR, onIOError);
+			loader.addEventListener(Event.COMPLETE, onResult_getMyDetails);
+			loader.load(request);
+		}
+		
+		/**
 		 * GET USER DETAILS 
 		 * @param uid
 		 * @param badges
@@ -160,8 +185,8 @@ package com.foursquare.services
 			var params : Object = new Object();
 			if(userVO){
 				params.uid = userVO.id;
-				params.badges = true;
-				params.mayor = true;
+				params.badges = badges;
+				params.mayor = mayor;
 			}
 			
 			var request : URLRequest = oauth.buildRequest(
@@ -212,7 +237,7 @@ package com.foursquare.services
 		// HANDLERS
 		//*****************************************	
 		
-		private function onLoginSuccess(event:Event):void{
+		private function  onLoginSuccess(event:Event):void{
 			var loader : URLLoader = event.target as URLLoader;
 			try
 			{
@@ -298,6 +323,19 @@ package com.foursquare.services
 			var checkinEvent:CheckinEvent = new CheckinEvent( CheckinEvent.SHOUT_SUCCESS );
 			checkinEvent.message = xml..message;
 			dispatch( checkinEvent );
+		}
+		
+		/**
+		 * returns my details 
+		 * @param event
+		 * 
+		 */		
+		private function onResult_getMyDetails(event:Event):void{
+			var xml:XML = new XML((event.target as URLLoader).data);
+			
+			var userEvent:UserEvent = new UserEvent( UserEvent.MY_DETAILS_GOT );
+			userEvent.userVO = new UserVO( XMLUtil.XMLToObject(xml.children()) );
+			dispatch( userEvent );
 		}
 		
 		/**

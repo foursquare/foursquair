@@ -7,6 +7,7 @@
 package com.foursquare.views
 {
 	import com.foursquare.events.UserEvent;
+	import com.foursquare.models.LibraryModel;
 	import com.foursquare.views.header.HeaderView;
 	
 	import org.robotlegs.mvcs.Mediator;
@@ -16,6 +17,9 @@ package com.foursquare.views
 		[Inject]
 		public var headerView:HeaderView;
 		
+		[Inject]
+		public var model:LibraryModel;
+		
 		public function HeaderMediator()
 		{
 			super();
@@ -23,19 +27,35 @@ package com.foursquare.views
 		
 		override public function onRegister():void
 		{
-			eventMap.mapListener( eventDispatcher, UserEvent.DETAILS_GOT, onUserDetailsGot );
+			eventMap.mapListener( eventDispatcher, UserEvent.MY_DETAILS_GOT, onMyDetailsGot );
+			
+			if(model.currentUser){
+				showUser(model.currentUser.firstname, model.currentUser.lastname, model.currentUser.photo);
+			}
 		}
 		
 		/**
-		 * show username, in header. 
+		 * display
+		 * 
+		 * @param firstName
+		 * @param lastName
+		 * @param photo
+		 * 
+		 */		
+		private function showUser(firstName:String, lastName:String, photo:String):void{
+			headerView.userName.text = firstName +" "+ lastName;
+			headerView.userImage.source = photo;
+		}
+		
+		/**
+		 * recieve user details
 		 * @param event
 		 * 
 		 */		
-		private function onUserDetailsGot(event:UserEvent):void{
+		private function onMyDetailsGot(event:UserEvent):void{
 			var lastName:String;
 			event.userVO.lastname ? lastName = event.userVO.lastname : lastName = "";
-			headerView.userName.text = event.userVO.firstname +" "+ lastName;
-			headerView.userImage.source = event.userVO.photo;
+			showUser(event.userVO.firstname, lastName, event.userVO.photo);
 		}
 	}
 }

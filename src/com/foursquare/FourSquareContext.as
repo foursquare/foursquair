@@ -10,9 +10,10 @@ package com.foursquare
 	import com.foursquare.controller.HistoryCommand;
 	import com.foursquare.controller.LoginCommand;
 	import com.foursquare.controller.Logout;
+	import com.foursquare.controller.MyDetailsCommand;
 	import com.foursquare.controller.SearchCommand;
 	import com.foursquare.controller.StartupCommand;
-	import com.foursquare.controller.UserCommand;
+	import com.foursquare.controller.UserDetailsCommand;
 	import com.foursquare.events.CheckinEvent;
 	import com.foursquare.events.HistoryEvent;
 	import com.foursquare.events.LoginEvent;
@@ -75,8 +76,10 @@ package com.foursquare
 			commandMap.mapEvent( LoginEvent.LOGOUT, Logout, LoginEvent );
 			commandMap.mapEvent( LoginEvent.LOGIN_SUCCESS, LoginCommand, LoginEvent );
 			
-			commandMap.mapEvent( UserEvent.GET_DETAILS, UserCommand, UserEvent );
-			commandMap.mapEvent( UserEvent.DETAILS_GOT, UserCommand, UserEvent );
+			commandMap.mapEvent( UserEvent.GET_MY_DETAILS, MyDetailsCommand, UserEvent );
+			commandMap.mapEvent( UserEvent.MY_DETAILS_GOT, MyDetailsCommand, UserEvent );
+			commandMap.mapEvent( UserEvent.GET_DETAILS, UserDetailsCommand, UserEvent );
+			commandMap.mapEvent( UserEvent.DETAILS_GOT, UserDetailsCommand, UserEvent );
 			
 			
 			

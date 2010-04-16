@@ -13,6 +13,9 @@ package com.foursquare.events
 	public class UserEvent extends Event
 	{
 		
+		public static const GET_MY_DETAILS:String = "getMyDetails";
+		public static const MY_DETAILS_GOT:String = "myDetailsGot";
+		
 		public static const GET_DETAILS:String = "getDetails";
 		public static const DETAILS_GOT:String = "detailsGot";
 		

@@ -90,7 +90,9 @@
 				<s:SolidColorStroke color="white" />
 			</s:stroke>
 		</s:Rect>
-		<mx:Image id="userImage" smoothBitmapContent="true" left="1" top="1" right="1" bottom="1" />
+		<mx:Image id="userImage" smoothBitmapContent="true"
+				  maintainAspectRatio="true"
+				  left="1" top="1" right="1" bottom="1" />
 	</s:Group>
 	
 	<s:Group width="100%" height="100%">
